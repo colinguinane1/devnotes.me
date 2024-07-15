@@ -1,4 +1,5 @@
 import { SignInButton, SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
+import { BiMenu } from "react-icons/bi";
 import Link from "next/link";
 const Header = () => {
   const logoText = "<b/>";
@@ -8,13 +9,13 @@ const Header = () => {
         <div className="">
           <h1 className="font-extrabold">{logoText}</h1>
         </div>
-        <div className="flex gap-6">
+        <div className=" gap-6 hidden md:flex">
           {" "}
           <li>Home</li>
           <li>Blogs</li>
           <li>Account</li>
         </div>
-        <div>
+        <div className="hidden md:block">
           <SignedOut>
             <div className={`bg-black text-white p-1 px-4 rounded-md`}>
               <SignInButton />
@@ -26,7 +27,10 @@ const Header = () => {
               <UserButton />
             </div>
           </SignedIn>
-        </div>
+        </div>{" "}
+        <button className="border md:hidden rounded-md">
+          <BiMenu size={25} color="" />
+        </button>
       </ul>
     </nav>
   );
