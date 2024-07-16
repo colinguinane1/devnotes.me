@@ -18,8 +18,7 @@ const Header = () => {
         <div className="hidden md:block">
           <SignedOut>
             <div className={`bg-black text-white p-1 px-4 rounded-md`}>
-              Sign In
-              <SignInButton />
+              <Link href="register">Register</Link>
             </div>
           </SignedOut>
           <SignedIn>
