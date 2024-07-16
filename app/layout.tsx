@@ -22,8 +22,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html className="antialiased" lang="en">
-        <Header />
-        <body className={geist.className}>{children}</body>
+        <body className={geist.className}>
+          <Header />
+          {children}
+        </body>
       </html>
     </ClerkProvider>
   );

@@ -1,9 +1,9 @@
-import { SignUp } from "@clerk/nextjs";
+import { SignIn } from "@clerk/nextjs";
 
 export default function Page() {
   return (
     <div className="grid h-screen place-items-center">
-      <SignUp />
+      <SignIn />
     </div>
   );
 }

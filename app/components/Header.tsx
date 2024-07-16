@@ -4,7 +4,7 @@ import Link from "next/link";
 const Header = () => {
   const logoText = "<b/>";
   return (
-    <nav className="fixed w-full px-4 top-0 py-3 border-b">
+    <div className="fixed w-full px-4 top-0 py-3 border-b">
       <ul className="flex items-center  text-lg font-semibold justify-between">
         <div className="">
           <h1 className="font-extrabold">{logoText}</h1>
@@ -32,7 +32,7 @@ const Header = () => {
           <BiMenu size={25} color="" />
         </button>
       </ul>
-    </nav>
+    </div>
   );
 };
 
