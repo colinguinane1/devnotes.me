@@ -5,6 +5,8 @@ import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import Header from "./components/Header";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "next-themes";
+import { useTheme } from "next-themes";
 
 const inter = Inter({ subsets: ["latin"] });
 const geist = GeistSans;
@@ -21,8 +23,8 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html className="antialiased" lang="en">
-        <body className={geist.className}>
+      <html className={geist.className} lang="en">
+        <body className="antialiased bg-primary-light dark:bg-primary-dark">
           <Header />
           {children}
         </body>
