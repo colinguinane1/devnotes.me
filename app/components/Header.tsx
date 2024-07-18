@@ -3,6 +3,7 @@ import { BiMenu } from "react-icons/bi";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { ModeToggle } from "./ThemeSwitcher";
+import { Button } from "@/components/ui/button";
 const Header = () => {
   const logoText = "<b/>";
   return (
@@ -22,11 +23,9 @@ const Header = () => {
         <div className="hidden md:flex gap-10">
           <ModeToggle />
           <SignedOut>
-            <div
-              className={`bg-secondary text-center flex items-center text-white p-1 px-4 rounded-md`}
-            >
+            <Button>
               <SignInButton />
-            </div>
+            </Button>
           </SignedOut>
         </div>{" "}
         <button className="border md:hidden rounded-md">
