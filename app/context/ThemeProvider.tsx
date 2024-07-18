@@ -1,19 +1,9 @@
 "use client";
-const { NextUIProvider } = require("@nextui-org/react");
-const { ThemeProvider: NextThemesProvider } = require("next-themes");
 
-function Providers({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <NextUIProvider>
-      <NextThemesProvider attribute="class" defaultTheme="dark">
-        {children}
-      </NextThemesProvider>
-    </NextUIProvider>
-  );
+import * as React from "react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { type ThemeProviderProps } from "next-themes/dist/types";
+
+export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
-
-module.exports = Providers;

@@ -2,7 +2,7 @@ import { SignInButton, SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 import { BiMenu } from "react-icons/bi";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { ThemeSwitcher } from "./ThemeSwitcher";
+import { ModeToggle } from "./ThemeSwitcher";
 const Header = () => {
   const logoText = "<b/>";
   return (
@@ -16,22 +16,18 @@ const Header = () => {
         <div className=" gap-6 hidden md:flex">
           {" "}
           <li>Home</li>
-          <li>Blogs</li>
-          <li>Account</li>
+          <li>Explore</li>
+          <li>Write</li>
         </div>
         <div className="hidden md:flex gap-10">
-          <ThemeSwitcher />
+          <ModeToggle />
           <SignedOut>
-            <div className={`bg-black text-white p-1 px-4 rounded-md`}>
-              <Link href="register">Register</Link>
+            <div
+              className={`bg-secondary text-center flex items-center text-white p-1 px-4 rounded-md`}
+            >
+              <SignInButton />
             </div>
           </SignedOut>
-          <SignedIn>
-            <div className="flex items-center justify-center scale-125">
-              {" "}
-              <UserButton />
-            </div>
-          </SignedIn>
         </div>{" "}
         <button className="border md:hidden rounded-md">
           <BiMenu size={25} color="" />

@@ -22,13 +22,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html className={geist.className} lang="en">
-        <body className="antialiased bg-primary-light dark:bg-primary-dark">
-          <Header />
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html className={geist.className} lang="en">
+      <body className="antialiased bg-primary-light dark:bg-primary-dark transition-colors">
+        {" "}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ClerkProvider>
+            <Header />
+            {children}{" "}
+          </ClerkProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

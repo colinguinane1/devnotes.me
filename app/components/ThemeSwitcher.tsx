@@ -1,31 +1,40 @@
 "use client";
+
+import * as React from "react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState, useRef } from "react";
-import { BiSun } from "react-icons/bi";
-import { BiMoon } from "react-icons/bi";
 
-export function ThemeSwitcher() {
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [themeDropdown, setThemeDropdown] = useState(false);
-  const [justClicked, setJustClicked] = useState(false);
-  const dropdownRef = useRef(null);
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-  const handleChangeTheme = (selectedTheme: any) => {
-    setTheme(selectedTheme);
-  };
+export function ModeToggle() {
+  const { setTheme } = useTheme();
 
   return (
-    <div className="flex items-center p-2 rounded-md  bg-white w-fit h-fit">
-      {theme === "light" ? (
-        <button onClick={() => handleChangeTheme("dark")}>
-          <BiMoon />
-        </button>
-      ) : (
-        <button onClick={() => handleChangeTheme("dark")}>
-          <BiSun />
-        </button>
-      )}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon">
+          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <span className="sr-only">Toggle theme</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => setTheme("light")}>
+          Light
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("dark")}>
+          Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("system")}>
+          System
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
