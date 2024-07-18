@@ -24,6 +24,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import SignInManager from "./ui/SignInManager";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -53,14 +54,7 @@ const Header = () => {
         </div>
         <div className="hidden md:flex gap-10">
           <ModeToggle />
-          <SignedOut>
-            <Button>
-              <SignInButton />
-            </Button>
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          <SignInManager />
         </div>
         <div className="block md:hidden">
           <Sheet>
@@ -71,11 +65,15 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent side="left">
               <SheetHeader>
-                <SheetTitle>Blogchain</SheetTitle>
+                <SheetTitle>
+                  <h1 className="text-left font-extrabold">
+                    {logoText} <span className="font-normal"></span>Blogchain
+                  </h1>
+                </SheetTitle>
                 <SheetDescription>
                   <div className=" gap-2 flex flex-col">
                     {NavigationData.map((nav, index) => (
-                      <Button key={index}>
+                      <Button variant={"secondary"} key={index}>
                         <Link href={nav.href}>{nav.name}</Link>
                       </Button>
                     ))}{" "}
@@ -83,14 +81,7 @@ const Header = () => {
                     <div className="flex justify-between items-center">
                       {" "}
                       <ModeToggle />
-                      <SignedOut>
-                        <Button color="#BF00FF">
-                          <SignInButton />
-                        </Button>
-                      </SignedOut>
-                      <SignedIn>
-                        <UserButton showName />
-                      </SignedIn>
+                      <SignInManager />
                     </div>
                   </div>
                 </SheetDescription>
