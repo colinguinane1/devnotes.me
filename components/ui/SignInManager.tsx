@@ -11,7 +11,10 @@ const SignInManager = () => {
         </Button>
       </SignedOut>
       <SignedIn>
-        <UserButton showName />
+        <Button variant={"secondary"}>
+          {" "}
+          <UserButton showName />
+        </Button>
       </SignedIn>
     </>
   );
