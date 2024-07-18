@@ -1,21 +1,10 @@
-"use client";
-import { SignInButton, SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 import { BiMenu } from "react-icons/bi";
 import Link from "next/link";
-import { useState } from "react";
-import { useTheme } from "next-themes";
+
 import { ModeToggle } from "./ThemeSwitcher";
 import { Button } from "@/components/ui/button";
-import { User } from "@clerk/nextjs/server";
 import { NavigationData } from "@/data/NavigationData";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+import Sidebar from "./Sidebar";
 import {
   Sheet,
   SheetContent,
@@ -27,12 +16,8 @@ import {
 import SignInManager from "./ui/SignInManager";
 
 const Header = () => {
-  const [open, setOpen] = useState(false);
   const logoText = "<b/>";
 
-  const toggleOpen = () => {
-    setOpen(!open);
-  };
   return (
     <div className="fixed w-full px-4 top-0 py-3 border-b">
       <ul className="flex items-center  text-lg font-semibold justify-between">
@@ -52,43 +37,11 @@ const Header = () => {
             </Link>
           ))}
         </div>
-        <div className="hidden md:flex gap-10">
+        <div className="hidden md:flex gap-2">
           <ModeToggle />
           <SignInManager />
         </div>
-        <div className="block md:hidden">
-          <Sheet>
-            <SheetTrigger>
-              <Button>
-                <BiMenu />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left">
-              <SheetHeader>
-                <SheetTitle>
-                  <h1 className="text-left font-extrabold">
-                    {logoText} <span className="font-normal"></span>Blogchain
-                  </h1>
-                </SheetTitle>
-                <SheetDescription>
-                  <div className=" gap-2 flex flex-col">
-                    {NavigationData.map((nav, index) => (
-                      <Button variant={"secondary"} key={index}>
-                        <Link href={nav.href}>{nav.name}</Link>
-                      </Button>
-                    ))}{" "}
-                    <DropdownMenuSeparator />
-                    <div className="flex justify-between items-center">
-                      {" "}
-                      <ModeToggle />
-                      <SignInManager />
-                    </div>
-                  </div>
-                </SheetDescription>
-              </SheetHeader>
-            </SheetContent>
-          </Sheet>
-        </div>
+        <Sidebar />
       </ul>
     </div>
   );
