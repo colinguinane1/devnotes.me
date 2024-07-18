@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { ModeToggle } from "./ThemeSwitcher";
 import { Button } from "@/components/ui/button";
 import { User } from "@clerk/nextjs/server";
+import { NavigationData } from "@/data/NavigationData";
 
 const Header = () => {
   const logoText = "<b/>";
@@ -17,11 +18,16 @@ const Header = () => {
             {logoText}
           </h1>
         </div>
-        <div className=" gap-6 hidden md:flex">
-          {" "}
-          <li>Home</li>
-          <li>Explore</li>
-          <li>Write</li>
+        <div className=" gap-4 hidden md:flex">
+          {NavigationData.map((nav, index) => (
+            <Link
+              className=" transition hover:underline"
+              key={index}
+              href={nav.href}
+            >
+              {nav.name}
+            </Link>
+          ))}
         </div>
         <div className="hidden md:flex gap-10">
           <ModeToggle />
@@ -34,7 +40,7 @@ const Header = () => {
             <UserButton />
           </SignedIn>
         </div>{" "}
-        <button className="border md:hidden rounded-md">
+        <button className="border p-2 md:hidden rounded-md">
           <BiMenu size={25} color="" />
         </button>
       </ul>
