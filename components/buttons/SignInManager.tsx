@@ -7,6 +7,7 @@ import {
 } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
+import Link from "next/link";
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { CiSettings } from "react-icons/ci";
 import { CiBookmark } from "react-icons/ci";
@@ -49,15 +50,17 @@ export default async function SignInManager() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            <DropdownMenuItem>
-              <CiSettings className="mr-1" />
-              Account
+            <DropdownMenuItem className="cursor-pointer flex">
+              <Link className="flex items-center" href="/account">
+                <CiSettings className="mr-1" />
+                Account
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
               <CiBookmark className="mr-1" />
               Blogs
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
               <FaSignOutAlt color="red" className="mr-1" />
               <SignOutButton>
                 <p className="text-red-500">Sign Out</p>

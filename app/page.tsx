@@ -10,15 +10,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useUser } from "@clerk/nextjs";
 
 const Home = () => {
-  const plugin = React.useRef(
-    Autoplay({ delay: 7000, stopOnInteraction: true })
-  );
+  const user = useUser();
+  const plugin = React.useRef(Autoplay({ stopOnInteraction: true }));
   return (
     <div className="grid mt-[12rem] place-content-center h-40 text-4xl font-semibold">
       {" "}
-      <h1 className="py-2">Top Blogs Today:</h1>
+      <h1 className="py-2">Your Top Blogs, {user.user?.firstName}.</h1>
       <Carousel
         plugins={[plugin.current]}
         className="w-full max-w-xs"

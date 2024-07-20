@@ -6,8 +6,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import SignInManager from "./ui/SignInManager";
-import { ModeToggle } from "./ThemeSwitcher";
+import SignInManager from "../buttons/SignInManager";
+import { ModeToggle } from "../buttons/ThemeSwitcher";
 import { Button } from "@/components/ui/button";
 import { NavigationData } from "@/data/NavigationData";
 import { Logo } from "@/data/NavigationData";

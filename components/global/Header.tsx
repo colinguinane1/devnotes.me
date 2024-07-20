@@ -1,7 +1,7 @@
 import { BiMenu } from "react-icons/bi";
 import Link from "next/link";
 
-import { ModeToggle } from "./ThemeSwitcher";
+import { ModeToggle } from "../buttons/ThemeSwitcher";
 import { Button } from "@/components/ui/button";
 import { NavigationData } from "@/data/NavigationData";
 import Sidebar from "./Sidebar";
@@ -13,7 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import SignInManager from "./ui/SignInManager";
+import SignInManager from "../buttons/SignInManager";
 
 const Header = () => {
   const logoText = "<b/>";

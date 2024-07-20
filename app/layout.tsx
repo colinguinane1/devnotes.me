@@ -3,10 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import Header from "../components/Header";
+import Header from "../components/global/Header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "next-themes";
 import { useTheme } from "next-themes";
+import { dark } from "@clerk/themes";
 
 const inter = Inter({ subsets: ["latin"] });
 const geist = GeistSans;
@@ -26,7 +27,7 @@ export default function RootLayout({
       <body className="antialiased bg-primary-light dark:bg-primary-dark transition-colors">
         {" "}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ClerkProvider>
+          <ClerkProvider appearance={{ baseTheme: dark }}>
             <Header />
             {children}{" "}
           </ClerkProvider>
