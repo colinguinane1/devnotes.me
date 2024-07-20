@@ -28,7 +28,7 @@ export default async function SignInManager() {
     <>
       <SignedOut>
         <Button>
-          <SignInButton />
+          <SignInButton>Sign In</SignInButton>
         </Button>
       </SignedOut>
       <SignedIn>
