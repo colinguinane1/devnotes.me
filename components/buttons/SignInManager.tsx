@@ -34,7 +34,7 @@ export default async function SignInManager() {
       <SignedIn>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Button variant="secondary">
+            <Button variant={"outline"}>
               <div className="flex items-center space-x-2">
                 {userImage && (
                   <Image

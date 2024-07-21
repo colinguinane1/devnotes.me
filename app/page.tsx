@@ -16,8 +16,12 @@ const Home = () => {
   const user = useUser();
   const plugin = React.useRef(Autoplay({ stopOnInteraction: true }));
   return (
-    <div className="grid mt-[12rem] place-content-center h-40 text-4xl font-semibold">
-      <h1 className="py-2">Your Top Blogs, {user.user?.firstName}.</h1>{" "}
+    <div className="grid mt-[12rem] place-content-center h-[10rem] text-4xl font-semibold">
+      {user.user ? (
+        <h1 className="py-2">Your Top Blogs, {user.user?.firstName}.</h1>
+      ) : (
+        <h1 className="py-2">Top Blogs Today</h1>
+      )}
       <SignedIn />
       <Carousel
         plugins={[plugin.current]}
@@ -40,8 +44,6 @@ const Home = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
       </Carousel>
     </div>
   );
