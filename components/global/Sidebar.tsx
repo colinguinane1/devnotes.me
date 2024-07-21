@@ -23,7 +23,7 @@ const Sidebar = () => {
             <BiMenu />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left">
+        <SheetContent className="w-fit" side="left">
           <SheetHeader>
             <SheetTitle>
               <h1 className="text-left font-extrabold">
@@ -31,15 +31,15 @@ const Sidebar = () => {
               </h1>
             </SheetTitle>
             <SheetDescription>
-              <div className="flex w-full h-full justify-between ">
-                <div className=" gap-2 justify-between h-full w-full flex flex-col">
+              <div className="flex gap-2 w-full h-full justify-between ">
+                <div className=" gap-2  justify-between h-full w-full flex flex-col">
                   {NavigationData.map((nav, index) => (
                     <Button variant={"outline"} key={index}>
                       <Link href={nav.href}>{nav.name}</Link>
                     </Button>
                   ))}{" "}
                   <div className="h-full border-b"></div>
-                  <div className="flex justify-between items-center">
+                  <div className="flex gap-2 justify-between items-center">
                     {" "}
                     <ModeToggle />
                     <SignInManager />
