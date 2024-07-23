@@ -44,6 +44,10 @@ const Home = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
+        <div className="hidden md:block">
+          <CarouselNext />
+          <CarouselPrevious />
+        </div>
       </Carousel>
     </div>
   );

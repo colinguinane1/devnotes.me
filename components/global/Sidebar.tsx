@@ -23,7 +23,7 @@ const Sidebar = () => {
             <BiMenu />
           </Button>
         </SheetTrigger>
-        <SheetContent className="w-fit" side="left">
+        <SheetContent className="w-[16rem]" side="left">
           <SheetHeader>
             <SheetTitle>
               <h1 className="text-left font-extrabold">
