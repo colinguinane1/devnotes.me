@@ -11,11 +11,13 @@ datasource db {
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String
-  author    String   @default("Guest")
-  published Boolean? @default(false)
-  updatedAt DateTime @default(now())
-  createdAt DateTime @default(now())
+  id             String   @id @default(cuid())
+  title          String
+  content        String
+  authorClerkId  String   @default("Guest")
+  authorPfp      String
+  authorFullName String
+  published      Boolean? @default(false)
+  updatedAt      DateTime @default(now())
+  createdAt      DateTime @default(now())
 }

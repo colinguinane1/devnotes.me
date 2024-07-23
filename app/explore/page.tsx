@@ -31,20 +31,16 @@ export default async function ExplorePage() {
             </div>
             <p className="mt-2">
               Posted by
-              {post.author === user?.id ? (
-                <div className="flex items-center gap-2">
-                  <Image
-                    className="rounded-full"
-                    alt="user"
-                    src={user.imageUrl}
-                    width={25}
-                    height={25}
-                  ></Image>
-                  <p>{user.fullName}</p>
-                </div>
-              ) : (
-                "User not found"
-              )}
+              <div className="flex items-center gap-2">
+                <Image
+                  className="rounded-full"
+                  alt="user"
+                  src={post.authorPfp}
+                  width={25}
+                  height={25}
+                ></Image>
+                <p>{post.authorFullName}</p>
+              </div>
             </p>
           </CardContent>
         </Card>
