@@ -6,11 +6,11 @@ const prisma = new PrismaClient();
 export async function generateMetadata({
   params,
 }: {
-  params: { username?: string[] };
+  params: { username?: any };
 }) {
   const username = params.username?.[0] || "";
   const user = await prisma.user.findUnique({
-    where: { username }, // Adjust if your Prisma model uses a different field for username
+    where: { username },
   });
 
   if (!user) {
