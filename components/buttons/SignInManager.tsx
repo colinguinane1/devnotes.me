@@ -2,7 +2,6 @@ import {
   SignInButton,
   SignedOut,
   SignedIn,
-  UserButton,
   SignOutButton,
 } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
@@ -20,10 +19,22 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import prisma from "@/prisma/db";
 
 export default async function SignInManager() {
+  // Fetch the current user from Clerk
   const user = await currentUser();
-  const userImage = await user?.imageUrl;
+
+  // Default userAccount to null
+  let userAccount = null;
+
+  // If user ID is present, fetch the user account from the database
+  if (user?.id) {
+    userAccount = await prisma.user.findUnique({
+      where: { id: user.id },
+    });
+  }
+
   return (
     <>
       <SignedOut>
@@ -36,16 +47,16 @@ export default async function SignInManager() {
           <DropdownMenuTrigger>
             <Button variant={"outline"}>
               <div className="flex items-center space-x-2">
-                {userImage && (
+                {user?.imageUrl && (
                   <Image
                     className="rounded-full"
-                    src={userImage}
+                    src={user.imageUrl}
                     alt="User image"
                     width={30}
                     height={30}
                   />
                 )}
-                <span>{user?.username}</span>
+                <span>{userAccount?.username || "Loading..."}</span>
               </div>
             </Button>
           </DropdownMenuTrigger>

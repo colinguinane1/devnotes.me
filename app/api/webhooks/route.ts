@@ -62,10 +62,11 @@ export async function POST(req: Request) {
     try {
       await prisma.user.create({
         data: {   
-          clerk_id: id,
+          id: id,
           first_name: first_name || '',
           last_name: last_name || '',
           image_url: image_url || null,
+          last_sign_in_at: parseDate(last_sign_in_at),
           username: generateUsername(first_name || '', last_name || ''),
         }
       });
