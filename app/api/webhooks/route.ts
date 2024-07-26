@@ -54,8 +54,8 @@ export async function POST(req: Request) {
 
     try {
       await prisma.user.create({
-        data: {
-          id: id,
+        data: {   
+          clerk_id: id,
           first_name: first_name || '',
           last_name: last_name || '',
           image_url: image_url || null,
