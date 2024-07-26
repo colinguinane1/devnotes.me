@@ -21,7 +21,7 @@ export default async function ExplorePage() {
   const posts = await prisma.post.findMany();
   return (
     <div className="grid p-4">
-      {posts.map((post) => (
+      {/* {posts.map((post) => (
         <Card className="w-60 px-2 " key={post.id}>
           <CardContent>
             <CardTitle className="mt-4 capitalize">{post.title}</CardTitle>
@@ -35,7 +35,7 @@ export default async function ExplorePage() {
                 <Image
                   className="rounded-full"
                   alt="user"
-                  src={post.authorPfp}
+                  src={post.author.imageUrl}
                   width={25}
                   height={25}
                 ></Image>
@@ -44,7 +44,7 @@ export default async function ExplorePage() {
             </p>
           </CardContent>
         </Card>
-      ))}
+      ))} */}
     </div>
   );
 }
