@@ -3,29 +3,6 @@ import { notFound } from "next/navigation";
 
 const prisma = new PrismaClient();
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { username?: any };
-}) {
-  const username = params.username?.[0] || "";
-  const user = await prisma.user.findUnique({
-    where: { username },
-  });
-
-  if (!user) {
-    return {
-      title: "User not found",
-      description: "This user does not exist",
-    };
-  }
-
-  return {
-    title: `${user.first_name} ${user.last_name} - Profile`,
-    description: `${user.first_name} ${user.last_name}'s profile page`,
-  };
-}
-
 export default async function ProfilePage({
   params,
 }: {
@@ -35,7 +12,7 @@ export default async function ProfilePage({
 
   // Fetch user data from Prisma
   const user = await prisma.user.findUnique({
-    where: { username }, // Adjust if your Prisma model uses a different field for username
+    where: { username },
   });
 
   // If user not found, return a 404 page
