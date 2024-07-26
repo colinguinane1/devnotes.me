@@ -63,10 +63,10 @@ export async function POST(req: Request) {
       await prisma.user.create({
         data: {   
           clerk_id: id,
-          first_name: first_name || '.',
+          first_name: first_name || '',
           last_name: last_name || '',
           image_url: image_url || null,
-          username: generateUsername(first_name, last_name),
+          username: generateUsername(first_name || '', last_name || ''),
         }
       });
       console.log('User created:', id);
