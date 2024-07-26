@@ -6,8 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
+  
   "dependencies": {
     "@clerk/nextjs": "^5.2.3",
     "@clerk/themes": "^2.1.12",
