@@ -12,17 +12,12 @@ datasource db {
 }
 
 model User {
-  id                String   @id @default(uuid())
-  clerk_id          String   @unique
-  first_name        String
-  last_name         String
-  posts             Post[]
-  image_url         String?
-  profile_image_url String?
-  last_sign_in_at   DateTime
-  created_at        DateTime
-  updated_at        DateTime
-  username          String? // Optional field
+  id         String  @id
+  clerk_id   String  @unique
+  first_name String
+  last_name  String
+  image_url  String?
+  posts      Post[]
 }
 
 model Post {
