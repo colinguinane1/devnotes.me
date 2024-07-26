@@ -12,12 +12,15 @@ datasource db {
 }
 
 model User {
-  id         String  @id
-  clerk_id   String  @unique
-  first_name String
-  last_name  String
-  image_url  String?
-  posts      Post[]
+  first_name      String
+  last_name       String
+  image_url       String?
+  last_sign_in_at DateTime?
+  created_at      DateTime?
+  updated_at      DateTime?
+  id              String    @id @default(cuid())
+  clerk_id        String?   @unique
+  Post            Post[]
 }
 
 model Post {
