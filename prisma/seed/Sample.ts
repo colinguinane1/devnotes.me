@@ -18,7 +18,7 @@ async function seed() {
       updated_at: new Date(),
       last_sign_in_at: new Date(),
       email: "johndoe@blogchain.com",
-      clerk_id: "user_2jmwhc8VaBOSYnIRhg60BD0NW217",
+      id: "user_2jmwhc8VaBOSYnIRhg60BD0NW217",
     },
   });
 }
