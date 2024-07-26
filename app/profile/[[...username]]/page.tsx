@@ -22,8 +22,8 @@ export default async function ProfilePage({
   }
 
   return (
-    <main className="grid h-screen overflow-y-auto place-items-center p-4">
-      <div className="overflow-y-auto">
+    <main className=" overflow-y-auto  p-4">
+      <div className="">
         <h1 className="text-center py-3 text-2xl font-bold">
           {user.first_name} {user.last_name}
         </h1>

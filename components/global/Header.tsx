@@ -37,7 +37,7 @@ const Header = () => {
             </Link>
           ))}
         </div>
-        <div className="hidden md:flex gap-2">
+        <div className="hidden items-center md:flex gap-2">
           <ModeToggle />
           <SignInManager />
         </div>

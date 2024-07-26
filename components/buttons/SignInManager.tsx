@@ -12,6 +12,7 @@ import { CiSettings } from "react-icons/ci";
 import { CiBookmark } from "react-icons/ci";
 import { FaSignOutAlt } from "react-icons/fa";
 
+import { RxAvatar } from "react-icons/rx";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -45,7 +46,7 @@ export default async function SignInManager() {
       <SignedIn>
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <Button variant={"outline"}>
+            <Button className="flex items-center" variant={"outline"}>
               <div className="flex items-center space-x-2">
                 {user?.imageUrl && (
                   <Image
@@ -65,6 +66,15 @@ export default async function SignInManager() {
               <Link className="flex items-center" href="/account">
                 <CiSettings className="mr-1" />
                 Account
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer flex">
+              <Link
+                className="flex items-center"
+                href={`/profile/${userAccount?.username}`}
+              >
+                <RxAvatar className="mr-1" />
+                Profile
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
