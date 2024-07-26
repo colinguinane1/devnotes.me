@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { PrismaClient } from "@prisma/client";
 import { notFound } from "next/navigation";
 

@@ -21,6 +21,7 @@ model User {
   updated_at      DateTime?
   clerk_id        String?   @unique
   username        String?   @unique // Make username unique
+  email           String?   @unique
   Post            Post[]
 }
 

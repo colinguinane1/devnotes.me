@@ -10,6 +10,7 @@ import {
 import { Calendar } from "lucide-react";
 import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
+import SamplePrismaUser from "@/data/SamplePrismaUser";
 
 export default async function ExplorePage() {
   const user = await currentUser();
@@ -49,6 +50,7 @@ export default async function ExplorePage() {
           </CardContent>
         </Card>
       ))}
+      <SamplePrismaUser />
     </div>
   );
 }

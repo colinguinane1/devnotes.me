@@ -45,7 +45,7 @@ export default async function SignInManager() {
                     height={30}
                   />
                 )}
-                <span>{user?.fullName}</span>
+                <span>{user?.username}</span>
               </div>
             </Button>
           </DropdownMenuTrigger>

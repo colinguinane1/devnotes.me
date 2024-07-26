@@ -12,9 +12,13 @@ import {
 } from "@/components/ui/carousel";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 
+import { Button } from "@/components/ui/button";
+import SamplePrismaUser from "@/data/SamplePrismaUser";
+
 const Home = () => {
   const user = useUser();
   const plugin = React.useRef(Autoplay({ stopOnInteraction: true }));
+
   return (
     <div className="grid mt-[12rem] place-content-center h-[10rem] text-4xl font-semibold">
       {user.user ? (
