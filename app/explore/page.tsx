@@ -43,7 +43,7 @@ export default async function ExplorePage() {
                   width={25}
                   height={25}
                 ></Image>
-                <p>{post.author.first_name + post.author.last_name}</p>
+                <p>{post.author.username}</p>
               </div>
             </p>
           </CardContent>

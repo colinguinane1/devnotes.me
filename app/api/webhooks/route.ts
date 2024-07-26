@@ -41,6 +41,12 @@ export async function POST(req: Request) {
       status: 400
     })
   }
+  function generateUsername(firstName: string, lastName: string): string {
+  const randomNumbers = Math.floor(100 + Math.random() * 900); // Generate two random numbers
+  const username = `${firstName.toLowerCase()}_${lastName.toLowerCase()}${randomNumbers}`;
+  return username;
+}
+
 
   if (evt.type === 'user.created') {
     const { id, first_name, last_name, image_url, last_sign_in_at, created_at, updated_at } = evt.data;
@@ -51,14 +57,16 @@ export async function POST(req: Request) {
       if (typeof date === 'string') return new Date(date);
       return null;
     }
+    
 
     try {
       await prisma.user.create({
         data: {   
           clerk_id: id,
-          first_name: first_name || '',
+          first_name: first_name || '.',
           last_name: last_name || '',
           image_url: image_url || null,
+          username: generateUsername(first_name, last_name),
         }
       });
       console.log('User created:', id);
