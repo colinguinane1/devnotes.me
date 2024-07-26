@@ -12,15 +12,15 @@ datasource db {
 }
 
 model User {
-  username        String?
+  id              String    @id @default(cuid())
   first_name      String
   last_name       String
   image_url       String?
   last_sign_in_at DateTime?
   created_at      DateTime?
   updated_at      DateTime?
-  id              String    @id @default(cuid())
   clerk_id        String?   @unique
+  username        String?   @unique // Make username unique
   Post            Post[]
 }
 
