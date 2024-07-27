@@ -53,11 +53,6 @@ export default async function ExplorePage() {
             </CardContent>
           </Card>
         ))}{" "}
-        <Button className="w-fit">
-          <Link className="flex items-center gap-2" href="/write">
-            Create Post <Pencil size={14} />
-          </Link>
-        </Button>
       </div>
     </>
   );

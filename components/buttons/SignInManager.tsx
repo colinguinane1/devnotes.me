@@ -23,18 +23,7 @@ import {
 import prisma from "@/prisma/db";
 
 export default async function SignInManager() {
-  // Fetch the current user from Clerk
   const user = await currentUser();
-
-  // Default userAccount to null
-  let userAccount = null;
-
-  // If user ID is present, fetch the user account from the database
-  if (user?.id) {
-    userAccount = await prisma.user.findUnique({
-      where: { id: user.id },
-    });
-  }
 
   return (
     <>

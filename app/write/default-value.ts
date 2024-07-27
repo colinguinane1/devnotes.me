@@ -6,7 +6,7 @@ export const defaultValue = {
       content: [
         {
           type: "text",
-          text: "This is an example for the editor",
+          text: "Use '/' commands to style your blog.",
         },
       ],
     },
@@ -51,7 +51,7 @@ export const defaultValue = {
       content: [
         {
           type: "text",
-          text: "text",
+          text: "Lists are easy to create!",
         },
       ],
     },
