@@ -22,9 +22,11 @@ const Header = () => {
     <div className="fixed w-full h-[4.1rem] z-30 bg-secondary px-4 top-0 py-3 border-b">
       <ul className="flex items-center  text-lg font-semibold justify-between">
         <div className="">
-          <h1 className="font-extrabold dark:text-secondary-dark text-primary-light ">
-            {logoText}
-          </h1>
+          <Link href="/">
+            <h1 className="font-extrabold dark:text-secondary-dark text-primary-light ">
+              {logoText}
+            </h1>
+          </Link>
         </div>
         <div className=" gap-4 hidden md:flex">
           {NavigationData.map((nav, index) => (

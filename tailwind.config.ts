@@ -18,6 +18,7 @@ const config = {
       },
     },
     extend: {
+      
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -67,8 +68,16 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+           meteor: {
+          "0%": { transform: "rotate(215deg) translateX(0)",},
+       
+          "100%": {
+            transform: "rotate(215deg) translateX(-500px)",
+        
+           }},
       },
       animation: {
+         meteor: "meteor 5s linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
