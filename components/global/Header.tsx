@@ -31,7 +31,7 @@ const Header = () => {
         <div className=" gap-4 ml-36 hidden md:flex">
           {NavigationData.map((nav, index) => (
             <Link
-              className=" transition hover:underline hover:text-primary-light hover:bg-slate-500 hover:bg-opacity-40 p-2 px-4 rounded-full"
+              className=" transition hover:text-primary-light hover:bg-slate-500 hover:bg-opacity-40 p-2 px-4 rounded-full hover:text-slate-100"
               key={index}
               href={nav.href}
             >
