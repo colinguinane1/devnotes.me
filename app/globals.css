@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .gradient{
-  @apply bg-gradient-to-r from-slate-400  to-slate-300 inline-block text-transparent bg-clip-text;
+  @apply bg-gradient-to-r from-blue-400  to-blue-300 inline-block text-transparent bg-clip-text;
 }
 
 @layer base {
