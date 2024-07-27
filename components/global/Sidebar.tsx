@@ -13,17 +13,19 @@ import { NavigationData } from "@/data/NavigationData";
 import { Logo, siteName } from "@/data/NavigationData";
 import { BiMenu } from "react-icons/bi";
 import Link from "next/link";
+import { MenuIcon } from "lucide-react";
+import { RiMenu3Line } from "react-icons/ri";
 
 const Sidebar = () => {
   return (
     <div className="block md:hidden">
       <Sheet>
         <SheetTrigger>
-          <Button>
-            <BiMenu />
+          <Button variant={"ghost"}>
+            <RiMenu3Line size={24} />
           </Button>
         </SheetTrigger>
-        <SheetContent className="w-screen" side="left">
+        <SheetContent className="w-[20rem]" side="right">
           <SheetHeader>
             <SheetTitle>
               <h1 className="text-left font-extrabold">

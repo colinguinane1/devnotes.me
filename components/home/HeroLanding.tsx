@@ -4,14 +4,19 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { siteName } from "@/data/NavigationData";
+import TypingAnimation from "../magicui/typing-animation";
 
 export default function HeroLanding() {
   return (
     <div className="grid mt-[1rem] w-screen place-content-center  text-4xl font-semibold">
       <div className="relative flex h-[500px] w-screen flex-col items-center justify-center overflow-hidden ">
         <Meteors number={20} />
-        <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center md:text-8xl text-6xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
-          {siteName}
+        <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-blue-500 to-blue-300 bg-clip-text text-center md:text-8xl text-6xl font-semibold leading-none text-transparent dark:from-white  dark:to-blue-500">
+          <TypingAnimation
+            className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-blue-500 to-blue-300 bg-clip-text text-center md:text-8xl text-6xl font-semibold leading-none text-transparent dark:from-white  dark:to-blue-500"
+            text={`${siteName}.me`}
+            duration={200}
+          ></TypingAnimation>
         </span>
         <p className="py-4 text-center">
           The blog <span className="gradient">for</span> developers,<br></br>{" "}
@@ -27,17 +32,28 @@ export default function HeroLanding() {
         </div>
         <div className="items-center gap-4 flex-col md:flex justify-center md:flex-row">
           <Button
-            className="flex items-center w-[10rem] gap-1"
+            className="flex items-center group w-[10rem] gap-1"
             variant={"outline"}
           >
             <Link href="/explore" className="flex items-center gap-1">
-              Explore <ArrowRight size={12} />
+              Explore{" "}
+              <ArrowRight
+                className="group-hover:ml-1 transition-all scale-105"
+                size={12}
+              />
             </Link>
           </Button>
-          <Button className="w-[10rem]">
-            <Link className="flex items-center gap-1" href="/sign-in">
+          <Button className="w-[10rem] bg-blue-400 group hover:bg-blue-500">
+            <Link
+              className="flex items-center gap-1 dark:text-white"
+              href="/sign-in"
+            >
               {" "}
-              Get Started <ArrowRight size={12} />
+              Get Started{" "}
+              <ArrowRight
+                className="group-hover:ml-1 transition-all scale-105"
+                size={12}
+              />
             </Link>
           </Button>
         </div>

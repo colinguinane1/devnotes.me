@@ -4,4 +4,4 @@ export const NavigationData = [
   { name: "Write", href: "/write" },
 ];
 export const Logo = "<d/>";
-export const siteName = "devnotes.me";
+export const siteName = "DevNotes";
