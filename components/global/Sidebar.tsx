@@ -10,7 +10,7 @@ import SignInManager from "../buttons/SignInManager";
 import { ModeToggle } from "../buttons/ThemeSwitcher";
 import { Button } from "@/components/ui/button";
 import { NavigationData } from "@/data/NavigationData";
-import { Logo } from "@/data/NavigationData";
+import { Logo, siteName } from "@/data/NavigationData";
 import { BiMenu } from "react-icons/bi";
 import Link from "next/link";
 
@@ -23,11 +23,12 @@ const Sidebar = () => {
             <BiMenu />
           </Button>
         </SheetTrigger>
-        <SheetContent className="w-[16rem]" side="left">
+        <SheetContent className="w-screen" side="left">
           <SheetHeader>
             <SheetTitle>
               <h1 className="text-left font-extrabold">
-                {Logo} <span className="font-normal"></span>Blogchain
+                {Logo} <span className="font-normal"></span>
+                {siteName}
               </h1>
             </SheetTitle>
             <SheetDescription>
