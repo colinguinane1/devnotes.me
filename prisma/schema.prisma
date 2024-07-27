@@ -18,14 +18,15 @@ model User {
   last_sign_in_at DateTime?
   created_at      DateTime  @default(now())
   updated_at      DateTime  @updatedAt
-  id              String    @unique
+  id              String    @id @unique
   username        String    @unique
   email           String?   @unique
-  Post            Post[]
+  Posts           Post[]
 }
 
 model Post {
   id        String   @id @default(cuid())
+  slug      String   @unique
   title     String
   content   String
   author    User     @relation(references: [id], fields: [userId])
