@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className="antialiased bg-primary-light dark:bg-primary-dark transition-colors">
         {" "}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ClerkProvider appearance={{ baseTheme: dark }}>
+          <ClerkProvider>
             <Header />
             <div className="mt-[4.1rem]">{children}</div>
           </ClerkProvider>
