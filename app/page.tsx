@@ -18,6 +18,7 @@ import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import SamplePrismaUser from "@/data/SamplePrismaUser";
 import { ArrowRight } from "lucide-react";
+import { Logo } from "@/data/NavigationData";
 
 const Home = () => {
   const user = useUser();

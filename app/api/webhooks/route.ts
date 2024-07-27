@@ -59,7 +59,7 @@ export async function POST(req: Request) {
           last_name: last_name || '',
           image_url: image_url || null,
           email: email_addresses[0].email_address,
-          last_sign_in_at: parseDate(last_sign_in_at),
+          last_sign_in_at: last_sign_in_at ? parseDate(last_sign_in_at) : null,
           username: username || '',
         }
       });
