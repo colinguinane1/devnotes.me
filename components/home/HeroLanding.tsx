@@ -3,14 +3,15 @@ import WordRotate from "../magicui/word-rotate";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { siteName } from "@/data/NavigationData";
 
 export default function HeroLanding() {
   return (
     <div className="grid mt-[1rem] w-screen place-content-center  text-4xl font-semibold">
       <div className="relative flex h-[500px] w-screen flex-col items-center justify-center overflow-hidden ">
         <Meteors number={20} />
-        <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center md:text-8xl text-7xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
-          Blogchain
+        <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center md:text-8xl text-6xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
+          {siteName}
         </span>
         <p className="py-4 text-center">
           The blog <span className="gradient">for</span> developers,<br></br>{" "}
