@@ -57,7 +57,7 @@ export default async function SignInManager() {
                     height={30}
                   />
                 )}
-                <span>{userAccount?.username || "Loading..."}</span>
+                <span>{user?.username || "Loading..."}</span>
               </div>
             </Button>
           </DropdownMenuTrigger>
@@ -71,7 +71,7 @@ export default async function SignInManager() {
             <DropdownMenuItem className="cursor-pointer flex">
               <Link
                 className="flex items-center"
-                href={`/profile/${userAccount?.username}`}
+                href={`/profile/${user?.username}`}
               >
                 <RxAvatar className="mr-1" />
                 Profile
