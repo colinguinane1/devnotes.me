@@ -28,10 +28,10 @@ const Header = () => {
             </h1>
           </Link>
         </div>
-        <div className=" gap-4 hidden md:flex">
+        <div className=" gap-4 ml-36 hidden md:flex">
           {NavigationData.map((nav, index) => (
             <Link
-              className=" transition hover:underline"
+              className=" transition hover:underline hover:text-primary-light hover:bg-slate-500 hover:bg-opacity-40 p-2 px-4 rounded-full"
               key={index}
               href={nav.href}
             >
