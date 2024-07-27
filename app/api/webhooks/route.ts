@@ -71,6 +71,26 @@ export async function POST(req: Request) {
       });
     }
   }
+  if (evt.type === 'user.updated') {
+    //will add later
+  }
+
+  if(evt.type === 'user.deleted') {
+    const { id } = evt.data;
+    try{
+        await prisma.user.delete({
+            where: { id: id }
+            });
+        console.log('User deleted:', id);
+    } catch(error) {
+        console.error('Error deleting user from database:', error);
+        return new Response('Error occurred while deleting user', {
+            status: 500
+        });
+    }
+    
+
+  }
 
   return new Response('', { status: 200 })
 }
