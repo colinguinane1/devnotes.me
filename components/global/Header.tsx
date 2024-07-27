@@ -18,7 +18,7 @@ import { Logo } from "@/data/NavigationData";
 
 const Header = () => {
   return (
-    <div className="fixed w-full h-[4.1rem] z-30 bg-secondary px-4 top-0 py-3 border-b">
+    <div className="fixed w-full  z-30 bg-secondary px-4 top-0 py-3 border-b">
       <ul className="flex items-center  text-lg font-semibold justify-between">
         <div className="">
           <Link href="/">
@@ -27,7 +27,7 @@ const Header = () => {
             </h1>
           </Link>
         </div>
-        <div className=" gap-4 ml-36 hidden md:flex">
+        <div className=" gap-4  hidden md:flex">
           {NavigationData.map((nav, index) => (
             <Link
               className=" transition hover:text-primary-light hover:bg-slate-500 hover:bg-opacity-40 p-2 px-4 rounded-full hover:text-slate-100"
