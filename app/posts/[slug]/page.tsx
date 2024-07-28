@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Calendar, Eye, Heart, HeartIcon } from "lucide-react";
 import rehypePrettyCode from "rehype-pretty-code";
 import { Post } from "@prisma/client";
+import { Metadata } from "next";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   function formatDate(dateString: Date) {
@@ -22,7 +23,10 @@ export default async function blog({ params }: { params: { slug: string } }) {
   if (!blog) {
     return <p>Blog not found!</p>;
   }
-
+  const metadata: Metadata = {
+    title: blog.title,
+    description: blog.description,
+  };
   const addLikes = async (blog: Post) => {
     prisma.post.update({
       where: { id: blog.id },
@@ -30,6 +34,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
     });
   };
   addLikes(blog);
+
   return (
     <section className="p-4 py-8">
       <div>
@@ -42,7 +47,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
           </div>
           <div className="flex items-center my-2 gap-2">
             <Link className="my-2" href={`/profile/${blog.author.username}`}>
-              <div className="flex h-full bg-slate-100 dark:bg-gray-900 dark:text-gray-300 rounded-full w-fit  pr-2 md:flex-col items-center gap-2">
+              <div className="flex h-full bg-slate-100 dark:bg-gray-900 dark:text-gray-300 rounded-full w-fit  pr-2 items-center gap-2">
                 <div className="flex items-center gap-2">
                   <Image
                     className="rounded-full"
