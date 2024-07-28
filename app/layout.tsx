@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className={geist.className} lang="en">
+    <html suppressHydrationWarning className={geist.className} lang="en">
       <body className="antialiased bg-primary-light dark:bg-primary-dark transition-colors">
         {" "}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>

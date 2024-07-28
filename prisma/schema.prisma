@@ -25,15 +25,16 @@ model User {
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  slug      String   @unique
-  title     String
-  content   String
-  views     Int      @default(0)
-  likes     Int      @default(0)
-  author    User     @relation(references: [id], fields: [userId])
-  published Boolean? @default(false)
-  updatedAt DateTime @default(now())
-  createdAt DateTime @default(now())
-  userId    String
+  id          String   @id @default(cuid())
+  description String?
+  slug        String   @unique
+  title       String
+  content     String
+  views       Int      @default(0)
+  likes       Int      @default(0)
+  author      User     @relation(references: [id], fields: [userId])
+  published   Boolean? @default(false)
+  updatedAt   DateTime @default(now())
+  createdAt   DateTime @default(now())
+  userId      String
 }
