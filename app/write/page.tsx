@@ -1,15 +1,11 @@
 "use client";
 import BlogEditor from "./editor";
-import { JSONContent } from "novel";
 import { useState } from "react";
-import { defaultValue } from "./default-value";
 import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { createPost } from "@/lib/actions";
 import { Check, Loader, X } from "lucide-react";
-import { error } from "console";
-import prisma from "@/prisma/db";
 
 export default function Home() {
   const defaultValue = {
@@ -49,6 +45,7 @@ export default function Home() {
         content: content,
         published: true,
         userId: user?.user.id,
+        createdAt: new Date(),
       });
       setLoading("success");
       console.log("Post created successfully");
