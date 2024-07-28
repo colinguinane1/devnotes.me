@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { createPost } from "@/lib/actions";
 import { Check, Loader, X } from "lucide-react";
 import { error } from "console";
+import prisma from "@/prisma/db";
 
 export default function Home() {
   const user = useUser();
@@ -74,7 +75,7 @@ export default function Home() {
         </div>
         <div className="flex  w-full items-center gap-4">
           <form onSubmit={handleSubmit} className="w-full">
-            <div className="flex-col flex md:flex-row mb-4  gap-2">
+            <div className="flex-col  flex md:flex-row mb-4  gap-2">
               <label>Title:</label>
               <input
                 name="title"
