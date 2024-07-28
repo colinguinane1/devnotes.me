@@ -1,18 +1,9 @@
-import { BiMenu } from "react-icons/bi";
 import Link from "next/link";
 
 import { ModeToggle } from "../buttons/ThemeSwitcher";
-import { Button } from "@/components/ui/button";
 import { NavigationData } from "@/data/NavigationData";
 import Sidebar from "./Sidebar";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import SignInManager from "../buttons/SignInManager";
 import { Logo } from "@/data/NavigationData";
 
@@ -30,7 +21,7 @@ const Header = () => {
         <div className=" gap-4  hidden md:flex">
           {NavigationData.map((nav, index) => (
             <Link
-              className=" transition hover:text-primary-light hover:bg-slate-500 hover:bg-opacity-40 p-2 px-4 rounded-full hover:text-slate-100"
+              className=" transition hover:text-blue-500 dark:hover:text-blue-300 dark:hover:bg-slate-700 hover:bg-slate-200 hover:bg-opacity-40 p-2 px-4 rounded-full "
               key={index}
               href={nav.href}
             >
