@@ -12,6 +12,20 @@ import { error } from "console";
 import prisma from "@/prisma/db";
 
 export default function Home() {
+  const defaultValue = {
+    type: "doc",
+    content: [
+      {
+        type: "paragraph",
+        content: [
+          {
+            type: "text",
+            text: 'Type "/" for commands or start writing...',
+          },
+        ],
+      },
+    ],
+  };
   const user = useUser();
 
   const [title, setTitle] = useState("");
@@ -19,7 +33,6 @@ export default function Home() {
   const [loading, setLoading] = useState("");
   const [content, setContent] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [value, setValue] = useState<JSONContent>(defaultValue);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -33,9 +46,9 @@ export default function Home() {
       await createPost({
         title,
         slug,
-        content: JSON.stringify(value),
+        content: content,
         published: true,
-        userId: user.user.id,
+        userId: user?.user.id,
       });
       setLoading("success");
       console.log("Post created successfully");
@@ -45,7 +58,7 @@ export default function Home() {
       console.error("Error creating post:", error);
     }
   };
-  console.log(value);
+  console.log(content);
   return (
     <main className="flex min-h-screen w-screen p-2  flex-col items-center justify-between">
       <div className="flex flex-col p-6 border w-full gap-6 rounded-md bg-card">
@@ -95,7 +108,7 @@ export default function Home() {
                 onChange={(e) => setSlug(e.target.value)}
               ></input>
             </div>{" "}
-            <BlogEditor initialValue={value} onChange={setContent} />
+            <BlogEditor initialValue={defaultValue} onChange={setContent} />
             <Button
               disabled={loading === "true"}
               className="w-full mt-4"
