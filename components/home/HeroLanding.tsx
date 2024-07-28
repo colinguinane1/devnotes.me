@@ -13,9 +13,9 @@ export default function HeroLanding() {
         <Meteors number={20} />
         <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-blue-500 to-blue-300 bg-clip-text text-center md:text-8xl text-6xl font-semibold leading-none text-transparent dark:from-white  dark:to-blue-500">
           <TypingAnimation
-            className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-blue-500 to-blue-300 bg-clip-text text-center md:text-8xl text-6xl font-semibold leading-none text-transparent dark:from-white  dark:to-blue-500"
+            className="lowercase pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-blue-500 to-blue-300 bg-clip-text text-center md:text-8xl text-6xl font-semibold leading-none text-transparent dark:from-white  dark:to-blue-500"
             text={`${siteName}.me`}
-            duration={200}
+            duration={100}
           ></TypingAnimation>
         </span>
         <p className="py-4 text-center">
@@ -27,7 +27,14 @@ export default function HeroLanding() {
           <h1>No</h1>
           <WordRotate
             className="text-4xl bg-black rounded-full p-1 px-4 text-left font-bold text-white dark:text-black dark:bg-white"
-            words={["Paywall", "Ads", "Algorithms"]}
+            words={[
+              "Paywall",
+              "Ads",
+              "Algorithms",
+              "Cookies",
+              "Trackers",
+              "BS",
+            ]}
           />
         </div>
         <div className="items-center gap-4 flex-col md:flex justify-center md:flex-row">
