@@ -29,34 +29,40 @@ export default async function ExplorePage() {
   });
   return (
     <>
-      <div className="grid p-4">
+      <div className="flex flex-col gap-2 p-4">
         {posts.map((post) => (
-          <Card className="w-60 px-2 " key={post.id}>
-            <Link href={`/posts/${post.slug}`}>
+          <Card
+            className="w-full h-[12rem] hover:bg-gray-100 dark:hover:bg-gray-900 transition-all truncate  pt-2"
+            key={post.id}
+          >
+            <Link className="truncate" href={`/posts/${post.slug}`}>
               <CardContent>
-                <CardTitle className="mt-4 capitalize">{post.title}</CardTitle>
-                <CardDescription>
+                <div className="flex flex-col justify-between ">
+                  <CardTitle className="capitalize py-1">
+                    {post.title}
+                  </CardTitle>{" "}
+                  <div className="flex h-full bg-slate-100 dark:bg-gray-900 dark:text-gray-300 rounded-full w-fit  pr-2 md:flex-col items-center gap-2">
+                    <div className="flex items-center gap-2">
+                      <Image
+                        className="rounded-full"
+                        alt="user"
+                        src={post.author.image_url || ""}
+                        width={25}
+                        height={25}
+                      ></Image>
+                      <p>{post.author.username} -</p>
+                    </div>
+                    <div className="flex items-center gap-2  min-w-fit">
+                      <Calendar size={18} /> {formatDate(post.updatedAt)}
+                    </div>
+                  </div>
+                </div>
+                <CardDescription className="truncate  overflow-hidden">
                   <div
-                    className="prose"
+                    className="prose  dark:text-gray-200"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                   ></div>
                 </CardDescription>
-                <div className="flex items-center gap-2  min-w-fit">
-                  <Calendar size={18} /> {formatDate(post.updatedAt)}
-                </div>
-                <p className="mt-2">
-                  Posted by
-                  <div className="flex items-center gap-2">
-                    <Image
-                      className="rounded-full"
-                      alt="user"
-                      src={post.author.image_url || ""}
-                      width={25}
-                      height={25}
-                    ></Image>
-                    <p>{post.author.username}</p>
-                  </div>
-                </p>
               </CardContent>
             </Link>{" "}
           </Card>
