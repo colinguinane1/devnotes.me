@@ -38,19 +38,19 @@ export default function Home() {
   };
   console.log(value);
   return (
-    <main className="flex min-h-screen w-screen p-6  flex-col items-center justify-between">
+    <main className="flex min-h-screen w-screen p-2  flex-col items-center justify-between">
       <div className="flex flex-col p-6 border w-full gap-6 rounded-md bg-card">
-        <div className="flex justify-between items-center">
+        <div className="flex md:flex-row flex-col justify-between ">
           <div className="flex flex-col">
             <h1 className="text-4xl font-semibold"> Write Your Blog</h1>
-            <p className="text-gray-500">
+            <p className="text-gray-500 mt-4">
               {" "}
               Write your blog here, and publish it to the world.
             </p>
           </div>
           {user.user && (
-            <div>
-              <h1 className="flex items-center gap-2">Publish as:</h1>
+            <div className="flex gap-2 text-gray-500 items-center md:flex-col  mt-4">
+              <h1 className="flex  items-center gap-2">Publish as:</h1>
               <div className="flex items-center gap-2">
                 <Image
                   className="rounded-full"
@@ -64,9 +64,9 @@ export default function Home() {
             </div>
           )}
         </div>
-        <div className="flex w-full items-center gap-4">
+        <div className="flex  w-full items-center gap-4">
           <form onSubmit={handleSubmit} className="w-full">
-            <div className="flex my-4 items-center gap-4">
+            <div className="flex-col flex md:flex-row mb-4  gap-2">
               <label>Title:</label>
               <input
                 name="title"
@@ -87,7 +87,7 @@ export default function Home() {
               ></input>
             </div>{" "}
             <BlogEditor initialValue={value} onChange={setValue} />
-            <Button className="w-full my-2" type="submit">
+            <Button className="w-full mt-4" type="submit">
               Publish Blog
             </Button>
           </form>
