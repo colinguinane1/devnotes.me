@@ -26,6 +26,7 @@ export default function Home() {
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState("");
   const [content, setContent] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -41,6 +42,7 @@ export default function Home() {
       setLoading("true");
       await createPost({
         title,
+        description,
         slug,
         content: content,
         published: true,
@@ -83,7 +85,7 @@ export default function Home() {
             </div>
           )}
         </div>
-        <div className="flex  w-full items-center gap-4">
+        <div className="flex flex-col  w-full items-center gap-4">
           <form onSubmit={handleSubmit} className="w-full">
             <div className="flex-col  flex md:flex-row mb-4  gap-2">
               <label>Title:</label>
@@ -105,6 +107,17 @@ export default function Home() {
                 onChange={(e) => setSlug(e.target.value)}
               ></input>
             </div>{" "}
+            <div className="pb-4">
+              <label>Description:</label>
+              <input
+                required
+                value={description}
+                name="description"
+                className="border rounded-md p-1 w-full"
+                placeholder="Enter your description"
+                onChange={(e) => setDescription(e.target.value)}
+              ></input>
+            </div>
             <BlogEditor initialValue={defaultValue} onChange={setContent} />
             <Button
               disabled={loading === "true"}
