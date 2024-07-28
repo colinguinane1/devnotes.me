@@ -16,6 +16,7 @@ import Link from "next/link";
 import { EditorRoot, EditorContent, useEditor } from "novel";
 import { Post } from "@prisma/client";
 import { Eye, Heart } from "lucide-react";
+import blog from "../posts/[slug]/page";
 
 export default async function ExplorePage() {
   const user = await currentUser();
@@ -52,7 +53,7 @@ export default async function ExplorePage() {
                   <CardTitle className="capitalize py-1">
                     {post.title}
                   </CardTitle>{" "}
-                  <div className="flex h-full bg-slate-100 dark:bg-gray-900 dark:text-gray-300 rounded-full w-fit  pr-2 md:flex-col items-center gap-2">
+                  <div className="flex h-full bg-slate-100 dark:bg-gray-900 dark:text-gray-300 rounded-full w-fit  pr-2 items-center gap-2">
                     <div className="flex items-center gap-2">
                       <Image
                         className="rounded-full"
@@ -64,7 +65,7 @@ export default async function ExplorePage() {
                       <p>{post.author.username} -</p>
                     </div>
                     <div className="flex items-center gap-2  min-w-fit">
-                      <Calendar size={18} /> {formatDate(post.updatedAt)}
+                      <Calendar size={18} /> {formatDate(post.createdAt)}
                     </div>
                     <div className="flex items-center gap-2  min-w-fit">
                       <Eye size={18} /> {post.views}
