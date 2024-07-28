@@ -7,12 +7,17 @@ import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { createPost } from "@/lib/actions";
+import { Check, Loader, X } from "lucide-react";
+import { error } from "console";
 
 export default function Home() {
   const user = useUser();
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
+  const [loading, setLoading] = useState("");
+  const [content, setContent] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [value, setValue] = useState<JSONContent>(defaultValue);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -23,6 +28,7 @@ export default function Home() {
     }
 
     try {
+      setLoading("true");
       await createPost({
         title,
         slug,
@@ -30,9 +36,11 @@ export default function Home() {
         published: true,
         userId: user.user.id,
       });
+      setLoading("success");
       console.log("Post created successfully");
-      // Optionally, you can reset form fields or navigate to another page
     } catch (error) {
+      setLoading("error");
+      setErrorMessage((error as Error).message);
       console.error("Error creating post:", error);
     }
   };
@@ -86,9 +94,28 @@ export default function Home() {
                 onChange={(e) => setSlug(e.target.value)}
               ></input>
             </div>{" "}
-            <BlogEditor initialValue={value} onChange={setValue} />
-            <Button className="w-full mt-4" type="submit">
+            <BlogEditor initialValue={value} onChange={setContent} />
+            <Button
+              disabled={loading === "true"}
+              className="w-full mt-4"
+              type="submit"
+            >
               Publish Blog
+              {loading === "true" ? (
+                <Loader className="ml-2 animate-spin" size={20} />
+              ) : null}
+              {loading === "success" ? (
+                <>
+                  <Check className="ml-2" color="rgb(34 197 94)" size={20} />
+                  <p className="text-green-500">Success</p>
+                </>
+              ) : null}
+              {loading === "error" ? (
+                <>
+                  <X className="ml-2" color="red" size={20} />
+                  <p className="text-red-500">{errorMessage}</p>{" "}
+                </>
+              ) : null}
             </Button>
           </form>
         </div>
