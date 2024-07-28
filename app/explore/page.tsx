@@ -41,10 +41,10 @@ export default async function ExplorePage() {
 
   return (
     <>
-      <div className="flex flex-col gap-2 p-4">
+      <div className="flex flex-col gap-2 p-2">
         {posts.map((post) => (
           <Card
-            className="w-full h-[12rem] hover:bg-gray-100 dark:hover:bg-gray-900 transition-all truncate  pt-2"
+            className="w-full h-fit hover:bg-gray-100 dark:hover:bg-gray-900 transition-all truncate  pt-2"
             key={post.id}
           >
             <Link className="truncate" href={`/posts/${post.slug}`}>
@@ -76,10 +76,9 @@ export default async function ExplorePage() {
                   </div>
                 </div>
                 <CardDescription className="truncate overflow-hidden">
-                  <div
-                    className="prose dark:prose-headings:text-white  dark:text-gray-200"
-                    dangerouslySetInnerHTML={{ __html: post.content }}
-                  ></div>
+                  <div className="prose pt-2  dark:prose-headings:text-white  dark:text-gray-200">
+                    {post.description}
+                  </div>
                 </CardDescription>
               </CardContent>
             </Link>{" "}

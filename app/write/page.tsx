@@ -110,6 +110,7 @@ export default function Home() {
             <div className="pb-4">
               <label>Description:</label>
               <input
+                maxLength={25}
                 required
                 value={description}
                 name="description"
