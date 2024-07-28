@@ -26,7 +26,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
   const addLikes = async (blog: Post) => {
     prisma.post.update({
       where: { id: blog.id },
-      data: { views: (blog.likes += 1) },
+      data: { views: (blog.views += 1) },
     });
   };
   addLikes(blog);
