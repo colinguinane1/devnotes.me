@@ -13,6 +13,7 @@ import Image from "next/image";
 import SamplePrismaUser from "@/data/SamplePrismaUser";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { EditorRoot, EditorContent, useEditor } from "novel";
 
 export default async function ExplorePage() {
   const user = await currentUser();
@@ -33,7 +34,12 @@ export default async function ExplorePage() {
           <Card className="w-60 px-2 " key={post.id}>
             <CardContent>
               <CardTitle className="mt-4 capitalize">{post.title}</CardTitle>
-              <CardDescription>{post.content}</CardDescription>
+              <CardDescription>
+                <div
+                  className="prose"
+                  dangerouslySetInnerHTML={{ __html: post.content }}
+                ></div>
+              </CardDescription>
               <div className="flex items-center gap-2  min-w-fit">
                 <Calendar size={18} /> {formatDate(post.updatedAt)}
               </div>

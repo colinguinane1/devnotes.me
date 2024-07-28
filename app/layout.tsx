@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ["latin"] });
 const geist = GeistSans;
 
 export const metadata: Metadata = {
-  title: "Blogchain",
+  title: "devnotes.me | Home",
   description: "The Blog, for developers, by developers.",
 };
 
