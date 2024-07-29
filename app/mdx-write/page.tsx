@@ -29,6 +29,7 @@ export default function Home() {
         title,
         description,
         slug,
+        mdx: true,
         content: content,
         published: true,
         userId: user?.user.id,
@@ -49,6 +50,9 @@ export default function Home() {
         <div className="flex md:flex-row flex-col justify-between ">
           <div className="flex flex-col">
             <h1 className="text-4xl font-semibold"> Write Your Blog</h1>
+            <p className="border rounded-full mt-4 px-4 text-yellow-500 border-yellow-500 w-fit">
+              Advanced Editor
+            </p>
             <p className="text-gray-500 mt-4">
               {" "}
               Write your blog here, and publish it to the world.
