@@ -6,6 +6,8 @@ import { Calendar, Eye, Heart, HeartIcon } from "lucide-react";
 import rehypePrettyCode from "rehype-pretty-code";
 import { Post } from "@prisma/client";
 import { Metadata } from "next";
+import { serialize } from "next-mdx-remote/serialize";
+import { MDXRemote } from "next-mdx-remote";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   function formatDate(dateString: Date) {
@@ -27,6 +29,12 @@ export default async function blog({ params }: { params: { slug: string } }) {
     title: blog.title,
     description: blog.description,
   };
+
+  const mdxSource = await serialize(blog.content, {
+    // Options for MDX serialization
+    parseFrontmatter: true,
+  });
+
   const addLikes = async (blog: Post) => {
     prisma.post.update({
       where: { id: blog.id },
@@ -74,7 +82,9 @@ export default async function blog({ params }: { params: { slug: string } }) {
         <div
           className="prose prose-code:language-javascript   dark:text-gray-400 dark:prose-headings:text-white mt-4"
           dangerouslySetInnerHTML={{ __html: blog.content }}
-        ></div>
+        >
+          {blog.mdx && <MDXRemote {...mdxSource} />}
+        </div>
       </div>
     </section>
   );
