@@ -1,13 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useEditor } from "novel";
 import { Check, Trash } from "lucide-react";
-import {
-  type Dispatch,
-  type FC,
-  type SetStateAction,
-  useEffect,
-  useRef,
-} from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   PopoverContent,
@@ -23,6 +17,7 @@ export function isValidUrl(url: string) {
     return false;
   }
 }
+
 export function getUrlFromString(str: string) {
   if (isValidUrl(str)) return str;
   try {
@@ -33,20 +28,32 @@ export function getUrlFromString(str: string) {
     return null;
   }
 }
+
 interface LinkSelectorProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
+export const LinkSelector: FC<LinkSelectorProps> = ({ open, onOpenChange }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { editor } = useEditor();
 
   // Autofocus on input by default
   useEffect(() => {
-    inputRef.current && inputRef.current?.focus();
-  });
+    inputRef.current?.focus();
+  }, []);
+
   if (!editor) return null;
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const input = inputRef.current?.value || "";
+    const url = getUrlFromString(input);
+    if (url) {
+      editor.chain().focus().setLink({ href: url }).run();
+      onOpenChange(false);
+    }
+  };
 
   return (
     <Popover modal={true} open={open} onOpenChange={onOpenChange}>
@@ -67,19 +74,7 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-60 p-0" sideOffset={10}>
-        <form
-          onSubmit={(e) => {
-            const target = e.currentTarget as HTMLFormElement;
-            e.preventDefault();
-            const input = target[0] as HTMLInputElement;
-            const url = getUrlFromString(input.value);
-            if (url) {
-              editor.chain().focus().setLink({ href: url }).run();
-              onOpenChange(false);
-            }
-          }}
-          className="flex  p-1 "
-        >
+        <form onSubmit={handleSubmit} className="flex p-1">
           <input
             ref={inputRef}
             type="text"
@@ -87,24 +82,25 @@ export const LinkSelector = ({ open, onOpenChange }: LinkSelectorProps) => {
             className="flex-1 bg-background p-1 text-sm outline-none"
             defaultValue={editor.getAttributes("link").href || ""}
           />
-          {editor.getAttributes("link").href ? (
-            <Button
-              size="icon"
-              variant="outline"
-              type="button"
-              className="flex h-8 items-center rounded-sm p-1 text-red-600 transition-all hover:bg-red-100 dark:hover:bg-red-800"
-              onClick={() => {
-                editor.chain().focus().unsetLink().run();
-                onOpenChange(false);
-              }}
-            >
-              <Trash className="h-4 w-4" />
-            </Button>
-          ) : (
-            <Button size="icon" className="h-8">
-              <Check className="h-4 w-4" />
-            </Button>
-          )}
+          <Button
+            size="icon"
+            variant="outline"
+            type="button" // This button should not submit the form
+            className="flex h-8 items-center rounded-sm p-1 text-red-600 transition-all hover:bg-red-100 dark:hover:bg-red-800"
+            onClick={() => {
+              editor.chain().focus().unsetLink().run();
+              onOpenChange(false);
+            }}
+          >
+            <Trash className="h-4 w-4" />
+          </Button>
+          <Button
+            size="icon"
+            type="submit" // This button should submit the form
+            className="h-8"
+          >
+            <Check className="h-4 w-4" />
+          </Button>
         </form>
       </PopoverContent>
     </Popover>

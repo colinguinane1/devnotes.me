@@ -8,6 +8,9 @@ import { Post } from "@prisma/client";
 import { Metadata } from "next";
 import { serialize } from "next-mdx-remote/serialize";
 import { MDXRemote } from "next-mdx-remote";
+import { MDXComponents } from "mdx/types";
+import { useMDXComponents } from "@/components/global/MDXComponents";
+import MdxLayout from "@/components/global/MDXLayout";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   function formatDate(dateString: Date) {
@@ -80,9 +83,9 @@ export default async function blog({ params }: { params: { slug: string } }) {
           </div>
         </div>
         {blog.mdx ? (
-          <>
+          <MdxLayout>
             <MDXRemote {...mdxSource} />
-          </>
+          </MdxLayout>
         ) : (
           <div
             className="prose prose-code:language-javascript   dark:text-gray-400 dark:prose-headings:text-white mt-4"
