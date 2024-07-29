@@ -25,6 +25,7 @@ model User {
 }
 
 model Post {
+  mdx         Boolean? @default(false)
   id          String   @id @default(cuid())
   description String?
   slug        String   @unique
