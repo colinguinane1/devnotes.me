@@ -44,6 +44,7 @@ export default function Home() {
         title,
         description,
         slug,
+        mdx: false,
         content: content,
         published: true,
         userId: user?.user.id,

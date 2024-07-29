@@ -79,12 +79,16 @@ export default async function blog({ params }: { params: { slug: string } }) {
             </Link>
           </div>
         </div>
-        <div
-          className="prose prose-code:language-javascript   dark:text-gray-400 dark:prose-headings:text-white mt-4"
-          dangerouslySetInnerHTML={{ __html: blog.content }}
-        >
-          {blog.mdx && <MDXRemote {...mdxSource} />}
-        </div>
+        {blog.mdx ? (
+          <>
+            <MDXRemote {...mdxSource} />
+          </>
+        ) : (
+          <div
+            className="prose prose-code:language-javascript   dark:text-gray-400 dark:prose-headings:text-white mt-4"
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          ></div>
+        )}
       </div>
     </section>
   );

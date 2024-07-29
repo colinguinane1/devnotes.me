@@ -1,7 +1,7 @@
 'use server'
 import prisma from "@/prisma/db"
 
-export async function createPost(data: { title: string; slug: string; content: string; published?: boolean; userId: string, createdAt: Date, description: string }) {
+export async function createPost(data: { title: string; slug: string; content: string; published?: boolean; userId: string, createdAt: Date, description: string, mdx: boolean }) {
   try {
     const newPost = await prisma.post.create({
       data: {
@@ -12,6 +12,7 @@ export async function createPost(data: { title: string; slug: string; content: s
         published: data.published ?? true, 
         userId: data.userId,
         createdAt: new Date(), 
+        mdx: data.mdx,
       },
     });
     return newPost;
