@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useEditor } from "novel";
 import { Check, Trash } from "lucide-react";
-import { Dispatch, FC, SetStateAction, useEffect, useRef } from "react";
+import { FC, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   PopoverContent,
@@ -85,7 +85,7 @@ export const LinkSelector: FC<LinkSelectorProps> = ({ open, onOpenChange }) => {
           <Button
             size="icon"
             variant="outline"
-            type="button" // This button should not submit the form
+            type="button" // Ensure this does not submit the form
             className="flex h-8 items-center rounded-sm p-1 text-red-600 transition-all hover:bg-red-100 dark:hover:bg-red-800"
             onClick={() => {
               editor.chain().focus().unsetLink().run();
@@ -96,7 +96,7 @@ export const LinkSelector: FC<LinkSelectorProps> = ({ open, onOpenChange }) => {
           </Button>
           <Button
             size="icon"
-            type="submit" // This button should submit the form
+            type="submit" // Ensure this submits the form
             className="h-8"
           >
             <Check className="h-4 w-4" />
