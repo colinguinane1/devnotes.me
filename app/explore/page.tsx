@@ -16,7 +16,6 @@ import Link from "next/link";
 import { EditorRoot, EditorContent, useEditor } from "novel";
 import { Post } from "@prisma/client";
 import { Eye, Heart } from "lucide-react";
-import blog from "../posts/[slug]/page";
 
 export default async function ExplorePage() {
   const user = await currentUser();
