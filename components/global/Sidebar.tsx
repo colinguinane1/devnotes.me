@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { NavigationData } from "@/data/NavigationData";
 import { Logo, siteName } from "@/data/NavigationData";
 import { BiMenu } from "react-icons/bi";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { MenuIcon } from "lucide-react";
 import { RiMenu3Line } from "react-icons/ri";
 
