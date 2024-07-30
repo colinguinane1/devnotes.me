@@ -12,7 +12,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 import SamplePrismaUser from "@/data/SamplePrismaUser";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { EditorRoot, EditorContent, useEditor } from "novel";
 import { Post } from "@prisma/client";
 import { Eye, Heart } from "lucide-react";
