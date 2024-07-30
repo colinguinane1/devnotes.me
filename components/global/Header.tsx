@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 import { ModeToggle } from "../buttons/ThemeSwitcher";
 import { NavigationData } from "@/data/NavigationData";

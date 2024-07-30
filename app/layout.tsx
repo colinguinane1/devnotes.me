@@ -8,6 +8,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "next-themes";
 import { useTheme } from "next-themes";
 import { dark } from "@clerk/themes";
+import { ViewTransitions } from "next-view-transitions";
 
 const inter = Inter({ subsets: ["latin"] });
 const geist = GeistSans;
@@ -23,16 +24,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning className={geist.className} lang="en">
-      <body className="antialiased bg-primary-light dark:bg-primary-dark transition-colors">
-        {" "}
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ClerkProvider>
-            <Header />
-            <div className="mt-[4.1rem]">{children}</div>
-          </ClerkProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html suppressHydrationWarning className={geist.className} lang="en">
+        <body className="antialiased bg-primary-light dark:bg-primary-dark transition-colors">
+          {" "}
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ClerkProvider>
+              <Header />
+              <div className="mt-[4.1rem]">{children}</div>
+            </ClerkProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }
