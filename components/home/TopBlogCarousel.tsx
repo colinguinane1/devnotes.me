@@ -30,23 +30,27 @@ export default async function TopBlogCarousel() {
     <div className="flex flex-col pb-20 items-center justify-center">
       <h1 className="py-2">Top Blogs Today</h1>
       <SignedIn />
-      <Carousel className="w-full  max-w-xs relative">
+      <Carousel className="w-full border h-full rounded-md max-w-[17rem] max-h-[] md:max-w-md relative">
         <CarouselContent>
           {posts.map((post) => (
-            <CarouselItem key={post.id}>
-              <Link href={post.slug}>
+            <CarouselItem className="" key={post.id}>
+              <Link href={`/posts/${post.slug}`}>
                 {" "}
-                <div className="w-full h-full from-10%  absolute bg-gradient-to-t from-white ">
-                  <div
-                    className=" flex gap-1 border-b border-black items-center bottom-4
+                <div className="">
+                  <Card className="border-none group ">
+                    {" "}
+                    <div className="w-full h-full from-10%  absolute bg-gradient-to-t from-secondary ">
+                      <div
+                        className=" flex gap-1 border-b border-black items-center bottom-4
                  right-10 absolute"
-                  >
-                    <p>Read More</p>
-                    <ArrowRight size={15} />
-                  </div>
-                </div>
-                <div className="p-1">
-                  <Card>
+                      >
+                        <p>Read More</p>
+                        <ArrowRight
+                          className="group-hover:mx-1 scale-105 transition-all"
+                          size={15}
+                        />
+                      </div>
+                    </div>
                     <CardHeader className="border-b mx-2">
                       <h1 className="font-bold text-2xl">{post.title}</h1>
                       <div className="flex h-full bg-slate-100 dark:bg-gray-900 dark:text-gray-300 rounded-full w-fit  pr-2 items-center gap-2">
@@ -76,7 +80,7 @@ export default async function TopBlogCarousel() {
                     </CardHeader>
                     <CardContent className="flex aspect-square   p-6">
                       <p
-                        className="truncate h-full"
+                        className="truncate prose dark:prose-headings:text-white dark:prose-strong:text-white text-xs"
                         dangerouslySetInnerHTML={{ __html: post.content }}
                       ></p>
                     </CardContent>
@@ -87,10 +91,8 @@ export default async function TopBlogCarousel() {
           ))}
         </CarouselContent>
 
-        <div className="hidden md:block">
-          <CarouselNext />
-          <CarouselPrevious />
-        </div>
+        <CarouselNext />
+        <CarouselPrevious />
       </Carousel>
     </div>
   );

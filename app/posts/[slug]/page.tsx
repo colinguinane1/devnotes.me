@@ -1,8 +1,8 @@
 import prisma from "@/prisma/db";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Link from "next/link";
-import { Calendar, Eye, Heart, HeartIcon } from "lucide-react";
+import { Link } from "next-view-transitions";
+import { ArrowRight, Calendar, Eye, Heart, HeartIcon } from "lucide-react";
 import rehypePrettyCode from "rehype-pretty-code";
 import { Post } from "@prisma/client";
 import { Metadata } from "next";
@@ -11,6 +11,7 @@ import { MDXRemote } from "next-mdx-remote";
 import { MDXComponents } from "mdx/types";
 import { useMDXComponents } from "@/components/global/MDXComponents";
 import MdxLayout from "@/components/global/MDXLayout";
+import { CiWarning } from "react-icons/ci";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   function formatDate(dateString: Date) {
@@ -26,7 +27,24 @@ export default async function blog({ params }: { params: { slug: string } }) {
     include: { author: true },
   });
   if (!blog) {
-    return <p>Blog not found!</p>;
+    return (
+      <div className="grid h-[80vh] place-content-center">
+        <div className="flex flex-col items-center justify-center">
+          <CiWarning color="yellow" size={150}></CiWarning>
+          <h1 className="font-semibold text-2xl pb-4">Blog not found!</h1>
+          <p className="pb-4">Double check you&apos;re in the right place...</p>
+          <Button className="flex items-center group w-[10rem] gap-1">
+            <Link href="/explore" className="flex items-center gap-1">
+              Explore{" "}
+              <ArrowRight
+                className="group-hover:ml-1 transition-all scale-105"
+                size={12}
+              />
+            </Link>
+          </Button>
+        </div>
+      </div>
+    );
   }
   const metadata: Metadata = {
     title: blog.title,

@@ -9,6 +9,7 @@ import { ThemeProvider } from "next-themes";
 import { useTheme } from "next-themes";
 import { dark } from "@clerk/themes";
 import { ViewTransitions } from "next-view-transitions";
+import NextNProgress from "nextjs-progressbar";
 
 const inter = Inter({ subsets: ["latin"] });
 const geist = GeistSans;
@@ -30,6 +31,7 @@ export default function RootLayout({
           {" "}
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <ClerkProvider>
+              <NextNProgress color="61E3E3" />
               <Header />
               <div className="mt-[4.1rem]">{children}</div>
             </ClerkProvider>
