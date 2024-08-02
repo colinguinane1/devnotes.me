@@ -27,10 +27,10 @@ export default async function TopBlogCarousel() {
     },
   });
   return (
-    <div className="flex flex-col pb-20 items-center justify-center">
-      <h1 className="py-2">Top Blogs Today</h1>
+    <div className="flex flex-col pb-20 px-4">
+      <h1 className="py-2 font-semibold text-left">Top Blogs Today</h1>
       <SignedIn />
-      <Carousel className="w-full border h-full rounded-md max-w-[17rem] max-h-[] md:max-w-md relative">
+      <Carousel className="w-full border h-full rounded-md max-w-[17rem]  relative">
         <CarouselContent>
           {posts.map((post) => (
             <CarouselItem className="" key={post.id}>
@@ -39,9 +39,9 @@ export default async function TopBlogCarousel() {
                 <div className="">
                   <Card className="border-none group ">
                     {" "}
-                    <div className="w-full h-full from-10%  absolute bg-gradient-to-t from-secondary ">
+                    <div className="w-full h-full absolute bg-gradient-to-t from-secondary to-transparent">
                       <div
-                        className=" flex gap-1 border-b border-black items-center bottom-4
+                        className=" flex gap-1 border-b border-primary  items-center bottom-4
                  right-10 absolute"
                       >
                         <p>Read More</p>
@@ -52,7 +52,7 @@ export default async function TopBlogCarousel() {
                       </div>
                     </div>
                     <CardHeader className="border-b mx-2">
-                      <h1 className="font-bold text-2xl">{post.title}</h1>
+                      <h1 className="font-bold text-xl">{post.title}</h1>
                       <div className="flex h-full bg-slate-100 dark:bg-gray-900 dark:text-gray-300 rounded-full w-fit  pr-2 items-center gap-2">
                         <div className="flex items-center gap-2">
                           <Image
@@ -78,7 +78,7 @@ export default async function TopBlogCarousel() {
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent className="flex aspect-square   p-6">
+                    <CardContent className="flex aspect-square max-h-40 w-full   p-6">
                       <p
                         className="truncate prose dark:prose-headings:text-white dark:prose-strong:text-white text-xs"
                         dangerouslySetInnerHTML={{ __html: post.content }}
