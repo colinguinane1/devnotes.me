@@ -112,6 +112,7 @@ export default function Home() {
               <label>Description:</label>
               <input
                 maxLength={25}
+                minLength={10}
                 required
                 value={description}
                 name="description"
