@@ -31,12 +31,24 @@ export default async function TopBlogCarousel() {
       <h1 className="py-2 font-semibold text-left">Top Blogs Today</h1>
       <div className="flex gap-2 overflow-x-auto h-[12rem]">
         {posts.map((post) => (
-          <div
+          <Link
+            href={`/posts/${post.slug}`}
             className="bg-primary-foreground h-full w-[15rem] flex-shrink-0 p-2"
             key={post.id}
           >
-            <h1 className="font-semibold">{post.title}</h1>
-          </div>
+            <h1 className="font-semibold text-lg ">{post.title}</h1>
+            <div className="flex items-center border-b pb-2 mx-2 gap-2">
+              <Image
+                className="rounded-full"
+                alt="user"
+                src={post.author.image_url || ""}
+                width={25}
+                height={25}
+              ></Image>
+              <p>{post.author.username}</p>
+            </div>
+            <p>{post.description}</p>
+          </Link>
         ))}
       </div>
     </div>
