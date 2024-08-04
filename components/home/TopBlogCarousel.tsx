@@ -33,26 +33,28 @@ export default async function TopBlogCarousel() {
   return (
     <div className="w-full overflow-x-auto p-4">
       <h1 className="py-2 font-semibold text-left">Top Blogs Today</h1>
-      <div className="flex gap-2 overflow-x-auto h-[12rem]">
+      <div className="flex gap-2 overflow-x-auto h-[15rem]">
         {posts.map((post) => (
           <Link
             href={`/posts/${post.slug}`}
-            className="bg-primary-foreground h-full w-[15rem] flex-shrink-0 p-2"
+            className="bg-primary-foreground relative h-full w-[15rem] flex-shrink-0 p-2"
             key={post.id}
           >
-            <p>{formatDate(post.createdAt)}</p>
-            <h1 className="font-semibold text-lg ">{post.title}</h1>
-            <div className="flex items-center border-b pb-2 mx-2 gap-2">
+            <h1 className="font-semibold capitalize text-lg ">{post.title}</h1>
+            <p>{post.description}</p>{" "}
+            <div className="flex absolute border-t pt-2 w-full bottom-2 items-center pb-2 mx-2 gap-2">
               <Image
                 className="rounded-full"
                 alt="user"
                 src={post.author.image_url || ""}
-                width={25}
-                height={25}
+                width={30}
+                height={30}
               ></Image>
-              <p>{post.author.username}</p>
-            </div>
-            <p>{post.description}</p>
+              <div className="text-sm">
+                <p>{post.author.username}</p>{" "}
+                <p className="text-gray-400">{formatDate(post.createdAt)}</p>
+              </div>{" "}
+            </div>{" "}
           </Link>
         ))}
       </div>
