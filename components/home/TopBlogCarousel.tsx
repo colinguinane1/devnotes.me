@@ -27,10 +27,35 @@ export default async function TopBlogCarousel() {
     },
   });
   return (
-    <div className="flex flex-col pb-20 px-4">
+    <div className="w-full overflow-x-auto p-4">
       <h1 className="py-2 font-semibold text-left">Top Blogs Today</h1>
-      <SignedIn />
-      <Carousel className="w-full border h-full rounded-md max-w-[17rem]  relative">
+      <div className="flex gap-2 overflow-x-auto h-[12rem]">
+        {posts.map((post) => (
+          <Link
+            href={`/posts/${post.slug}`}
+            className="bg-primary-foreground h-full w-[15rem] flex-shrink-0 p-2"
+            key={post.id}
+          >
+            <h1 className="font-semibold text-lg ">{post.title}</h1>
+            <div className="flex items-center border-b pb-2 mx-2 gap-2">
+              <Image
+                className="rounded-full"
+                alt="user"
+                src={post.author.image_url || ""}
+                width={25}
+                height={25}
+              ></Image>
+              <p>{post.author.username}</p>
+            </div>
+            <p>{post.description}</p>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+
+  {
+    /* <Carousel className="w-full border h-full rounded-md max-w-[17rem]  relative">
         <CarouselContent>
           {posts.map((post) => (
             <CarouselItem className="" key={post.id}>
@@ -93,7 +118,6 @@ export default async function TopBlogCarousel() {
 
         <CarouselNext />
         <CarouselPrevious />
-      </Carousel>
-    </div>
-  );
+      </Carousel> */
+  }
 }
