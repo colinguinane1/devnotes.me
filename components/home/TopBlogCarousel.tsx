@@ -17,7 +17,11 @@ import { Link } from "next-view-transitions";
 
 function formatDate(dateString: Date) {
   const date = new Date(dateString);
-  return date.toLocaleDateString("en-US");
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
 export default async function TopBlogCarousel() {
@@ -36,6 +40,7 @@ export default async function TopBlogCarousel() {
             className="bg-primary-foreground h-full w-[15rem] flex-shrink-0 p-2"
             key={post.id}
           >
+            <p>{formatDate(post.createdAt)}</p>
             <h1 className="font-semibold text-lg ">{post.title}</h1>
             <div className="flex items-center border-b pb-2 mx-2 gap-2">
               <Image
