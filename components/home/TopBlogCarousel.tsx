@@ -37,7 +37,7 @@ export default async function TopBlogCarousel() {
         {posts.map((post) => (
           <Link
             href={`/posts/${post.slug}`}
-            className="bg-primary-foreground relative h-full w-[15rem] flex-shrink-0 p-2"
+            className="bg-primary-foreground relative h-full rounded-lg w-[15rem] flex-shrink-0 p-3"
             key={post.id}
           >
             <h1 className="font-semibold capitalize text-lg ">{post.title}</h1>
