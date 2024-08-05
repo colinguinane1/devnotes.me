@@ -42,7 +42,7 @@ export default async function TopBlogCarousel() {
           >
             <h1 className="font-semibold capitalize text-lg ">{post.title}</h1>
             <p>{post.description}</p>{" "}
-            <div className="flex absolute border-t py-2 w-full bottom-2 items-center gap-2">
+            <div className="flex absolute border-t p-2 w-full left-0 bottom-2 items-center gap-2">
               <Image
                 className="rounded-full"
                 alt="user"
