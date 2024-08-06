@@ -63,6 +63,8 @@ export default async function TopBlogCarousel() {
                   <p>{post.author.username}</p>{" "}
                   <p className="text-gray-400">{formatDate(post.createdAt)}</p>
                 </div>
+                <p className="text-gray-400">{formatDate(post.createdAt)}</p>
+
               </div>{" "}
               <div className="z-[1000]">
                 <Button
