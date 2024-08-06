@@ -37,7 +37,7 @@ const Sidebar = () => {
               <div className="flex gap-2 w-full h-full justify-between ">
                 <div className=" gap-2  justify-between h-full w-full flex flex-col">
                   {NavigationData.map((nav, index) => (
-                    <Button variant={"outline"} key={index}>
+                    <Button key={index}>
                       <Link href={nav.href}>{nav.name}</Link>
                     </Button>
                   ))}{" "}
