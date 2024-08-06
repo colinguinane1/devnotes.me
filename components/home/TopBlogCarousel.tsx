@@ -13,7 +13,7 @@ import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import prisma from "@/prisma/db";
 import Image from "next/image";
 import { ArrowRight, Calendar, Eye, Heart } from "lucide-react";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import { BiMenu } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { Button } from "../ui/button";
