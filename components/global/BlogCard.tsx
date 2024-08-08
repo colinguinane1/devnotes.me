@@ -1,0 +1,48 @@
+import Image from "next/image";
+import Link from "next/link";
+import { formatDate } from "@/data/NavigationData";
+import { Button } from "../ui/button";
+import { BsThreeDots } from "react-icons/bs";
+import { Post } from "@prisma/client";
+
+interface BlogCardProps {
+  post: Post;
+  author: any;
+}
+
+export default function BlogCard({ post, author }: BlogCardProps) {
+  return (
+    <div
+      className="bg-card rounded-lg shadow-lg relative h-full w-[15rem] flex-shrink-0 p-3"
+      key={post.id}
+    >
+      <Link href={`/posts/${post.slug}`}>
+        <h1 className="font-semibold capitalize text-lg ">{post.title}</h1>
+        <p className="font-light h-full w-full text-sm text-gray-400">
+          {post.description}
+        </p>{" "}
+      </Link>
+      <div className="flex absolute  border-t p-2 w-full bottom-1 left-0  justify-between items-center pr-4 gap-2">
+        <div className="flex items-center gap-2">
+          <Image
+            className="rounded-full"
+            alt="user"
+            src={author.image_url || ""}
+            width={30}
+            height={30}
+          ></Image>
+          <div className="text-sm">
+            <p>{author.username}</p>{" "}
+            <p className="text-gray-400">{formatDate(post.createdAt)}</p>
+          </div>
+        </div>{" "}
+        <div className="z-[1000]">
+          <Button size={"icon"} variant={"ghost"} className="rounded-full">
+            {" "}
+            <BsThreeDots />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
