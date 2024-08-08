@@ -17,6 +17,7 @@ import { Link } from "next-view-transitions";
 import { BiMenu } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { Button } from "../ui/button";
+import BlogCard from "../global/BlogCard";
 
 function formatDate(dateString: Date) {
   const date = new Date(dateString);
@@ -38,44 +39,7 @@ export default async function TopBlogCarousel() {
       <h1 className="py-2 font-semibold text-left">Top Blogs Today</h1>
       <div className="flex gap-4 py-4 overflow-x-auto h-[17rem]">
         {posts.map((post) => (
-          <div
-            className="bg-card rounded-lg shadow-lg relative h-full w-[15rem] flex-shrink-0 p-3"
-            key={post.id}
-          >
-            <Link href={`/posts/${post.slug}`}>
-              <h1 className="font-semibold capitalize text-lg ">
-                {post.title}
-              </h1>
-              <p className="font-light text-sm text-gray-400">
-                {post.description}
-              </p>{" "}
-            </Link>
-            <div className="flex absolute  border-t p-2 w-full bottom-1 left-0  justify-between items-center pr-4 gap-2">
-              <div className="flex items-center gap-2">
-                <Image
-                  className="rounded-full"
-                  alt="user"
-                  src={post.author.image_url || ""}
-                  width={30}
-                  height={30}
-                ></Image>
-                <div className="text-sm">
-                  <p>{post.author.username}</p>{" "}
-                  <p className="text-gray-400">{formatDate(post.createdAt)}</p>
-                </div>
-              </div>{" "}
-              <div className="z-[1000]">
-                <Button
-                  size={"icon"}
-                  variant={"secondary"}
-                  className="rounded-full"
-                >
-                  {" "}
-                  <BsThreeDots />
-                </Button>
-              </div>
-            </div>{" "}
-          </div>
+          <BlogCard key={post.id} post={post} author={post.author} />
         ))}
       </div>
     </div>
