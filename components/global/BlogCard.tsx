@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { formatDate } from "@/data/NavigationData";
 import { Button } from "../ui/button";
-import { BsThreeDots } from "react-icons/bs";
+import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post } from "@prisma/client";
+import { Heart } from "lucide-react";
 
 interface BlogCardProps {
   post: Post;
@@ -18,9 +19,19 @@ export default function BlogCard({ post, author }: BlogCardProps) {
     >
       <Link href={`/posts/${post.slug}`}>
         <h1 className="font-semibold capitalize text-lg ">{post.title}</h1>
-        <p className="font-light h-full w-full text-sm text-gray-400">
+        <p className="font-light relative h-full w-full text-sm text-gray-400">
           {post.description}
         </p>{" "}
+        <div className="absolute text-sm bottom-16 right-1">
+          <div className="flex items-center gap-1">
+            <p className="flex items-center gap-1">
+              {post.views} <BsEye />
+            </p>
+            <p className="flex items-center gap-1">
+              {post.likes} <BsHeart size={10} />
+            </p>
+          </div>{" "}
+        </div>
       </Link>
       <div className="flex absolute  border-t p-2 w-full bottom-1 left-0  justify-between items-center pr-4 gap-2">
         <div className="flex items-center gap-2">
@@ -28,8 +39,8 @@ export default function BlogCard({ post, author }: BlogCardProps) {
             className="rounded-full"
             alt="user"
             src={author.image_url || ""}
-            width={30}
-            height={30}
+            width={32}
+            height={32}
           ></Image>
           <div className="text-sm">
             <p>{author.username}</p>{" "}
