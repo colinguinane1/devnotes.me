@@ -1,4 +1,6 @@
 import HeroLanding from "@/components/home/HeroLanding";
+import MostLikedBlogs from "@/components/home/MostLikedBlogs";
+import MostRecentBlogs from "@/components/home/MostRecentBlogs";
 import TopBlogCarousel from "@/components/home/TopBlogCarousel";
 
 const Home = () => {
@@ -6,6 +8,8 @@ const Home = () => {
     <>
       <HeroLanding />
       <TopBlogCarousel />
+      <MostRecentBlogs />
+      <MostLikedBlogs />
     </>
   );
 };
