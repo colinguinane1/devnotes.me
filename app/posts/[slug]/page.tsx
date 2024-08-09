@@ -6,11 +6,7 @@ import { ArrowRight, Calendar, Eye, Heart, HeartIcon } from "lucide-react";
 import rehypePrettyCode from "rehype-pretty-code";
 import { Post } from "@prisma/client";
 import { Metadata } from "next";
-import { serialize } from "next-mdx-remote/serialize";
-import { MDXRemote } from "next-mdx-remote";
-import { MDXComponents } from "mdx/types";
-import { useMDXComponents } from "@/components/global/MDXComponents";
-import MdxLayout from "@/components/global/MDXLayout";
+
 import { CiWarning } from "react-icons/ci";
 
 export default async function blog({ params }: { params: { slug: string } }) {
@@ -59,11 +55,6 @@ export default async function blog({ params }: { params: { slug: string } }) {
     description: blog.description,
   };
 
-  const mdxSource = await serialize(blog.content, {
-    // Options for MDX serialization
-    parseFrontmatter: true,
-  });
-
   const addLikes = async (blog: Post) => {
     prisma.post.update({
       where: { id: blog.id },
@@ -108,16 +99,11 @@ export default async function blog({ params }: { params: { slug: string } }) {
             </Link>
           </div>
         </div>
-        {blog.mdx ? (
-          <MdxLayout>
-            <MDXRemote {...mdxSource} />
-          </MdxLayout>
-        ) : (
-          <div
-            className="prose prose-code:language-javascript   dark:text-gray-400 dark:prose-headings:text-white mt-4"
-            dangerouslySetInnerHTML={{ __html: blog.content }}
-          ></div>
-        )}
+
+        <div
+          className="prose prose-code:language-javascript   dark:text-gray-400 dark:prose-headings:text-white mt-4"
+          dangerouslySetInnerHTML={{ __html: blog.content }}
+        ></div>
       </div>
     </section>
   );
