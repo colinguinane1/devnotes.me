@@ -3,11 +3,11 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Link } from "next-view-transitions";
 import { ArrowRight, Calendar, Eye, Heart, HeartIcon } from "lucide-react";
-import rehypePrettyCode from "rehype-pretty-code";
-import { Post } from "@prisma/client";
 import { Metadata } from "next";
 
 import { CiWarning } from "react-icons/ci";
+import { incrementViews } from "@/lib/actions";
+import LikeManager from "@/components/buttons/LikeManager";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   function formatDate(dateString: Date) {
@@ -55,23 +55,14 @@ export default async function blog({ params }: { params: { slug: string } }) {
     description: blog.description,
   };
 
-  const addLikes = async (blog: Post) => {
-    prisma.post.update({
-      where: { id: blog.id },
-      data: { views: (blog.views += 1) },
-    });
-  };
-  addLikes(blog);
-
+  incrementViews(blog.id);
   return (
     <section className="p-4 py-8">
       <div>
         <div className="border-b">
           <div className="flex justify-between items-center">
             <h1 className="text-4xl font-bold">{blog.title}</h1>
-            <Button size={"icon"}>
-              <HeartIcon></HeartIcon>
-            </Button>
+            <LikeManager postId={blog.id} />
           </div>
           <div className="flex items-center my-2 gap-2">
             <Link className="my-2" href={`/profile/${blog.author.username}`}>

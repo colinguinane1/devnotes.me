@@ -1,14 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model User {
@@ -21,7 +18,8 @@ model User {
   id              String    @id @unique
   username        String    @unique
   email           String?   @unique
-  Posts           Post[]
+  Posts           Post[]    @relation("author")
+  likedPosts      Post[]    @relation("likedBy")
 }
 
 model Post {
@@ -33,9 +31,10 @@ model Post {
   content     String
   views       Int      @default(0)
   likes       Int      @default(0)
-  author      User     @relation(references: [id], fields: [userId])
+  author      User     @relation("author", fields: [userId], references: [id])
   published   Boolean? @default(false)
   updatedAt   DateTime @default(now())
   createdAt   DateTime @default(now())
   userId      String
+  likedBy     User[]   @relation("likedBy")
 }
