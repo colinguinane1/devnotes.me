@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post } from "@prisma/client";
 import { Heart } from "lucide-react";
+import BlogDropdown from "../buttons/BlogDropdown";
 
 interface BlogCardProps {
   post: Post;
@@ -47,11 +48,8 @@ export default function BlogCard({ post, author }: BlogCardProps) {
             <p className="text-gray-400">{formatDate(post.createdAt)}</p>
           </div>
         </div>{" "}
-        <div className="z-[1000]">
-          <Button size={"icon"} variant={"ghost"} className="rounded-full">
-            {" "}
-            <BsThreeDots />
-          </Button>
+        <div>
+          <BlogDropdown slug={post.slug} />
         </div>
       </div>
     </div>

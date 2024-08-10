@@ -6,11 +6,7 @@ import { SignedIn, useUser } from "@clerk/nextjs";
 import { manageLikes } from "@/lib/actions";
 import { useState, useEffect } from "react";
 
-interface LikeManagerProps {
-  postId: string; // Define the type of postId
-}
-
-export default function LikeManager({ postId }: LikeManagerProps) {
+export default function LikeManager(postId: string) {
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(false);
