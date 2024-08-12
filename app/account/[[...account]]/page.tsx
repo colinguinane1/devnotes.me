@@ -7,7 +7,7 @@ export default function AccountPage() {
   const clerkUser = useUser();
 
   return (
-    <main className="grid  h-[80vh] overflow-y-auto place-items-center">
+    <main className="grid  h-[110vh] overflow-y-auto place-items-center">
       <div className="overflow-y-auto">
         <UserProfile></UserProfile>
         <Alert className="my-4">

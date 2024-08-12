@@ -6,11 +6,12 @@ import Sidebar from "./Sidebar";
 
 import SignInManager from "../buttons/SignInManager";
 import { Logo } from "@/data/NavigationData";
+import UserIcon from "../buttons/UserIcon";
 
 const Header = () => {
   return (
     <div className="fixed  w-screen   z-30 p-2    top-0 py-3 ">
-      <div className="bg-card relative  border-b rounded-lg py-2 px-2 border-secondary">
+      <div className="bg-opacity-85 bg-card/50  backdrop-blur-2xl relative  border rounded-lg p-2">
         <ul className="flex items-center  text-lg font-semibold justify-between">
           <div className="hidden md:block ">
             <Link href="/">
@@ -27,6 +28,7 @@ const Header = () => {
               </h1>
             </Link>
           </div>
+          <UserIcon />
           <div className=" gap-4  hidden md:flex">
             {NavigationData.map((nav, index) => (
               <Link

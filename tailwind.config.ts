@@ -95,6 +95,11 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+          gradient: {
+          to: {
+            backgroundPosition: "var(--bg-size) 0",
+          },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -115,7 +120,9 @@ const config = {
          meteor: "meteor 5s linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+          gradient: "gradient 8s linear infinite",
       },
+      
     },
   },
   plugins: [require("tailwindcss-animate") , require('@tailwindcss/typography')],

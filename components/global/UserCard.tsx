@@ -15,10 +15,13 @@ interface UserCardProps {
 export default function UserCard({ user }: UserCardProps) {
   return (
     <div
-      className="bg-card items-center justify-center rounded-lg shadow-lg relative h-full w-[15rem] flex-shrink-0 p-3"
+      className="bg-card  rounded-lg shadow-lg relative h-full w-[15rem] flex-shrink-0 p-3"
       key={user.id}
     >
-      <Link href={`/profile/${user.username}`}>
+      <Link
+        className="flex flex-col mt-4 justify-center items-center"
+        href={`/profile/${user.username}`}
+      >
         <Image
           className="rounded-full"
           src={user.image_url || ""}

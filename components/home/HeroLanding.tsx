@@ -5,6 +5,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { siteName } from "@/data/NavigationData";
 import TypingAnimation from "../magicui/typing-animation";
+import AnimatedGradientText from "../magicui/animated-gradient-text";
+import { ChevronRight } from "lucide-react";
 
 export default function HeroLanding() {
   return (
@@ -12,6 +14,15 @@ export default function HeroLanding() {
       <div className="relative flex h-[500px] w-screen flex-col items-center justify-center overflow-hidden ">
         <Meteors number={20} />
         <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-blue-500 to-blue-300 bg-clip-text text-center md:text-8xl text-6xl font-semibold leading-none text-transparent dark:from-white  dark:to-blue-500">
+          <AnimatedGradientText className="mt-10 mb-8">
+            🎉 <hr className="mx-2 h-4 w-[1px] shrink-0 bg-gray-300" />{" "}
+            <span
+              className={`inline animate-gradient bg-gradient-to-r from-[#ffaa40] via-[#9c40ff] to-[#ffaa40] bg-[length:var(--bg-size)_100%] bg-clip-text text-transparent`}
+            >
+              DevNotes Launch 1.0!
+            </span>
+            <ChevronRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
+          </AnimatedGradientText>
           <TypingAnimation
             className="lowercase pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-blue-500 to-blue-300 bg-clip-text text-center md:text-8xl text-6xl font-semibold leading-none text-transparent dark:from-white  dark:to-blue-500"
             text={`${siteName}.me`}
@@ -37,7 +48,7 @@ export default function HeroLanding() {
             ]}
           />
         </div>
-        <div className="items-center gap-4 flex-col md:flex justify-center md:flex-row">
+        <div className="items-center gap-4 flex justify-center ">
           <Button
             className="flex items-center group w-[10rem] gap-1"
             variant={"outline"}

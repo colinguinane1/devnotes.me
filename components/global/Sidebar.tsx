@@ -26,7 +26,7 @@ const Sidebar = () => {
             <CgMenuLeft size={24} />
           </Button>
         </SheetTrigger>
-        <SheetContent className="w-[20rem]" side="left">
+        <SheetContent className="w-[15rem]" side="left">
           <SheetHeader>
             <SheetTitle>
               <h1 className="text-left font-extrabold">
@@ -46,7 +46,6 @@ const Sidebar = () => {
                   <div className="flex gap-2 justify-between items-center">
                     {" "}
                     <ModeToggle />
-                    <SignInManager />
                   </div>
                 </div>
               </div>

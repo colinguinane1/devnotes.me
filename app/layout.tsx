@@ -8,9 +8,11 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "next-themes";
 import { useTheme } from "next-themes";
 import { dark } from "@clerk/themes";
-import { ViewTransitions } from "next-view-transitions"
+import { ViewTransitions } from "next-view-transitions";
+import { DM_Sans } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
+const dm_sans = DM_Sans({ subsets: ["latin"] });
 const geist = GeistSans;
 
 export const metadata: Metadata = {
@@ -25,12 +27,11 @@ export default function RootLayout({
 }>) {
   return (
     <ViewTransitions>
-      <html suppressHydrationWarning className={geist.className} lang="en">
+      <html suppressHydrationWarning className={dm_sans.className} lang="en">
         <body className="antialiased bg-primary-light dark:bg-primary-dark transition-colors">
           {" "}
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <ClerkProvider>
-              
               <Header />
               <div className="mt-[4.1rem]">{children}</div>
             </ClerkProvider>
