@@ -6,19 +6,29 @@ import Sidebar from "./Sidebar";
 
 import SignInManager from "../buttons/SignInManager";
 import { Logo } from "@/data/NavigationData";
+import UserIcon from "../buttons/UserIcon";
 
 const Header = () => {
   return (
-    <div className="flex items-center justify-center    z-30 bg-background  px-2  py-3 border-b shadow-lg border-secondary">
-      <div className=" w-full">
-        <ul className="flex items-center   text-lg font-semibold justify-between">
-          <div className="">
+    <div className="fixed  w-screen   z-30 p-2    top-0 py-3 ">
+      <div className="bg-opacity-85 bg-card/50  backdrop-blur-2xl relative  border rounded-lg p-2">
+        <ul className="flex items-center  text-lg font-semibold justify-between">
+          <div className="hidden md:block ">
             <Link href="/">
               <h1 className="font-extrabold dark:text-secondary-dark text-primary-light text-blue-400">
                 {Logo}
               </h1>
             </Link>
           </div>
+          <Sidebar />
+          <div className="absolute md:hidden flex items-center justify-center w-full">
+            <Link href="/">
+              <h1 className="font-extrabold dark:text-secondary-dark text-primary-light text-blue-400">
+                devnotes
+              </h1>
+            </Link>
+          </div>
+          <UserIcon />
           <div className=" gap-4  hidden md:flex">
             {NavigationData.map((nav, index) => (
               <Link
@@ -34,7 +44,6 @@ const Header = () => {
             <ModeToggle />
             <SignInManager />
           </div>
-          <Sidebar />
         </ul>
       </div>
     </div>

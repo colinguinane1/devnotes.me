@@ -15,17 +15,18 @@ import { BiMenu } from "react-icons/bi";
 import Link from "next/link";
 import { MenuIcon } from "lucide-react";
 import { RiMenu3Line } from "react-icons/ri";
+import { CgMenu, CgMenuLeft } from "react-icons/cg";
 
 const Sidebar = () => {
   return (
-    <div className="block md:hidden">
+    <div className="block md:hidden z-10">
       <Sheet>
         <SheetTrigger>
           <Button variant={"ghost"}>
-            <RiMenu3Line size={24} />
+            <CgMenuLeft size={24} />
           </Button>
         </SheetTrigger>
-        <SheetContent className="w-[20rem]" side="right">
+        <SheetContent className="w-[15rem]" side="left">
           <SheetHeader>
             <SheetTitle>
               <h1 className="text-left font-extrabold">
@@ -45,7 +46,6 @@ const Sidebar = () => {
                   <div className="flex gap-2 justify-between items-center">
                     {" "}
                     <ModeToggle />
-                    <SignInManager />
                   </div>
                 </div>
               </div>
