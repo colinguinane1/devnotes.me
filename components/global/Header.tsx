@@ -28,7 +28,7 @@ const Header = () => {
               </h1>
             </Link>
           </div>
-          <UserIcon />
+
           <div className=" gap-4  hidden md:flex">
             {NavigationData.map((nav, index) => (
               <Link
@@ -40,9 +40,14 @@ const Header = () => {
               </Link>
             ))}
           </div>
-          <div className="hidden items-center md:flex gap-2">
+          <div className="flex items-center gap-2">
             <ModeToggle />
-            <SignInManager />
+            <div className="hidden md:flex">
+              <SignInManager />
+            </div>
+            <div className="flex md:hidden">
+              <UserIcon />
+            </div>
           </div>
         </ul>
       </div>
