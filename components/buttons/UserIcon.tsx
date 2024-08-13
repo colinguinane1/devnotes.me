@@ -36,7 +36,7 @@ export default async function UserIcon() {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button
-              className="flex border bg-gray-100 items-center z-[100]"
+              className="flex  items-center z-[100]"
               variant={"ghost"}
               size={"icon"}
             >
