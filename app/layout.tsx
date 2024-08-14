@@ -26,18 +26,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ViewTransitions>
-      <html suppressHydrationWarning className={dm_sans.className} lang="en">
-        <body className="antialiased bg-primary-light dark:bg-primary-dark transition-colors">
-          {" "}
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <ClerkProvider>
-              <Header />
-              <div className="mt-[4.1rem]">{children}</div>
-            </ClerkProvider>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ViewTransitions>
+    <html suppressHydrationWarning className={dm_sans.className} lang="en">
+      <body className="antialiased  bg-primary-light dark:bg-primary-dark transition-colors">
+        {" "}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ClerkProvider>
+            <Header />
+            <div className="mt-[4.5rem]">{children}</div>
+          </ClerkProvider>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

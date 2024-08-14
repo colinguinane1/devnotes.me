@@ -1,58 +1,41 @@
+"use client";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import SignInManager from "../buttons/SignInManager";
-import { ModeToggle } from "../buttons/ThemeSwitcher";
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "../ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { RiMenu2Line } from "react-icons/ri";
 import { NavigationData } from "@/data/NavigationData";
-import { Logo, siteName } from "@/data/NavigationData";
-import { BiMenu } from "react-icons/bi";
 import Link from "next/link";
-import { MenuIcon } from "lucide-react";
-import { RiMenu3Line } from "react-icons/ri";
-import { CgMenu, CgMenuLeft } from "react-icons/cg";
+import { usePathname } from "next/navigation";
 
 const Sidebar = () => {
+  const pathname = usePathname();
   return (
     <div className="block md:hidden z-10">
-      <Sheet>
-        <SheetTrigger>
-          <Button variant={"ghost"}>
-            <CgMenuLeft size={24} />
+      {" "}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant={"ghost"} size="icon" className="outline-none">
+            <RiMenu2Line size={20} />
           </Button>
-        </SheetTrigger>
-        <SheetContent className="w-[15rem]" side="left">
-          <SheetHeader>
-            <SheetTitle>
-              <h1 className="text-left font-extrabold">
-                {Logo} <span className="font-normal"></span>
-                {siteName}
-              </h1>
-            </SheetTitle>
-            <SheetDescription>
-              <div className="flex gap-2 w-full h-full justify-between ">
-                <div className=" gap-2  justify-between h-full w-full flex flex-col">
-                  {NavigationData.map((nav, index) => (
-                    <Button key={index}>
-                      <Link href={nav.href}>{nav.name}</Link>
-                    </Button>
-                  ))}{" "}
-                  <div className="h-full border-b"></div>
-                  <div className="flex gap-2 justify-between items-center">
-                    {" "}
-                    <ModeToggle />
-                  </div>
-                </div>
-              </div>
-            </SheetDescription>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          {NavigationData.map((nav) => (
+            <DropdownMenuItem
+              className={`${pathname === nav.href && "bg-secondary"}`}
+              key={nav.href}
+            >
+              <Link prefetch={false} href={nav.href}>
+                {" "}
+                {nav.name}
+              </Link>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

@@ -42,10 +42,10 @@ const Header = () => {
           </div>
           <div className="flex items-center gap-2">
             <ModeToggle />
-            <div className="hidden md:flex">
+            <div className="hidden md:block">
               <SignInManager />
             </div>
-            <div className="flex md:hidden">
+            <div className="block md:hidden">
               <UserIcon />
             </div>
           </div>
