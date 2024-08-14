@@ -8,7 +8,6 @@ import TypingAnimation from "../magicui/typing-animation";
 import AnimatedShinyText from "../magicui/animated-shiny-text";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import BlurFade from "../magicui/blur-fade";
 import WordPullUp from "../magicui/word-pull-up";
 import DotPattern from "../magicui/dot-pattern";
 import { FadeText } from "../magicui/fade-text";
