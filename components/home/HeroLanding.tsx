@@ -15,10 +15,10 @@ import AnimatedGridPattern from "../magicui/animated-grid-pattern";
 
 export default function HeroLanding() {
   return (
-    <div className="grid  w-screen place-content-center -mt-16 text-4xl font-semibold">
+    <div className="grid  w-screen place-content-center -mt-20 text-4xl font-semibold">
       <div className="z-10 flex pb-4  items-center justify-center"></div>{" "}
       <div>
-        <div className="relative flex h-[500px]  w-screen flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+        <div className="relative flex h-[500px]  w-screen flex-col items-center justify-center overflow-hidden rounded-lg bg-background md:shadow-xl">
           <div
             className={cn(
               "group rounded-full  border  z-10  bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200  dark:bg-neutral-900 dark:hover:bg-neutral-800 "
