@@ -1,3 +1,6 @@
+Notion Changelog [here](https://stealth-pumpkin-dad.notion.site/b43edb134f2146b887d54e78c57de1d5?v=8d480c1ba4644e5f94c459f4be5085e5&pvs=4)
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
