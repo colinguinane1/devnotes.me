@@ -81,7 +81,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
                   <Calendar size={18} /> {formatDate(blog.updatedAt)}
                 </div>
                 <div className="flex items-center gap-2  min-w-fit">
-                  <Eye size={18} /> {blog.views}
+                  <Eye size={18} /> {blog.views + 1}
                 </div>
                 <div className="flex items-center gap-2  min-w-fit">
                   <Heart size={18} /> {blog.likes}
