@@ -18,7 +18,7 @@ export default function HeroLanding() {
     <div className="grid  w-screen place-content-center -mt-16 text-4xl font-semibold">
       <div className="z-10 flex pb-4  items-center justify-center"></div>{" "}
       <div>
-        <div className="relative flex h-[500px]  w-screen flex-col items-center justify-center overflow-hidden rounded-lg border bg-background md:shadow-xl">
+        <div className="relative flex h-[600px]  w-screen flex-col items-center justify-center overflow-hidden  ">
           <div
             className={cn(
               "group rounded-full  border  z-10  bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200  dark:bg-neutral-900 dark:hover:bg-neutral-800 "
@@ -86,62 +86,11 @@ export default function HeroLanding() {
             repeatDelay={1}
             className={cn(
               "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
-              "absolute top-0 left-0 w-full h-full z-0"
+              "inset-x-0 inset-y-[-30%] h-[150%] skew-y-12"
             )}
           />
         </div>
       </div>
-      {/* <TypingAnimation
-            className="lowercase pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-blue-500 to-blue-300 bg-clip-text text-center md:text-8xl text-6xl font-semibold leading-none text-transparent dark:from-white  dark:to-blue-500"
-            text={`${siteName}.me`}
-            duration={100}
-          ></TypingAnimation>
-        </span>
-        <p className="py-4 text-center">
-          The blog <span className="gradient">for</span> developers,<br></br>{" "}
-          <span className="gradient px-2">by </span>
-          developers.
-        </p>{" "}
-        <div className="flex pb-4 justify-center items-center gap-2">
-          <h1>No</h1>
-          <WordRotate
-            className="text-4xl bg-black rounded-full p-1 px-4 text-left font-bold text-white dark:text-black dark:bg-white"
-            words={[
-              "Paywall",
-              "Ads",
-              "Algorithms",
-              "Cookies",
-              "Trackers",
-              "BS",
-            ]}
-          />
-        </div>
-        <div className="items-center gap-4 flex justify-center ">
-          <Button
-            className="flex items-center group w-[10rem] gap-1"
-            variant={"default"}
-          >
-            <Link href="/explore" className="flex items-center gap-1">
-              Explore{" "}
-              <ArrowRight
-                className="group-hover:ml-1 transition-all scale-105"
-                size={12}
-              />
-            </Link>
-          </Button>
-          <Button className="w-[10rem] bg-blue-400 group hover:bg-blue-500">
-            <Link
-              className="flex items-center gap-1 dark:text-white"
-              href="/sign-in"
-            >
-              {" "}
-              Get Started{" "}
-              <ArrowRight
-                className="group-hover:ml-1 transition-all scale-105"
-                size={12}
-              />
-            </Link>
-          </Button> */}
     </div>
   );
 }
