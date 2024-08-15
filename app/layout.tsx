@@ -10,6 +10,9 @@ import { useTheme } from "next-themes";
 import { dark } from "@clerk/themes";
 import { ViewTransitions } from "next-view-transitions";
 import { DM_Sans } from "next/font/google";
+import Footer from "@/components/global/Footer";
+import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 const dm_sans = DM_Sans({ subsets: ["latin"] });
@@ -31,8 +34,11 @@ export default function RootLayout({
         {" "}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ClerkProvider>
+            <Analytics />
             <Header />
             <div className="mt-[4.5rem]">{children}</div>
+            <Footer />
+            <Toaster />
           </ClerkProvider>
         </ThemeProvider>
       </body>
