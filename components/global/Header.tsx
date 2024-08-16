@@ -49,7 +49,7 @@ export default async function Header() {
           </div>
           <div className="flex items-center gap-2">
             <ModeToggle />
-            <div className="hidden md:block">
+            <div className="">
               {user !== null ? (
                 <>
                   <form action={signOut}>
@@ -61,9 +61,6 @@ export default async function Header() {
                   <Link href="/login">Log In</Link>
                 </Button>
               )}
-            </div>
-            <div className="block md:hidden">
-              <UserIcon />
             </div>
           </div>
         </ul>
