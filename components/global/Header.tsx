@@ -4,11 +4,18 @@ import { ModeToggle } from "../buttons/ThemeSwitcher";
 import { NavigationData } from "@/data/NavigationData";
 import Sidebar from "./Sidebar";
 
-import SignInManager from "../buttons/SignInManager";
 import { Logo } from "@/data/NavigationData";
 import UserIcon from "../buttons/UserIcon";
+import { Button } from "../ui/button";
+import { createClient } from "@/utils/supabase/server";
+import { signOut } from "@/app/login/actions";
 
-const Header = () => {
+export default async function Header() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   return (
     <div className="fixed  w-screen   z-30 p-2    top-0 py-3 ">
       <div className="bg-opacity-85 bg-card/50  backdrop-blur-2xl relative  border rounded-lg p-2">
@@ -43,7 +50,17 @@ const Header = () => {
           <div className="flex items-center gap-2">
             <ModeToggle />
             <div className="hidden md:block">
-              <SignInManager />
+              {user !== null ? (
+                <>
+                  <form action={signOut}>
+                    <Button>Sign Out</Button>
+                  </form>
+                </>
+              ) : (
+                <Button>
+                  <Link href="/login">Log In</Link>
+                </Button>
+              )}
             </div>
             <div className="block md:hidden">
               <UserIcon />
@@ -53,6 +70,4 @@ const Header = () => {
       </div>
     </div>
   );
-};
-
-export default Header;
+}
