@@ -32,7 +32,7 @@ export default async function Login({
   }
 
   return (
-    <section className="h-[calc(100vh-65px)] flex justify-center items-center">
+    <section className="h-[calc(85vh)] flex justify-center items-center">
       <Tabs defaultValue="login" className="">
         <TabsList className="w-full bg-card">
           <TabsTrigger className="w-full" value="login">

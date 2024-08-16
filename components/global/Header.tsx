@@ -47,7 +47,7 @@ export default async function Header() {
               </Link>
             ))}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 z-10">
             <ModeToggle />
             <div className="">
               {user !== null ? (
