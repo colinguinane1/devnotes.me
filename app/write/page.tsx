@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { createPost } from "@/lib/actions";
 import { Check, Loader, X } from "lucide-react";
-import { createClient } from "@/utils/supabase/server";
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
@@ -23,17 +22,6 @@ export default function Home() {
       },
     ],
   };
-  useEffect(() => {
-    const fetchUser = async () => {
-      const supabase = createClient();
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-    };
-
-    fetchUser();
-  }, []);
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
