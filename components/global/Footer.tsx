@@ -11,16 +11,17 @@ export default function Footer() {
   const pathname = usePathname();
   return (
     <footer>
-      <div className="flex flex-col items-center justify-center p-4 bg-background border-t ">
+      <div className="flex text-gray-500 flex-col items-center justify-center p-4 bg-background border-t ">
         <p className="text-center flex items-center gap-6">
-          © 2024 devnotes | All rights reserved.
-          <Link
-            className="flex items-center gap-1 underline"
-            href="https://github.com/colinguinane1/devnotes.me"
-          >
-            <BsGithub size={20} /> Github <ArrowRight size={12} />
-          </Link>
+          © 2024 devnotes | All rights reserved.{" "}
         </p>
+        <Link
+          className="flex items-center pt-2 gap-1 underline"
+          href="https://github.com/colinguinane1/devnotes.me"
+        >
+          <BsGithub size={20} /> Github <ArrowRight size={12} />
+        </Link>
+
         <div className="flex gap-4 py-4">
           {NavigationData.map((nav) => (
             <Link href={nav.href} key={nav.href}>

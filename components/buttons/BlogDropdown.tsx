@@ -7,15 +7,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { BsPerson, BsThreeDots } from "react-icons/bs";
-import { Clipboard, Plus } from "lucide-react";
+import { Check, CheckCircle, Clipboard, Plus } from "lucide-react";
 import { useToast } from "../ui/use-toast";
+import Link from "next/link";
+import { User } from "@prisma/client";
 
 interface BlogDropdownProps {
   slug: string;
+  author: User;
 }
 
-export default function BlogDropdown({ slug }: BlogDropdownProps) {
+export default function BlogDropdown({ slug, author }: BlogDropdownProps) {
   const { toast } = useToast();
+  const successTitle = <CheckCircle size={15} /> + "Success!";
 
   const copyToClipboard = () => {
     const url = `https://www.devnotes.me/posts/${slug}`;
@@ -24,7 +28,7 @@ export default function BlogDropdown({ slug }: BlogDropdownProps) {
       .then(() => {
         toast({
           variant: "success",
-          title: "Success!",
+          title: "Success ✓",
           description: "Copied to clipboard",
         });
       })
@@ -58,9 +62,12 @@ export default function BlogDropdown({ slug }: BlogDropdownProps) {
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer flex">
-          <div className="flex items-center gap-2">
+          <Link
+            href={`/profile/${author.username}`}
+            className="flex items-center gap-2"
+          >
             <BsPerson /> Go to Author
-          </div>
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer flex">
           <div className="flex items-center gap-2">

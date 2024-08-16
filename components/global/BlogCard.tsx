@@ -4,12 +4,13 @@ import { formatDate } from "@/data/NavigationData";
 import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post } from "@prisma/client";
+import { User } from "@prisma/client";
 import { Heart } from "lucide-react";
 import BlogDropdown from "../buttons/BlogDropdown";
 
 interface BlogCardProps {
   post: Post;
-  author: any;
+  author: User;
 }
 
 export default function BlogCard({ post, author }: BlogCardProps) {
@@ -49,7 +50,7 @@ export default function BlogCard({ post, author }: BlogCardProps) {
           </div>
         </div>{" "}
         <div>
-          <BlogDropdown slug={post.slug} />
+          <BlogDropdown slug={post.slug} author={author} />
         </div>
       </div>
     </div>
