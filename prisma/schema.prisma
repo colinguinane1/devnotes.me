@@ -23,7 +23,7 @@ model User {
   Posts           Post[]    @relation("author")
   likedPosts      Post[]    @relation("likedBy")
 
-  @@schema("auth") // or @@schema("public")
+  @@schema("public")
 }
 
 model Post {
@@ -42,5 +42,5 @@ model Post {
   userId      String
   likedBy     User[]   @relation("likedBy")
 
-  @@schema("auth") // or @@schema("public")
+  @@schema("public")
 }
