@@ -57,7 +57,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
 
   incrementViews(blog.id);
   return (
-    <section className="p-4 py-8">
+    <section className="p-4 py-8 min-h-screen">
       <div>
         <div className="border-b">
           <div className="flex justify-between items-center">
