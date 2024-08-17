@@ -25,14 +25,12 @@ export function OAuthButtons() {
         <Button
           key={provider.name}
           className="w-full flex items-center justify-center gap-2"
-          variant="outline"
           onClick={async () => {
             await oAuthSignIn(provider.name);
           }}
         >
           {provider.icon}
-
-          {provider.displayName}
+          Sign in with {provider.displayName}
         </Button>
       ))}
     </>

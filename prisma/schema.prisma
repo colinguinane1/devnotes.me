@@ -10,7 +10,7 @@ generator client {
   previewFeatures = ["multiSchema"]
 }
 
-model User {
+model Author {
   first_name      String
   last_name       String
   image_url       String?
@@ -26,6 +26,20 @@ model User {
   @@schema("public")
 }
 
+model SupabaseUser {
+  first_name      String
+  last_name       String
+  image_url       String?
+  last_sign_in_at DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  id              String    @id @unique
+  username        String    @unique
+  email           String?   @unique
+
+  @@schema("auth")
+}
+
 model Post {
   mdx         Boolean? @default(false)
   id          String   @id @default(cuid())
@@ -35,12 +49,12 @@ model Post {
   content     String
   views       Int      @default(0)
   likes       Int      @default(0)
-  author      User     @relation("author", fields: [userId], references: [id])
+  author      Author   @relation("author", fields: [userId], references: [id])
   published   Boolean? @default(false)
   updatedAt   DateTime @default(now())
   createdAt   DateTime @default(now())
   userId      String
-  likedBy     User[]   @relation("likedBy")
+  likedBy     Author[] @relation("likedBy")
 
   @@schema("public")
 }
