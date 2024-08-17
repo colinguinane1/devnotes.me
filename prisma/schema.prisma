@@ -2,7 +2,7 @@ datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-  schemas   = ["public", "auth"]
+  schemas   = ["public"]
 }
 
 generator client {
@@ -26,7 +26,7 @@ model Author {
   @@schema("public")
 }
 
-model SupabaseUser {
+model User {
   first_name      String
   last_name       String
   image_url       String?
@@ -37,7 +37,7 @@ model SupabaseUser {
   username        String    @unique
   email           String?   @unique
 
-  @@schema("auth")
+  @@schema("public")
 }
 
 model Post {

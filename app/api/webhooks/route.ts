@@ -52,7 +52,7 @@ export async function POST(req: Request) {
     }
 
     try {
-      await prisma.user.create({
+      await prisma.author.create({
         data: {   
           id: id,
           first_name: first_name || '',
@@ -78,7 +78,7 @@ export async function POST(req: Request) {
   if(evt.type === 'user.deleted') {
     const { id } = evt.data;
     try{
-        await prisma.user.delete({
+        await prisma.author.delete({
             where: { id: id }
             });
         console.log('User deleted:', id);
