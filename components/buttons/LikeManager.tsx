@@ -3,7 +3,7 @@
 import { Button } from "../ui/button";
 import { HeartIcon, Loader } from "lucide-react";
 import { SignedIn, useUser } from "@clerk/nextjs";
-import { manageLikes } from "@/lib/actions";
+
 import { useState, useEffect } from "react";
 
 interface LikeManagerProps {
@@ -30,8 +30,7 @@ export default function LikeManager({ postId }: LikeManagerProps) {
     setLoading(true);
     try {
       // Call the manageLikes function to handle the like/unlike
-      await manageLikes(user.id, postId);
-      setLiked((prev) => !prev); // Toggle liked state
+    
       console.log("Liked successfully");
     } catch (error) {
       console.error("Error managing like:", error);
