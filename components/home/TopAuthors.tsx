@@ -3,7 +3,9 @@ import prisma from "@/prisma/db";
 import UserCard from "../global/UserCard";
 
 export default async function TopAuthors() {
-  const users = await prisma.user.findMany({ orderBy: { created_at: "desc" } });
+  const users = await prisma.author.findMany({
+    orderBy: { created_at: "desc" },
+  });
 
   return (
     <div className="w-full overflow-x-auto p-4">

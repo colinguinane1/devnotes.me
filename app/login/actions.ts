@@ -6,6 +6,11 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import { Provider } from '@supabase/supabase-js'
 import { getURL } from '@/utils/helpers'
+import prisma from '@/prisma/db'
+import { create } from 'domain'
+import { LassoSelect } from 'lucide-react'
+
+let defaultAvatar = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F009%2F292%2F244%2Foriginal%2Fdefault-avatar-icon-of-social-media-user-vector.jpg&f=1&nofb=1&ipt=006767bb3b833d3cb8590d11f5c03a9e64ec2adf837953f627c67bdf8a29cf7e&ipo=images"
 
 export async function emailLogin(formData: FormData) {
     
@@ -21,31 +26,105 @@ export async function emailLogin(formData: FormData) {
     const { error } = await supabase.auth.signInWithPassword(data)
 
     if (error) {
-        redirect('/login?message=Could not authenticate user')
+        redirect('/login?error-message=Invalid email or password')
     }
+      const { data: { user } } = await supabase.auth.getUser()
     
     revalidatePath('/', 'layout')
+    checkAuthorExists(user)
     redirect('/')
+}
+
+export async function checkUsernameExists(username: string) {
+    const author = await prisma.author.findUnique({
+        where: {
+            username,
+        }
+    })
+    if (author) {
+        console.log("Username exists")
+        return true
+
+    }
+     console.log("Username DOESNT exist")
+
+    return false
 }
 
 export async function signup(formData: FormData) {
     const supabase = createClient()
+    const username = formData.get('username') as string
+    const usernameExists = await checkUsernameExists(username)
 
-    // type-casting here for convenience
-    // in practice, you should validate your inputs
+    if (usernameExists) {
+        redirect('/login?message=Username already exists')
+    }
+
     const data = {
         email: formData.get('email') as string,
         password: formData.get('password') as string,
+         options: {
+      data: {
+        first_name: formData.get('first_name') as string,
+        last_name: formData.get('last_name') as string,
+        username: formData.get('username') as string,
+        age: 27,
+      }
+    }
     }
 
     const { error } = await supabase.auth.signUp(data)
 
     if (error) {
+        console.log(error)
         redirect('/login?message=Error signing up')
+        
     }
 
     revalidatePath('/', 'layout')
     redirect('/login')
+}
+
+export async function checkAuthorExists(user: any) {
+    const author = await prisma.author.findUnique({
+        where: {
+            id: user?.id,
+        }
+        
+    })
+    
+    if (!author) {
+        console.log("User doesnt exist, creating author...")
+        createAuthor(user)
+    }
+}
+
+export async function createAuthor(user: any) {
+    if(!user) 
+        {
+            console.log("user not authenticated")
+  return redirect('/login')
+    }
+    else
+    {
+      try{
+        await prisma.author.create({
+        data: {
+        id: user?.id,
+        email: user.email,
+      first_name: user.user_metadata?.first_name || "null",
+                    last_name: user.user_metadata?.last_name || "null",
+                    image_url: user.user_metadata?.avatar_url || defaultAvatar,
+                    username: user.user_metadata?.username || "null",
+      
+    },
+    
+})} catch (error) {
+    console.error('Error creating user in database:', error);
+    return redirect('/login?message=Error creating user')
+}
+console.log('User created! :', user?.id);
+}
 }
 
 export async function signOut() {

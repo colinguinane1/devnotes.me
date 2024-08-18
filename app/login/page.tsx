@@ -15,6 +15,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BsGithub } from "react-icons/bs";
 import { OAuthButtons } from "./oauth-signin";
+import { Info } from "lucide-react";
 
 export default async function Login({
   searchParams,
@@ -78,6 +79,7 @@ export default async function Login({
                   </div>
                   {searchParams.message && (
                     <div className="text-sm font-medium text-destructive">
+                      <Info />
                       {searchParams.message}
                     </div>
                   )}
@@ -105,7 +107,38 @@ export default async function Login({
                 <OAuthButtons />
                 <form id="login-form" className="grid gap-4">
                   <div className="grid gap-2">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="username">Username*</Label>
+                    <Input
+                      className="w-full"
+                      id="username"
+                      name="username"
+                      type="text"
+                      placeholder="johndoe17"
+                      required
+                    />
+                    <div className="flex items-center gap-4">
+                      <div className="flex flex-col gap-2 ">
+                        <Label htmlFor="first_name">First Name</Label>
+                        <Input
+                          className="w-full"
+                          id="first_name"
+                          name="first_name"
+                          type="text"
+                          placeholder="John"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-2 ">
+                        <Label htmlFor="last_name">Last Name</Label>
+                        <Input
+                          className="w-full"
+                          id="last_name"
+                          name="last_name"
+                          type="text"
+                          placeholder="Doe"
+                        />
+                      </div>
+                    </div>
+                    <Label htmlFor="email">Email *</Label>
                     <Input
                       id="email"
                       name="email"
@@ -116,18 +149,20 @@ export default async function Login({
                   </div>
                   <div className="grid gap-2">
                     <div className="flex items-center">
-                      <Label htmlFor="password">Password</Label>
+                      <Label htmlFor="password">Password *</Label>
                     </div>
                     <Input
                       minLength={6}
                       name="password"
                       id="password"
                       type="password"
+                      placeholder="********"
                       required
                     />
                   </div>
                   {searchParams.message && (
-                    <div className="text-sm font-medium text-destructive">
+                    <div className="text-sm border p-2 rounded-md flex items-center gap-2  font-medium  ">
+                      <Info size={20} />
                       {searchParams.message}
                     </div>
                   )}

@@ -13,7 +13,7 @@ export default async function ProfilePage({
   const username = params.username?.[0] || "";
 
   // Fetch user data from Prisma
-  const user = await prisma.user.findUnique({
+  const user = await prisma.author.findUnique({
     where: { username },
   });
 
