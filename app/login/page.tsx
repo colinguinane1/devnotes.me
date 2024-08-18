@@ -18,14 +18,14 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BsGithub } from "react-icons/bs";
 import { OAuthButtons } from "./oauth-signin";
-import { Info } from "lucide-react";
+import { Info, XCircle } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loader-spinner";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function Login({
   searchParams,
 }: {
-  searchParams: { message: string };
+  searchParams: { message: string; messageType: string };
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formType, setFormType] = useState("login");
@@ -51,7 +51,7 @@ export default function Login({
   return (
     <section className="h-screen flex justify-center items-center">
       <div className="mb-60">
-        <Tabs defaultValue="login" className="">
+        <Tabs defaultValue="login">
           <TabsList className="w-full bg-card">
             <TabsTrigger
               className="w-full"
@@ -111,9 +111,17 @@ export default function Login({
                         initial={{ scale: 0.5, opacity: 0.5 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.5, opacity: 0.5 }}
-                        className="text-sm border p-2 rounded-md flex items-center gap-2  font-medium  "
+                        className={`text-sm border p-2 rounded-md flex items-center gap-2 font-medium ${
+                          searchParams.messageType === "error"
+                            ? "bg-red-200 text-red-700 border-red-300"
+                            : "bg-green-200 text-green-700 border-green-300"
+                        }`}
                       >
-                        <Info size={20} />
+                        {searchParams.messageType === "error" ? (
+                          <XCircle size={20} />
+                        ) : (
+                          <Info size={20} />
+                        )}
                         {searchParams.message}
                       </motion.div>
                     )}
@@ -129,7 +137,6 @@ export default function Login({
                     disabled={isSubmitting}
                     className="w-full active:scale-95"
                   >
-                    {" "}
                     {isSubmitting && <LoadingSpinner />}
                     <motion.p
                       layout
@@ -215,9 +222,17 @@ export default function Login({
                         initial={{ scale: 0.5, opacity: 0.5 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.5, opacity: 0.5 }}
-                        className="text-sm border p-2 rounded-md flex items-center gap-2  font-medium  "
+                        className={`text-sm border p-2 rounded-md flex items-center gap-2 font-medium ${
+                          searchParams.messageType === "error"
+                            ? "bg-red-200 text-red-700 border-red-300"
+                            : "bg-green-200 text-green-700 border-green-300"
+                        }`}
                       >
-                        <Info size={20} />
+                        {searchParams.messageType === "error" ? (
+                          <XCircle size={20} />
+                        ) : (
+                          <Info size={20} />
+                        )}
                         {searchParams.message}
                       </motion.div>
                     )}
@@ -227,7 +242,6 @@ export default function Login({
                     disabled={isSubmitting}
                     className="w-full active:scale-95"
                   >
-                    {" "}
                     {isSubmitting && <LoadingSpinner />}
                     <motion.p
                       layout

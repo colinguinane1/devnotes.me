@@ -30,6 +30,7 @@ export async function emailLogin(formData: FormData) {
     return redirect('/login?message=Login%20successful!&messageType=success');
 }
 
+
 export async function checkUsernameExists(username: string) {
     const author = await prisma.author.findUnique({
         where: {
@@ -64,42 +65,39 @@ export async function checkEmailInUse(email: string) {
 }
 
 export async function signup(formData: FormData) {
-    const supabase = createClient()
-    const username = formData.get('username') as string
-    const email = formData.get('email') as string
-    const usernameExists = await checkUsernameExists(username)
-    const emailInUse = await checkEmailInUse(email)
+    const supabase = createClient();
+    const username = formData.get('username') as string;
+    const email = formData.get('email') as string;
+    const usernameExists = await checkUsernameExists(username);
+    const emailInUse = await checkEmailInUse(email);
 
     if (usernameExists) {
-        redirect('/login?message=Username already exists')
+        return redirect('/login?message=Username%20already%20exists&messageType=error');
     }
     if (emailInUse) {
-        redirect('/login?message=Email already in use')
+        return redirect('/login?message=Email%20already%20in%20use&messageType=error');
     }
 
     const data = {
         email: formData.get('email') as string,
         password: formData.get('password') as string,
-         options: {
-      data: {
-        first_name: formData.get('first_name') as string,
-        last_name: formData.get('last_name') as string,
-        username: formData.get('username') as string,
-        
-      }
-    }
-    }
+        options: {
+            data: {
+                first_name: formData.get('first_name') as string,
+                last_name: formData.get('last_name') as string,
+                username: formData.get('username') as string,
+            }
+        }
+    };
 
-    const { error } = await supabase.auth.signUp(data)
+    const { error } = await supabase.auth.signUp(data);
 
     if (error) {
-        console.log(error)
-        redirect('/login?message=Error signing up')
-        
+        return redirect('/login?message=Error%20signing%20up&messageType=error');
     }
 
-    revalidatePath('/', 'layout')
-    redirect('/login?message=Email Verification Sent')
+    revalidatePath('/', 'layout');
+    return redirect('/login?message=Email%20Verification%20Sent&messageType=success');
 }
 
 export async function checkAuthorExists(user: any) {
