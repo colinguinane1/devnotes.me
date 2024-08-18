@@ -51,13 +51,35 @@ export async function checkUsernameExists(username: string) {
     return false
 }
 
+export async function checkEmailInUse(email: string) {
+    const author = await prisma.author.findUnique({
+        where: {
+            email,
+        }
+    })
+    if (author) {
+        console.log("Email exists")
+        return true
+
+    }
+     console.log("Email DOESNT exist")
+
+    return false
+   
+}
+
 export async function signup(formData: FormData) {
     const supabase = createClient()
     const username = formData.get('username') as string
+    const email = formData.get('email') as string
     const usernameExists = await checkUsernameExists(username)
+    const emailInUse = await checkEmailInUse(email)
 
     if (usernameExists) {
         redirect('/login?message=Username already exists')
+    }
+    if (emailInUse) {
+        redirect('/login?message=Email already in use')
     }
 
     const data = {
@@ -68,7 +90,7 @@ export async function signup(formData: FormData) {
         first_name: formData.get('first_name') as string,
         last_name: formData.get('last_name') as string,
         username: formData.get('username') as string,
-        age: 27,
+        
       }
     }
     }
@@ -82,7 +104,7 @@ export async function signup(formData: FormData) {
     }
 
     revalidatePath('/', 'layout')
-    redirect('/login')
+    redirect('/login?message=Email Verification Sent')
 }
 
 export async function checkAuthorExists(user: any) {
