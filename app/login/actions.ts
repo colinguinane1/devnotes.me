@@ -13,26 +13,21 @@ import { LassoSelect } from 'lucide-react'
 let defaultAvatar = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F009%2F292%2F244%2Foriginal%2Fdefault-avatar-icon-of-social-media-user-vector.jpg&f=1&nofb=1&ipt=006767bb3b833d3cb8590d11f5c03a9e64ec2adf837953f627c67bdf8a29cf7e&ipo=images"
 
 export async function emailLogin(formData: FormData) {
-    
-    const supabase = createClient()
-
-    // type-casting here for convenience
-    // in practice, you should validate your inputs
+    const supabase = createClient();
     const data = {
         email: formData.get('email') as string,
         password: formData.get('password') as string,
-    }
+    };
 
-    const { error } = await supabase.auth.signInWithPassword(data)
-
+    const { error } = await supabase.auth.signInWithPassword(data);
     if (error) {
-        redirect('/login?error-message=Invalid email or password')
+        return redirect('/login?message=Invalid%20Credentials&messageType=error');
     }
-      const { data: { user } } = await supabase.auth.getUser()
-    
-    revalidatePath('/', 'layout')
-    checkAuthorExists(user)
-    redirect('/')
+
+    const { data: { user } } = await supabase.auth.getUser();
+    await checkAuthorExists(user);
+    revalidatePath('/', 'layout');
+    return redirect('/login?message=Login%20successful!&messageType=success');
 }
 
 export async function checkUsernameExists(username: string) {
