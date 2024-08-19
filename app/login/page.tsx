@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
+import { Spinner } from "@nextui-org/spinner";
 import {
   Card,
   CardHeader,
@@ -25,10 +26,15 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function Login({
   searchParams,
 }: {
-  searchParams: { message: string; messageType: string };
+  searchParams: { m: string; type: string; form: string };
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formType, setFormType] = useState("login");
+
+  const tabChangeHandler = (value: string) => {
+    setFormType(value);
+    redirect(`/login`);
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,20 +57,16 @@ export default function Login({
   return (
     <section className="h-screen flex justify-center items-center">
       <div className="mb-60">
-        <Tabs defaultValue="login">
+        <Tabs
+          defaultValue="login"
+          value={formType}
+          onValueChange={tabChangeHandler}
+        >
           <TabsList className="w-full bg-card">
-            <TabsTrigger
-              className="w-full"
-              value="login"
-              onClick={() => setFormType("login")}
-            >
+            <TabsTrigger className="w-full" value="login">
               Log In
             </TabsTrigger>
-            <TabsTrigger
-              className="w-full"
-              value="signup"
-              onClick={() => setFormType("signup")}
-            >
+            <TabsTrigger className="w-full" value="signup">
               Sign Up
             </TabsTrigger>
           </TabsList>
@@ -106,23 +108,23 @@ export default function Login({
                     />
                   </div>
                   <AnimatePresence>
-                    {searchParams.message && (
+                    {searchParams.form === "login" && searchParams.m && (
                       <motion.div
                         initial={{ scale: 0.5, opacity: 0.5 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.5, opacity: 0.5 }}
                         className={`text-sm border p-2 rounded-md flex items-center gap-2 font-medium ${
-                          searchParams.messageType === "error"
+                          searchParams.type === "error"
                             ? "bg-red-200 text-red-700 border-red-300"
                             : "bg-green-200 text-green-700 border-green-300"
                         }`}
                       >
-                        {searchParams.messageType === "error" ? (
+                        {searchParams.type === "error" ? (
                           <XCircle size={20} />
                         ) : (
                           <Info size={20} />
                         )}
-                        {searchParams.message}
+                        {searchParams.m}
                       </motion.div>
                     )}
                   </AnimatePresence>
@@ -217,23 +219,23 @@ export default function Login({
                     />
                   </div>
                   <AnimatePresence>
-                    {searchParams.message && (
+                    {searchParams.form === "signup" && searchParams.m && (
                       <motion.div
                         initial={{ scale: 0.5, opacity: 0.5 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.5, opacity: 0.5 }}
                         className={`text-sm border p-2 rounded-md flex items-center gap-2 font-medium ${
-                          searchParams.messageType === "error"
+                          searchParams.type === "error"
                             ? "bg-red-200 text-red-700 border-red-300"
                             : "bg-green-200 text-green-700 border-green-300"
                         }`}
                       >
-                        {searchParams.messageType === "error" ? (
+                        {searchParams.type === "error" ? (
                           <XCircle size={20} />
                         ) : (
                           <Info size={20} />
                         )}
-                        {searchParams.message}
+                        {searchParams.m}
                       </motion.div>
                     )}
                   </AnimatePresence>

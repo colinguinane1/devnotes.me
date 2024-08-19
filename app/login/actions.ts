@@ -9,6 +9,7 @@ import { getURL } from '@/utils/helpers'
 import prisma from '@/prisma/db'
 import { create } from 'domain'
 import { LassoSelect } from 'lucide-react'
+import { time } from 'console'
 
 let defaultAvatar = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F009%2F292%2F244%2Foriginal%2Fdefault-avatar-icon-of-social-media-user-vector.jpg&f=1&nofb=1&ipt=006767bb3b833d3cb8590d11f5c03a9e64ec2adf837953f627c67bdf8a29cf7e&ipo=images"
 
@@ -21,13 +22,16 @@ export async function emailLogin(formData: FormData) {
 
     const { error } = await supabase.auth.signInWithPassword(data);
     if (error) {
-        return redirect('/login?message=Invalid%20Credentials&messageType=error');
+        return redirect('/login?m=Invalid%20Credentials&type=error&form=login');
     }
 
     const { data: { user } } = await supabase.auth.getUser();
     await checkAuthorExists(user);
     revalidatePath('/', 'layout');
-    return redirect('/login?message=Login%20successful!&messageType=success');
+    
+     redirect('/login?m=Login%20successful!&type=success&form=login');
+    
+
 }
 
 
@@ -72,10 +76,10 @@ export async function signup(formData: FormData) {
     const emailInUse = await checkEmailInUse(email);
 
     if (usernameExists) {
-        return redirect('/login?message=Username%20already%20exists&messageType=error');
+        return redirect('/login?m=Username%20already%20exists&type=error&form=signup');
     }
     if (emailInUse) {
-        return redirect('/login?message=Email%20already%20in%20use&messageType=error');
+        return redirect('/login?m=Email%20already%20in%20use&type=error&form=signup');
     }
 
     const data = {
@@ -93,11 +97,11 @@ export async function signup(formData: FormData) {
     const { error } = await supabase.auth.signUp(data);
 
     if (error) {
-        return redirect('/login?message=Error%20signing%20up&messageType=error');
+        return redirect('/login?m=Error%20signing%20up&type=error&form=signup');
     }
 
     revalidatePath('/', 'layout');
-    return redirect('/login?message=Email%20Verification%20Sent&messageType=success');
+    return redirect('/login?m=Email%20Verification%20Sent&type=success&form=signup');
 }
 
 export async function checkAuthorExists(user: any) {
@@ -136,7 +140,7 @@ export async function createAuthor(user: any) {
     
 })} catch (error) {
     console.error('Error creating user in database:', error);
-    return redirect('/login?message=Error creating user')
+    return redirect('/login?m=Error creating user in database.&type=error&form=signup');
 }
 console.log('User created! :', user?.id);
 }
