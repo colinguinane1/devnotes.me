@@ -152,9 +152,10 @@ export async function signOut() {
     redirect('/login')
 }
 
+
 export async function oAuthSignIn(provider: Provider) {
     if (!provider) {
-        return redirect('/login?message=No provider selected')
+        return redirect('/login?m=No provider selected')
     }
 
     const supabase = createClient();
@@ -163,18 +164,43 @@ export async function oAuthSignIn(provider: Provider) {
         provider,
         options: {
             redirectTo: redirectUrl,
+            
         }
     })
 
     if (error) {
-        redirect('/login?message=Could not authenticate user')
+        return redirect('/login?m=Could not authenticate user')
     }
 
     return redirect(data.url)
 }
+export async function handleOAuthCallback() {
+    const supabase = createClient();
+
+    // Get the logged-in user
+    const { data: { user }, error } = await supabase.auth.getUser();
+    if (error || !user) {
+        return redirect('/login?m=Could not retrieve user after OAuth')
+    }
+
+    // Check if the author exists
+    await checkAuthorExists(user);
+
+    // Redirect to the homepage or a dashboard
+    return redirect('/');
+}
+
+
 export async function signInWithGithub() {
     const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'github',
+  })
+}
+
+export async function signInWithGoogle() {
+    const supabase = createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
   })
 }

@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
+  CardFooter,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -54,9 +54,10 @@ export default function Login({
   };
 
   return (
-    <section className="h-screen w-screen flex justify-center items-center">
-      <div className="">
+    <section className="grid h-[80vh]  place-content-center">
+      <div className="max-h-fit">
         <Tabs
+          className="max-h-fit"
           defaultValue="login"
           value={formType}
           onValueChange={tabChangeHandler}
@@ -78,7 +79,6 @@ export default function Login({
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
-                <OAuthButtons />
                 <form
                   id="login-form"
                   className="grid gap-4"
@@ -146,6 +146,12 @@ export default function Login({
                       Log In
                     </motion.p>
                   </Button>
+                  <div className="">
+                    <CardDescription className="text-center pb-4">
+                      or continue with
+                    </CardDescription>{" "}
+                    <OAuthButtons />
+                  </div>
                 </form>
               </CardContent>
             </Card>
@@ -157,7 +163,6 @@ export default function Login({
                 <CardDescription>Create a devnotes account.</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-col gap-4">
-                <OAuthButtons />
                 <form
                   id="signup-form"
                   className="grid gap-4"
@@ -251,6 +256,12 @@ export default function Login({
                       Sign Up
                     </motion.p>
                   </Button>
+                  <div className="">
+                    <CardDescription className="text-center pb-4">
+                      or continue with
+                    </CardDescription>{" "}
+                    <OAuthButtons />
+                  </div>
                 </form>
               </CardContent>
             </Card>
