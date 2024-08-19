@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
-import { Spinner } from "@nextui-org/spinner";
 import {
   Card,
   CardHeader,

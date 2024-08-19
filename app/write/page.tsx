@@ -5,9 +5,9 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { createPost } from "@/lib/actions";
 import { Check, Loader, X } from "lucide-react";
+import { createClient } from "@/utils/supabase/client";
 
 export default function Home() {
-  const [user, setUser] = useState<any>(null);
   const defaultValue = {
     type: "doc",
     content: [
@@ -29,13 +29,28 @@ export default function Home() {
   const [loading, setLoading] = useState("");
   const [content, setContent] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [user, setUser] = useState<any>({});
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    const fetchUser = async () => {
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+      if (error) {
+        setErrorMessage(error.message);
+      } else {
+        setUser(user);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (!user.user) {
-      console.error("User not authenticated");
-      return;
-    }
 
     try {
       setLoading("true");
@@ -69,6 +84,7 @@ export default function Home() {
               Write your blog here, and publish it to the world.
             </p>
           </div>
+
           {user.user && (
             <div className="flex gap-2 text-gray-500 items-center md:flex-col  mt-4">
               <h1 className="flex  items-center gap-2">Publish as:</h1>
