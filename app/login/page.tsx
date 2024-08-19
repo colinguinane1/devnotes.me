@@ -54,8 +54,8 @@ export default function Login({
   };
 
   return (
-    <section className="h-screen flex justify-center items-center">
-      <div className="mb-60">
+    <section className="h-screen w-screen flex justify-center items-center">
+      <div className="">
         <Tabs
           defaultValue="login"
           value={formType}
