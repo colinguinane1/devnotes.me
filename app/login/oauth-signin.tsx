@@ -4,6 +4,7 @@ import { Provider } from "@supabase/supabase-js";
 import { Github } from "lucide-react";
 import { oAuthSignIn } from "./actions";
 import { BsGoogle } from "react-icons/bs";
+import { CardDescription } from "@/components/ui/card";
 
 type OAuthProvider = {
   name: Provider;
@@ -26,20 +27,27 @@ export function OAuthButtons() {
   ];
 
   return (
-    <div className="flex md:flex-col gap-4">
-      {oAuthProviders.map((provider) => (
-        <Button
-          key={provider.name}
-          variant={"outline"}
-          className="w-full flex  items-center  justify-center gap-2"
-          onClick={async () => {
-            await oAuthSignIn(provider.name);
-          }}
-        >
-          {provider.icon}
-          {provider.displayName}
-        </Button>
-      ))}
-    </div>
+    <>
+      <p>
+        <CardDescription className="text-center">
+          or continue with
+        </CardDescription>
+      </p>
+      <div className="flex md:flex-col gap-4">
+        {oAuthProviders.map((provider) => (
+          <Button
+            key={provider.name}
+            variant={"outline"}
+            className="w-full flex  items-center  justify-center gap-2"
+            onClick={async () => {
+              await oAuthSignIn(provider.name);
+            }}
+          >
+            {provider.icon}
+            {provider.displayName}
+          </Button>
+        ))}
+      </div>
+    </>
   );
 }

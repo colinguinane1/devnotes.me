@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { PrismaClient } from "@prisma/client";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { formatDate } from "@/data/NavigationData";
 
 const prisma = new PrismaClient();
 
@@ -23,7 +24,7 @@ export default async function ProfilePage({
   }
 
   return (
-    <main className=" overflow-y-auto  p-4">
+    <main className=" overflow-y-auto min-h-screen  p-4">
       <div className="">
         <Image
           src={user.image_url || "/default-avatar.png"}
@@ -32,13 +33,10 @@ export default async function ProfilePage({
           width={100}
           height={100}
         />
-        <h1 className="  font-bold">
-          {user.first_name} {user.last_name}
-        </h1>
-
-        <p className="text-center py-3">Username: {user.username}</p>
-
-        {/* Add more user profile information as needed */}
+        <h1 className="font-bold text-2xl py-3">{user.username}</h1>
+        <p>Joined on: {formatDate(user.created_at)}</p>
+        <p>UUiD: {user.id}</p>
+        <p>Email: {user.email}</p>
       </div>
     </main>
   );

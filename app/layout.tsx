@@ -36,7 +36,7 @@ export default function RootLayout({
           <ClerkProvider>
             <Analytics />
             <Header />
-            <div className="mt-[4.5rem]">{children}</div>
+            <div className="pt-[4.5rem]">{children}</div>
             <Footer />
             <Toaster />
           </ClerkProvider>

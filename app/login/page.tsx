@@ -21,6 +21,7 @@ import { OAuthButtons } from "./oauth-signin";
 import { Info, XCircle } from "lucide-react";
 import LoadingSpinner from "@/components/ui/loader-spinner";
 import { AnimatePresence, motion } from "framer-motion";
+import Loading from "@/components/ui/loader-spinner";
 
 export default function Login({
   searchParams,
@@ -54,8 +55,8 @@ export default function Login({
   };
 
   return (
-    <section className="grid h-[80vh]  place-content-center">
-      <div className="max-h-fit">
+    <section className="grid h-screen -mt-20 place-content-center">
+      <div className="max-h-fit px-4">
         <Tabs
           className="max-h-fit"
           defaultValue="login"
@@ -71,7 +72,7 @@ export default function Login({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="login">
-            <Card className="mx-auto w-[22rem]">
+            <Card className="mx-auto w-fit">
               <CardHeader>
                 <CardTitle className="text-2xl">Login</CardTitle>
                 <CardDescription>
@@ -136,28 +137,31 @@ export default function Login({
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full active:scale-95"
+                    className="w-full active:scale-95 flex items-center justify-center"
                   >
-                    {isSubmitting && <LoadingSpinner />}
-                    <motion.p
-                      layout
-                      className="flex items-center justify-center"
-                    >
-                      Log In
-                    </motion.p>
+                    <AnimatePresence>
+                      {isSubmitting && (
+                        <motion.span
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          exit={{ scale: 0 }}
+                          className="items-center justify-center flex px-2"
+                          layout
+                        >
+                          <Loading />
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                    <motion.p layout>Log In</motion.p>
                   </Button>
-                  <div className="">
-                    <CardDescription className="text-center pb-4">
-                      or continue with
-                    </CardDescription>{" "}
-                    <OAuthButtons />
-                  </div>
+
+                  {/* <OAuthButtons />   --  disabled for the moment*/}
                 </form>
               </CardContent>
             </Card>
           </TabsContent>
           <TabsContent value="signup">
-            <Card className="mx-auto w-[22rem]">
+            <Card className="">
               <CardHeader>
                 <CardTitle className="text-2xl">Sign Up</CardTitle>
                 <CardDescription>Create a devnotes account.</CardDescription>
@@ -248,7 +252,19 @@ export default function Login({
                     disabled={isSubmitting}
                     className="w-full active:scale-95"
                   >
-                    {isSubmitting && <LoadingSpinner />}
+                    <AnimatePresence>
+                      {isSubmitting && (
+                        <motion.span
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          exit={{ scale: 0 }}
+                          className="items-center justify-center flex px-2"
+                          layout
+                        >
+                          <Loading />
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
                     <motion.p
                       layout
                       className="flex items-center justify-center"
@@ -256,12 +272,8 @@ export default function Login({
                       Sign Up
                     </motion.p>
                   </Button>
-                  <div className="">
-                    <CardDescription className="text-center pb-4">
-                      or continue with
-                    </CardDescription>{" "}
-                    <OAuthButtons />
-                  </div>
+
+                  {/* <OAuthButtons />   --  disabled for the moment*/}
                 </form>
               </CardContent>
             </Card>

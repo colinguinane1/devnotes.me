@@ -29,7 +29,7 @@ export async function emailLogin(formData: FormData) {
     await checkAuthorExists(user);
     revalidatePath('/', 'layout');
     
-     redirect('/login?m=Login%20successful!&type=success&form=login');
+     redirect('/');
     
 
 }

@@ -52,9 +52,7 @@ export default async function Header() {
             <div className="">
               {user !== null ? (
                 <>
-                  <form action={signOut}>
-                    <Button>Sign Out</Button>
-                  </form>
+                  <UserIcon />
                 </>
               ) : (
                 <Button>
