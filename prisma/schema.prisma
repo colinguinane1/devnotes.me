@@ -35,11 +35,11 @@ model Post {
   content     String
   views       Int      @default(0)
   likes       Int      @default(0)
-  author      Author   @relation("author", fields: [userId], references: [id])
+  author      Author   @relation("author", fields: [user_id], references: [id])
   published   Boolean? @default(false)
   updatedAt   DateTime @default(now())
   createdAt   DateTime @default(now())
-  userId      String
+  user_id     String
   likedBy     Author[] @relation("likedBy")
 
   @@schema("public")

@@ -7,7 +7,7 @@ import Sidebar from "./Sidebar";
 import { Logo } from "@/data/NavigationData";
 import UserIcon from "../buttons/UserIcon";
 import { Button } from "../ui/button";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/app/utils/supabase/server";
 import { signOut } from "@/app/login/actions";
 
 export default async function Header() {

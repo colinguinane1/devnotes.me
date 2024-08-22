@@ -7,7 +7,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 
 import { RxAvatar } from "react-icons/rx";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/app/utils/supabase/server";
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -3,9 +3,9 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/app/utils/supabase/server'
 import { Provider } from '@supabase/supabase-js'
-import { getURL } from '@/utils/helpers'
+import { getURL } from '@/app/utils/helpers'
 import prisma from '@/prisma/db'
 import { create } from 'domain'
 import { LassoSelect } from 'lucide-react'
@@ -28,8 +28,10 @@ export async function emailLogin(formData: FormData) {
     const { data: { user } } = await supabase.auth.getUser();
     await checkAuthorExists(user);
     revalidatePath('/', 'layout');
-    
-     redirect('/');
+    redirect('/login?m=Login%20Success&type=success&form=login');
+ 
+
+     
     
 
 }
@@ -119,13 +121,6 @@ export async function checkAuthorExists(user: any) {
 }
 
 export async function createAuthor(user: any) {
-    if(!user) 
-        {
-            console.log("user not authenticated")
-  return redirect('/login')
-    }
-    else
-    {
       try{
         await prisma.author.create({
         data: {
@@ -144,7 +139,7 @@ export async function createAuthor(user: any) {
 }
 console.log('User created! :', user?.id);
 }
-}
+
 
 export async function signOut() {
     const supabase = createClient();
