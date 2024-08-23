@@ -1,25 +1,29 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["public"]
 }
 
-model User {
-  first_name      String
-  last_name       String
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+model Author {
+  first_name      String?
+  last_name       String?
   image_url       String?
   last_sign_in_at DateTime?
   created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
+  updated_at      DateTime? @updatedAt
   id              String    @id @unique
-  username        String    @unique
-  email           String?   @unique
+  username        String?   @unique
+  email           String    @unique
   Posts           Post[]    @relation("author")
   likedPosts      Post[]    @relation("likedBy")
+
+  @@schema("public")
 }
 
 model Post {
@@ -31,10 +35,12 @@ model Post {
   content     String
   views       Int      @default(0)
   likes       Int      @default(0)
-  author      User     @relation("author", fields: [userId], references: [id])
+  author      Author   @relation("author", fields: [user_id], references: [id])
   published   Boolean? @default(false)
   updatedAt   DateTime @default(now())
   createdAt   DateTime @default(now())
-  userId      String
-  likedBy     User[]   @relation("likedBy")
+  user_id     String
+  likedBy     Author[] @relation("likedBy")
+
+  @@schema("public")
 }

@@ -4,7 +4,7 @@ import "./globals.css";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import Header from "../components/global/Header";
-import { ClerkProvider } from "@clerk/nextjs";
+
 import { ThemeProvider } from "next-themes";
 import { useTheme } from "next-themes";
 import { dark } from "@clerk/themes";
@@ -33,13 +33,11 @@ export default function RootLayout({
       <body className="antialiased  bg-primary-light dark:bg-primary-dark transition-colors">
         {" "}
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ClerkProvider>
-            <Analytics />
-            <Header />
-            <div className="mt-[4.5rem]">{children}</div>
-            <Footer />
-            <Toaster />
-          </ClerkProvider>
+          <Analytics />
+          <Header />
+          <div className="pt-[4.5rem]">{children}</div>
+          <Footer />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

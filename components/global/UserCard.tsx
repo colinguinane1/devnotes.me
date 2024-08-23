@@ -4,32 +4,32 @@ import { formatDate } from "@/data/NavigationData";
 import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post } from "@prisma/client";
-import { User } from "@prisma/client";
+import { Author } from "@prisma/client";
 import { Heart } from "lucide-react";
 import BlogDropdown from "../buttons/BlogDropdown";
 
 interface UserCardProps {
-  user: User;
+  author: Author;
 }
 
-export default function UserCard({ user }: UserCardProps) {
+export default function UserCard({ author }: UserCardProps) {
   return (
     <div
       className="bg-card  rounded-lg shadow-lg relative h-full w-[15rem] flex-shrink-0 p-3"
-      key={user.id}
+      key={author.id}
     >
       <Link
         className="flex flex-col mt-4 justify-center items-center"
-        href={`/profile/${user.username}`}
+        href={`/profile/${author.username}`}
       >
         <Image
           className="rounded-full"
-          src={user.image_url || ""}
+          src={author.image_url || ""}
           alt="pfp"
           width={100}
           height={100}
         ></Image>
-        <h1 className="font-semibold capitalize text-lg ">{user.username}</h1>
+        <h1 className="font-semibold capitalize text-lg ">{author.username}</h1>
 
         <div className="absolute text-sm bottom-16 right-1">
           {/* <div className="flex items-center gap-1">
@@ -46,7 +46,7 @@ export default function UserCard({ user }: UserCardProps) {
         {" "}
         <p className="font-light relative h-full w-full text-sm text-gray-400">
           Member since:<br></br>
-          {formatDate(user.created_at)}
+          {formatDate(author.created_at)}
         </p>{" "}
       </div>
     </div>

@@ -10,11 +10,11 @@ import { BsPerson, BsThreeDots } from "react-icons/bs";
 import { Check, CheckCircle, Clipboard, Plus } from "lucide-react";
 import { useToast } from "../ui/use-toast";
 import Link from "next/link";
-import { User } from "@prisma/client";
+import { Author } from "@prisma/client";
 
 interface BlogDropdownProps {
   slug: string;
-  author: User;
+  author: Author;
 }
 
 export default function BlogDropdown({ slug, author }: BlogDropdownProps) {

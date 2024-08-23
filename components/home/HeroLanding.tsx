@@ -18,9 +18,7 @@ export default function HeroLanding() {
     <div className="grid  w-screen place-content-center -mt-20 text-4xl font-semibold">
       <div className="z-10 flex pb-4  items-center justify-center"></div>{" "}
       <div>
-
         <div className="relative flex h-[600px]  w-screen flex-col items-center justify-center overflow-hidden  ">
-
           <div
             className={cn(
               "group rounded-full  border  z-10  bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200  dark:bg-neutral-900 dark:hover:bg-neutral-800 "
@@ -80,7 +78,7 @@ export default function HeroLanding() {
                 </Link>
               </Button>
             </div>
-          </div>
+          </div>{" "}
           <AnimatedGridPattern
             numSquares={30}
             maxOpacity={0.1}

@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Calendar, Pencil } from "lucide-react";
-import { currentUser } from "@clerk/nextjs/server";
+
 import Image from "next/image";
 import SamplePrismaUser from "@/data/SamplePrismaUser";
 import { Button } from "@/components/ui/button";
@@ -18,8 +18,6 @@ import { Post } from "@prisma/client";
 import { Eye, Heart } from "lucide-react";
 
 export default async function ExplorePage() {
-  const user = await currentUser();
-
   function formatDate(dateString: Date) {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US");

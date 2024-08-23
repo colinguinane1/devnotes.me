@@ -23,6 +23,10 @@ const nextConfig = { reactStrictMode: true ,  images: {
         hostname: 'img.clerk.com',
   
       },
+      {
+        protocol: 'https',
+        hostname: 'external-content.duckduckgo.com',
+      }
     ],
   },
 };
