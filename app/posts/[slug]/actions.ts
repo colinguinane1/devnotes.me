@@ -4,6 +4,10 @@ import prisma from "@/prisma/db";
 import { createClient } from "@/app/utils/supabase/server";
 
 // Server action for liking a post
+
+
+
+
 export async function likePost(postId: string) {
   const supabase = createClient();
 
@@ -14,6 +18,8 @@ export async function likePost(postId: string) {
     console.log('User not found');
     throw new Error("User not authenticated");
   }
+
+
 
   try {
     // Add the blog to the user's likedPosts and add the user to the blog's likedBy
@@ -32,6 +38,7 @@ export async function likePost(postId: string) {
         likedBy: {
           connect: { id: user.id }, // Connect the user to the post's likedBy
         },
+        likes: {increment: 1}
       },
     });
 
