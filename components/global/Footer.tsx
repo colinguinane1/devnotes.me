@@ -15,12 +15,6 @@ export default function Footer() {
         <p className="text-center flex items-center gap-6">
           © 2024 devnotes | All rights reserved.{" "}
         </p>
-        <Link
-          className="flex items-center pt-2 gap-1 underline"
-          href="https://github.com/colinguinane1/devnotes.me"
-        >
-          <BsGithub size={20} /> Github <ArrowRight size={12} />
-        </Link>
 
         <div className="flex gap-4 py-4">
           {NavigationData.map((nav) => (

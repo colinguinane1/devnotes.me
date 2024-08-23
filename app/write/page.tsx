@@ -4,9 +4,23 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { createPost } from "./actions";
 import { useState } from "react";
+import Loading from "@/components/ui/loader-spinner";
+import { Check, X } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const [content, setContent] = useState<string>(
+    "Type for commands or start writing..."
+  );
+  const [loading, setLoading] = useState("false");
+  const successToast = () => {
+    toast({
+      variant: "success",
+      title: "Success ✓",
+      description: "Blog posted successfully!",
+    });
+  };
   const defaultValue = {
     type: "doc",
     content: [
@@ -24,20 +38,24 @@ export default function Home() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget); // Create FormData object
-
+    const formData = new FormData(event.currentTarget);
+    formData.append("content", content);
     try {
+      setLoading("true");
       // Directly call the server action
       await createPost(formData);
       console.log("Post created successfully");
+      setLoading("success");
+      successToast();
     } catch (error) {
+      setLoading("error");
       console.error("Error creating post:", error);
     }
   };
 
   return (
-    <main className="flex min-h-screen w-screen p-2 flex-col items-center justify-between">
-      <div className="flex flex-col p-6 border w-full gap-6 rounded-md bg-card">
+    <main className="flex min-h-screen w-screen  flex-col items-center justify-between">
+      <div className="flex flex-col p-6  w-full gap-6 rounded-md ">
         <div className="flex md:flex-row flex-col justify-between">
           <div className="flex flex-col">
             <h1 className="text-4xl font-semibold">Write Your Blog</h1>
@@ -91,9 +109,16 @@ export default function Home() {
                 placeholder="Enter your description"
               />
             </div>
-            <BlogEditor initialValue={defaultValue} onChange={() => {}} />
-            <Button className="w-full mt-4" type="submit">
+            <BlogEditor initialValue={defaultValue} onChange={setContent} />
+            <Button
+              className="w-full mt-4"
+              type="submit"
+              disabled={loading === "true"}
+            >
+              {loading === "true" && <Loading />}
               Publish Blog
+              {loading === "success" && <Check color="green" />}
+              {loading === "error" && <X color="red" />}
             </Button>
           </form>
         </div>

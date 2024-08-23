@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export const NavigationData = [
   { name: "Home", href: "/" },
   { name: "Explore", href: "/explore" },
@@ -15,3 +17,13 @@ export function formatDate(dateString: Date) {
     day: "numeric",
   });
 }
+
+export const LogoSVG = () => (
+  <Image
+    src="/testlogo.svg"
+    alt="logo"
+    width={45}
+    height={45}
+    className="bg-primary rounded-lg shadow-2xl fill-white "
+  ></Image>
+);
