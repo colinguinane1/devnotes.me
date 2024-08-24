@@ -2,20 +2,41 @@
 "use client";
 
 import { useTransition } from "react";
-import { likePost } from "@/app/posts/[slug]/actions";
+import { handleLike } from "@/app/posts/[slug]/actions";
+import Loading from "../ui/loader-spinner";
+import { Heart } from "lucide-react";
+import { Button } from "../ui/button";
+import { useToast } from "../ui/use-toast";
 
-export default function LikeManager({ postId }: { postId: string }) {
+export const PostLikedManager = ({ postId }: { postId: string }) => {
+  const { toast } = useToast();
   const [isPending, startTransition] = useTransition();
 
-  const handleLike = () => {
+  const like = () => {
     startTransition(() => {
-      likePost(postId);
+      handleLike(postId);
     });
   };
 
   return (
-    <button onClick={handleLike} disabled={isPending}>
-      {isPending ? "Liking..." : "Like Post"}
-    </button>
+    <Button variant={"ghost"} size={"icon"} onClick={like} disabled={isPending}>
+      {isPending ? <Loading /> : <Heart fill="red" color="red" />}
+    </Button>
   );
-}
+};
+
+export const RemovePostLikeManager = ({ postId }: { postId: string }) => {
+  const [isPending, startTransition] = useTransition();
+
+  const like = () => {
+    startTransition(() => {
+      handleLike(postId);
+    });
+  };
+
+  return (
+    <Button variant={"ghost"} size={"icon"} onClick={like} disabled={isPending}>
+      {isPending ? <Loading /> : <Heart />}
+    </Button>
+  );
+};

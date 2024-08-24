@@ -3,7 +3,7 @@ import WordRotate from "../magicui/word-rotate";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { ArrowRight, ArrowRightIcon } from "lucide-react";
-import { siteName } from "@/data/NavigationData";
+import { siteName } from "@/data/SiteData";
 import TypingAnimation from "../magicui/typing-animation";
 import AnimatedShinyText from "../magicui/animated-shiny-text";
 import { ChevronRight } from "lucide-react";

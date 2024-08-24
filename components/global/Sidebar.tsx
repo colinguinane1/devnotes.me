@@ -7,7 +7,7 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { RiMenu2Line } from "react-icons/ri";
-import { NavigationData } from "@/data/NavigationData";
+import { NavigationData } from "@/data/SiteData";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

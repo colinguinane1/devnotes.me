@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatDate } from "@/data/NavigationData";
+import { formatDate } from "@/data/SiteData";
 import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post } from "@prisma/client";

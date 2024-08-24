@@ -1,10 +1,10 @@
 import Link from "next/link";
 
 import { ModeToggle } from "../buttons/ThemeSwitcher";
-import { NavigationData } from "@/data/NavigationData";
+import { NavigationData } from "@/data/SiteData";
 import Sidebar from "./Sidebar";
 
-import { Logo } from "@/data/NavigationData";
+import { Logo } from "@/data/SiteData";
 import UserIcon from "../buttons/UserIcon";
 import { Button } from "../ui/button";
 import { createClient } from "@/app/utils/supabase/server";
