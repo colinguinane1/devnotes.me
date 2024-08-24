@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { PrismaClient } from "@prisma/client";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { formatDate } from "@/data/NavigationData";
+import { formatDate } from "@/data/SiteData";
 import BlogCard from "@/components/global/BlogCard";
 
 const prisma = new PrismaClient();
@@ -22,6 +22,19 @@ export default async function ProfilePage({
   const posts = await prisma.post.findMany({
     where: {
       user_id: user?.id,
+    },
+    include: {
+      author: true,
+    },
+  });
+
+  const likedPosts = await prisma.post.findMany({
+    where: {
+      likedBy: {
+        some: {
+          id: user?.id,
+        },
+      },
     },
     include: {
       author: true,
@@ -51,6 +64,14 @@ export default async function ProfilePage({
           <h1 className="text-left text-2xl">User Posts</h1>
           <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
             {posts.map((post) => (
+              <BlogCard key={post.id} post={post} author={user} />
+            ))}
+          </div>
+        </div>
+        <div className="w-full overflow-hidden overflow-x-auto mt-4">
+          <h1 className="text-left text-2xl">Liked Posts</h1>
+          <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
+            {likedPosts.map((post) => (
               <BlogCard key={post.id} post={post} author={user} />
             ))}
           </div>

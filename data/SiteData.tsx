@@ -27,3 +27,5 @@ export const LogoSVG = () => (
     className="bg-primary rounded-lg shadow-2xl fill-white "
   ></Image>
 );
+
+export const siteVersion = "1.5.6";

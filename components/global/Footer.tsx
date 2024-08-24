@@ -2,7 +2,7 @@
 import Link from "next/link";
 import ShimmerButton from "../magicui/shimmer-button";
 import { ArrowRight, ChevronRight } from "lucide-react";
-import { NavigationData } from "@/data/NavigationData";
+import { NavigationData, siteVersion } from "@/data/SiteData";
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";
 import { BsGithub } from "react-icons/bs";
@@ -15,7 +15,6 @@ export default function Footer() {
         <p className="text-center flex items-center gap-6">
           © 2024 devnotes | All rights reserved.{" "}
         </p>
-
         <div className="flex gap-4 py-4">
           {NavigationData.map((nav) => (
             <Link href={nav.href} key={nav.href}>
@@ -35,7 +34,8 @@ export default function Footer() {
               Colin <ChevronRight size={12} />
             </span>
           </ShimmerButton>
-        </Link>
+        </Link>{" "}
+        <p className="pt-4">v{siteVersion}</p>
       </div>
     </footer>
   );
