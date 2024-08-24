@@ -1,7 +1,7 @@
 import prisma from "@/prisma/db";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Link } from "next-view-transitions";
+import Link from "next/link";
 import {
   ArrowRight,
   BoldIcon,
@@ -52,18 +52,29 @@ export default async function blog({ params }: { params: { slug: string } }) {
           </div>
           <div className="flex    p-2 w-full   justify-between items-center pr-4 gap-2">
             <div className="flex items-center gap-2">
-              <Image
-                className="rounded-full"
-                alt="user"
-                src={blog.author.image_url || ""}
-                width={32}
-                height={32}
-              ></Image>
-              <div className="text-sm">
-                <p>{blog.author.username}</p>{" "}
-                <p className="text-gray-400">{formatDate(blog.createdAt)}</p>
-              </div>
+              <Link
+                className="flex items-center gap-2"
+                href={`/profile/${blog.author.username}`}
+              >
+                <Image
+                  className="rounded-full"
+                  alt="user"
+                  src={blog.author.image_url || ""}
+                  width={32}
+                  height={32}
+                ></Image>
+                <div className="text-sm">
+                  <p>{blog.author.username}</p>{" "}
+                  <p className="text-gray-400">{formatDate(blog.createdAt)}</p>
+                </div>
+              </Link>
             </div>{" "}
+            <div className=" text-sm text-gray-400">
+              <div>
+                <p>{blog.views} views</p>
+                <p>{blog.likes} likes</p>
+              </div>
+            </div>
             <div className="flex items-center">
               {postLiked ? (
                 <PostLikedManager postId={blog.id} />
