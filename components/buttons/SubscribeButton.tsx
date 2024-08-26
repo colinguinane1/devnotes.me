@@ -1,9 +1,8 @@
-// components/SubscribeButton.tsx
-"use client"; // This directive makes the component a Client Component
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { subscribe, unsubscribe } from "@/app/profile/[[...username]]/actions"; // Adjust the import path as necessary
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Loading from "../ui/loader-spinner";
 
 interface SubscribeButtonProps {
@@ -15,22 +14,22 @@ export function SubscribeButton({
   subscriberId,
   subscribeToId,
 }: SubscribeButtonProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const handleSubscribe = async () => {
-    setIsLoading(true);
-    try {
-      await subscribe(subscriberId, subscribeToId);
-      // Optionally: Add a success message or update UI state here
-    } catch (error) {
-      console.error("Error subscribing:", error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSubscribe = () => {
+    startTransition(async () => {
+      try {
+        await subscribe(subscriberId, subscribeToId);
+        // Optionally: Add a success message or update UI state here
+      } catch (error) {
+        console.error("Error subscribing:", error);
+      }
+    });
   };
+
   return (
-    <Button onClick={handleSubscribe} disabled={isLoading}>
-      {isLoading ? (
+    <Button onClick={handleSubscribe} disabled={isPending}>
+      {isPending ? (
         <div className="flex items-center gap-2">
           <Loading />
           <p>Subscribing...</p>
@@ -46,27 +45,26 @@ export function UnsubscribeButton({
   subscriberId,
   subscribeToId,
 }: SubscribeButtonProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  const handleUnsubscribe = async () => {
-    setIsLoading(true);
-    try {
-      await unsubscribe(subscriberId, subscribeToId);
-      // Optionally: Add a success message or update UI state here
-    } catch (error) {
-      console.error("Error unsubscribing:", error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleUnsubscribe = () => {
+    startTransition(async () => {
+      try {
+        await unsubscribe(subscriberId, subscribeToId);
+        // Optionally: Add a success message or update UI state here
+      } catch (error) {
+        console.error("Error unsubscribing:", error);
+      }
+    });
   };
 
   return (
     <Button
       variant={"destructive"}
       onClick={handleUnsubscribe}
-      disabled={isLoading}
+      disabled={isPending}
     >
-      {isLoading ? (
+      {isPending ? (
         <div className="flex items-center gap-2">
           <Loading />
           <p>Unsubscribing...</p>
