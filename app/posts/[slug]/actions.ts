@@ -3,6 +3,7 @@
 import prisma from "@/prisma/db";
 import { createClient } from "@/app/utils/supabase/server";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/dist/server/api-utils";
 
 // Server action for liking a post
 export async function checkPostLiked(postId: string) {
@@ -13,7 +14,8 @@ export async function checkPostLiked(postId: string) {
 
   if (!user) {
     console.log('User not found');
-    throw new Error("User not authenticated");
+    
+    return false;
   }
 
   // Fetch the user's liked posts and check if the postId is included

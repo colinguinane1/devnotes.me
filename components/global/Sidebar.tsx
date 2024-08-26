@@ -22,7 +22,10 @@ const Sidebar = () => {
             <RiMenu2Line size={20} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
+        <DropdownMenuContent
+          className="bg-transparent backdrop-blur-lg"
+          align="start"
+        >
           {NavigationData.map((nav) => (
             <DropdownMenuItem
               className={`${pathname === nav.href && "bg-secondary"}`}

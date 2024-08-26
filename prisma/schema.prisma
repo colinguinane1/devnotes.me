@@ -11,24 +11,39 @@ generator client {
 }
 
 model Author {
+  id              String    @id @unique
   first_name      String?
   last_name       String?
   image_url       String?
   last_sign_in_at DateTime?
   created_at      DateTime  @default(now())
   updated_at      DateTime? @updatedAt
-  id              String    @id @unique
   username        String?   @unique
   email           String    @unique
   Posts           Post[]    @relation("author")
   likedPosts      Post[]    @relation("likedBy")
 
+  // Relationships
+  subscribers   Subscription[] @relation("Subscriptions")
+  subscriptions Subscription[] @relation("Subscribers")
+
+  @@schema("public")
+}
+
+model Subscription {
+  id             String @id @default(cuid())
+  subscriberId   String
+  subscribedToId String
+  subscriber     Author @relation("Subscribers", fields: [subscriberId], references: [id])
+  subscribedTo   Author @relation("Subscriptions", fields: [subscribedToId], references: [id])
+
+  @@unique([subscriberId, subscribedToId]) // Ensure unique subscription pairs
   @@schema("public")
 }
 
 model Post {
-  mdx         Boolean? @default(false)
   id          String   @id @default(cuid())
+  mdx         Boolean? @default(false)
   description String?
   slug        String   @unique
   title       String

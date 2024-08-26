@@ -92,7 +92,6 @@ export default function Home() {
               />
               <label>Slug:</label>
               <input
-                required
                 name="slug"
                 className="border rounded-md p-1 w-full"
                 placeholder="https://devnotes.me/posts/(slug)"
@@ -103,7 +102,6 @@ export default function Home() {
               <input
                 maxLength={25}
                 minLength={10}
-                required
                 name="description"
                 className="border rounded-md p-1 w-full"
                 placeholder="Enter your description"

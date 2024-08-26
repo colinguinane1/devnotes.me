@@ -21,9 +21,9 @@ export default function BlogCard({ post, author }: BlogCardProps) {
     >
       <Link href={`/posts/${post.slug}`}>
         <h1 className="font-semibold capitalize text-lg ">{post.title}</h1>
-        <p className="font-light relative h-full w-full text-sm text-gray-400">
+        {/* <p className="font-light relative h-full w-full text-sm text-gray-400"> // disabled atm
           {post.description}
-        </p>{" "}
+        </p>{" "} */}
         <div className="absolute text-sm bottom-16 right-1">
           <div className="flex items-center gap-1">
             <p className="flex items-center gap-1">

@@ -7,6 +7,7 @@ import {
   BoldIcon,
   Calendar,
   Eye,
+  EyeIcon,
   Heart,
   HeartIcon,
 } from "lucide-react";
@@ -19,7 +20,7 @@ import {
   PostLikedManager,
   RemovePostLikeManager,
 } from "@/components/buttons/LikeManager";
-import { formatDate } from "@/data/SiteData";
+import { calculateReadingTime, formatDate } from "@/data/SiteData";
 import BlogNotFound from "@/components/global/BlogNotFound";
 import { createClient } from "@/app/utils/supabase/server";
 import { checkPostLiked, likePost, removeLike } from "./actions";
@@ -37,6 +38,13 @@ export default async function blog({ params }: { params: { slug: string } }) {
   }
   const postLiked = await checkPostLiked(blog.id);
 
+  const supabase = createClient();
+
+  // Get the logged-in user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const metadata: Metadata = {
     title: blog.title,
     description: blog.description,
@@ -44,13 +52,13 @@ export default async function blog({ params }: { params: { slug: string } }) {
 
   incrementViews(blog.id);
   return (
-    <section className="p-4 py-8 min-h-screen">
+    <section className="p-4  py-8 min-h-screen">
       <div>
-        <div className="border-b">
+        <div className="border-b ">
           <div className="flex  items-center">
             <h1 className="text-4xl pb-2 font-bold">{blog.title}</h1>
           </div>
-          <div className="flex    p-2 w-full   justify-between items-center pr-4 gap-2">
+          <div className="flex    p-2 w-full   justify-between items-center  gap-2">
             <div className="flex items-center gap-2">
               <Link
                 className="flex items-center gap-2"
@@ -69,26 +77,51 @@ export default async function blog({ params }: { params: { slug: string } }) {
                 </div>
               </Link>
             </div>{" "}
-            <div className=" text-sm text-gray-400">
-              <div>
-                <p>{blog.views} views</p>
-                <p>{blog.likes} likes</p>
-              </div>
-            </div>
             <div className="flex items-center">
-              {postLiked ? (
-                <PostLikedManager postId={blog.id} />
+              {user ? (
+                <div>
+                  {postLiked ? (
+                    <PostLikedManager postId={blog.id} />
+                  ) : (
+                    <RemovePostLikeManager postId={blog.id} />
+                  )}
+                </div>
               ) : (
-                <RemovePostLikeManager postId={blog.id} />
+                <Button size={"icon"}>
+                  <Link href="/login">
+                    <Heart />
+                  </Link>
+                </Button>
               )}
               <BlogDropdown slug={blog.slug} author={blog.author} />
             </div>
           </div>
+        </div>{" "}
+        <div className=" text-sm text-gray-400">
+          <div className="justify-between mt-1 flex items-center">
+            <div className="flex items-center gap-2">
+              {" "}
+              <p className="flex items-center gap-1">
+                <EyeIcon size={15} />
+                {blog.views}{" "}
+              </p>
+              <p className="flex items-center gap-1">
+                <Heart size={15} />
+                {blog.likes}{" "}
+              </p>
+            </div>
+            <div>
+              {" "}
+              <p>{calculateReadingTime(blog.content)} minute read</p>
+            </div>
+          </div>
         </div>
-        <div
-          className="prose prose-code:language-javascript   dark:text-gray-400 dark:prose-headings:text-white mt-4"
-          dangerouslySetInnerHTML={{ __html: blog.content }}
-        ></div>
+        <div className="flex items-center justify-center">
+          <div
+            className="prose text-black  dark:text-gray-400 dark:prose-headings:text-white "
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          ></div>
+        </div>
       </div>
     </section>
   );
