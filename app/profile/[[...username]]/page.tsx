@@ -4,6 +4,14 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { formatDate } from "@/data/SiteData";
 import BlogCard from "@/components/global/BlogCard";
+import { createClient } from "@/app/utils/supabase/server";
+import { subscribe } from "./actions";
+import {
+  SubscribeButton,
+  UnsubscribeButton,
+} from "@/components/buttons/SubscribeButton";
+import UserCard from "@/components/global/UserCard";
+import Link from "next/link";
 
 const prisma = new PrismaClient();
 
@@ -13,9 +21,15 @@ export default async function ProfilePage({
   params: { username?: string[] };
 }) {
   const username = params.username?.[0] || "";
+  const supabase = createClient();
+
+  // Get the logged-in user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   // Fetch user data from Prisma
-  const user = await prisma.author.findUnique({
+  const author = await prisma.author.findUnique({
     where: { username },
   });
 
@@ -42,41 +56,99 @@ export default async function ProfilePage({
   });
 
   // If user not found, return a 404 page
-  if (!user) {
+  if (!author) {
     return notFound();
   }
 
+  const isSubscribed = await prisma.subscription.findFirst({
+    where: {
+      subscribedToId: author.id,
+      subscriberId: user?.id,
+    },
+  });
+
+  const authorSubscribedTo = await prisma.subscription.findMany({
+    where: {
+      subscriberId: author.id,
+    },
+    include: {
+      subscribedTo: true, // Include the full Author object
+    },
+  });
+
   return (
     <main className=" overflow-y-auto min-h-screen  p-4">
-      <div className="">
-        <Image
-          src={user.image_url || "/default-avatar.png"}
-          alt="User Avatar"
-          className="rounded-full"
-          width={100}
-          height={100}
-        />
-        <h1 className="font-bold text-2xl py-3">{user.username}</h1>
-        <p>Joined on: {formatDate(user.created_at)}</p>
-        <p>UUiD: {user.id}</p>
-        <p>Email: {user.email}</p>{" "}
-        <div className="w-full overflow-hidden overflow-x-auto mt-4">
-          <h1 className="text-left text-2xl">User Posts</h1>
-          <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
-            {posts.map((post) => (
-              <BlogCard key={post.id} post={post} author={user} />
-            ))}
+      {author && (
+        <div className="">
+          <Image
+            src={author?.image_url || "/default-avatar.png"}
+            alt="User Avatar"
+            className="rounded-full"
+            width={100}
+            height={100}
+          />
+          <h1 className="font-bold text-2xl py-3">{author.username}</h1>
+          <p>Joined on: {formatDate(author?.created_at)}</p>
+          <p>UUiD: {author.id}</p>
+          <p>Email: {author.email}</p>{" "}
+          {user?.id !== author?.id ? (
+            <div className="pt-2">
+              {user ? (
+                <div>
+                  {!isSubscribed ? (
+                    <SubscribeButton
+                      subscriberId={user.id}
+                      subscribeToId={author.id}
+                    />
+                  ) : (
+                    <UnsubscribeButton
+                      subscriberId={user.id}
+                      subscribeToId={author.id}
+                    />
+                  )}
+                </div>
+              ) : (
+                <Button>
+                  <Link href="/login">Sign In To Subscribe</Link>
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div className="pt-2">
+              <Button disabled variant={"outline"}>
+                Can&apos;t Subscribe To Own Account
+              </Button>
+            </div>
+          )}
+          <div className="w-full overflow-hidden overflow-x-auto mt-4">
+            <h1 className="text-left text-2xl">User Posts</h1>
+            <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
+              {posts.map((post) => (
+                <BlogCard key={post.id} post={post} author={author} />
+              ))}
+            </div>
+          </div>
+          <div className="w-full overflow-hidden overflow-x-auto mt-4">
+            <h1 className="text-left text-2xl">Liked Posts</h1>
+            <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
+              {likedPosts.map((post) => (
+                <BlogCard key={post.id} post={post} author={author} />
+              ))}
+            </div>
+          </div>
+          <div className="w-full overflow-hidden overflow-x-auto mt-4">
+            <h1 className="text-left text-2xl">Subscriptions</h1>
+            <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
+              {authorSubscribedTo.map((subscriptions) => (
+                <UserCard
+                  key={subscriptions.id}
+                  author={subscriptions.subscribedTo}
+                />
+              ))}
+            </div>
           </div>
         </div>
-        <div className="w-full overflow-hidden overflow-x-auto mt-4">
-          <h1 className="text-left text-2xl">Liked Posts</h1>
-          <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
-            {likedPosts.map((post) => (
-              <BlogCard key={post.id} post={post} author={user} />
-            ))}
-          </div>
-        </div>
-      </div>
+      )}
     </main>
   );
 }

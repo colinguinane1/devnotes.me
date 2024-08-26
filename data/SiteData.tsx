@@ -18,6 +18,31 @@ export function formatDate(dateString: Date) {
   });
 }
 
+export function generateSlug(title: string): string {
+  const slug = title
+    .toLowerCase() // Convert the title to lowercase
+    .trim() // Remove whitespace from both ends
+    .replace(/[^\w\s-]/g, "") // Remove all non-word characters except spaces and hyphens
+    .replace(/\s+/g, "-"); // Replace spaces with hyphens
+
+  // Generate a 4-digit random number
+  const randomNumber = Math.floor(1000 + Math.random() * 9000); // Generates a random number between 1000 and 9999
+
+  // Combine the slug and the random number
+  return `${slug}-${randomNumber}`;
+}
+
+export function calculateReadingTime(content: string) {
+  const wordsPerMinute = 200;
+  const words = content.split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+  return minutes;
+}
+
+export function generateDescription(content: string): string {
+  return content.length > 150 ? content.substring(0, 147) + "..." : content;
+}
+
 export const LogoSVG = () => (
   <Image
     src="/testlogo.svg"
