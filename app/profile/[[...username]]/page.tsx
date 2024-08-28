@@ -6,6 +6,7 @@ import { formatDate } from "@/data/SiteData";
 import BlogCard from "@/components/global/BlogCard";
 import { createClient } from "@/app/utils/supabase/server";
 import { subscribe } from "./actions";
+import ProfilePictureUpload from "@/components/buttons/ProfilePictureUpload";
 import {
   SubscribeButton,
   UnsubscribeButton,
@@ -87,6 +88,7 @@ export default async function ProfilePage({
             width={100}
             height={100}
           />
+          {user?.id === author?.id && <ProfilePictureUpload userId={user.id} />}
           <h1 className="font-bold text-2xl py-3">{author.username}</h1>
           <p>Joined on: {formatDate(author?.created_at)}</p>
           <p>UUiD: {author.id}</p>
