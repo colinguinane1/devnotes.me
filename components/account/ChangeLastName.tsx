@@ -28,7 +28,7 @@ import { Check, CheckCircle, Pencil } from "lucide-react";
 import { ChangeFirstName, ChangeUsername } from "@/app/account/actions";
 import Loading from "../ui/loader-spinner";
 
-export default function ChangeFirstNameDialog() {
+export default function ChangeLastNameDialog() {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 

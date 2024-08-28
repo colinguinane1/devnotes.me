@@ -14,6 +14,7 @@ import ChangeUsername from "@/components/account/ChangeUsername";
 import ChangeFirstNameDialog from "@/components/account/ChangeFirstName";
 import Image from "next/image";
 import ChangeProfilePictureDialog from "@/components/account/ChangeProfilePicDialog";
+import ChangeLastNameDialog from "@/components/account/ChangeLastName";
 
 export default async function AccountPage() {
   const supabase = createClient();
@@ -96,6 +97,19 @@ export default async function AccountPage() {
                     {author.first_name}
                   </p>
                   <ChangeFirstNameDialog />
+                </div>
+              </div>
+              <div className="text-sm">
+                <h1 className="font-bold py-2 text-lg">Last Name</h1>
+                <div className="flex items-center gap-4 justify-between">
+                  <p
+                    className={`${
+                      author.last_name === "null" && "text-gray-400"
+                    }`}
+                  >
+                    {author.last_name}
+                  </p>
+                  <ChangeLastNameDialog />
                 </div>
               </div>
             </CardContent>
