@@ -55,27 +55,16 @@ export default async function UserIcon() {
               </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem className="cursor-pointer flex ">
-              <Link className="flex items-center" href="/account">
-                {userExists?.image_url && (
-                  <Image
-                    className="rounded-full mr-1"
-                    src={userExists?.image_url}
-                    alt="User image"
-                    width={15}
-                    height={15}
-                  />
-                )}
-                <span>{userExists?.username || "Loading..."}</span>
-              </Link>
-            </DropdownMenuItem>
-            {/* <DropdownMenuItem className="cursor-pointer flex"> // item disabled as its a clerk leftover
+          <DropdownMenuContent
+            className="bg-transparent backdrop-blur-md"
+            align="end"
+          >
+            <DropdownMenuItem className="cursor-pointer flex">
               <Link className="flex items-center" href="/account">
                 <CiSettings className="mr-1" />
                 Account
               </Link>
-            </DropdownMenuItem> */}
+            </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer flex">
               <Link
                 className="flex items-center"
@@ -91,11 +80,11 @@ export default async function UserIcon() {
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
               <form>
-                <Button variant={"outline"} formAction={signOut}>
+                <button className="flex items-center " formAction={signOut}>
                   {" "}
                   <FaSignOutAlt color="red" className="mr-1" />{" "}
                   <p className="text-red-500">Sign Out</p>
-                </Button>
+                </button>
               </form>
             </DropdownMenuItem>
           </DropdownMenuContent>

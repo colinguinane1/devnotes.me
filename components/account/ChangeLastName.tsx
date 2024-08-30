@@ -25,7 +25,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Check, CheckCircle, Pencil } from "lucide-react";
-import { ChangeFirstName, ChangeUsername } from "@/app/account/actions";
+import {
+  ChangeFirstName,
+  ChangeLastName,
+  ChangeUsername,
+} from "@/app/account/actions";
 import Loading from "../ui/loader-spinner";
 
 export default function ChangeLastNameDialog() {
@@ -92,7 +96,7 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
     const formData = new FormData(event.currentTarget);
 
     try {
-      await ChangeFirstName(formData);
+      await ChangeLastName(formData);
       setSuccess(true);
       // Optionally close the drawer or dialog here if you want to hide the form after success
     } catch (err: any) {
@@ -110,19 +114,21 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
       <div className="grid gap-2">
         <Label htmlFor="username">First Name</Label>
         <Input
-          id="first_name"
-          name="first_name"
-          placeholder="Enter your new first name"
+          id="last_name"
+          name="last_name"
+          placeholder="Enter your new last name"
         />
       </div>
       <Button type="submit" disabled={loading}>
-        {loading ? <Loading /> : "Update First Name"}
+        {loading ? <Loading /> : "Update Last Name"}
       </Button>
       {error && <p className="text-red-500">{error}</p>}
       {success && (
-        <div className="bg-green-500/50 flex items-center gap-2 max-w-fit px-2 rounded-md">
+        <div className="bg-green-300 dark:bg-green-500/90 flex items-center gap-2 max-w-fit px-2 rounded-md">
           <CheckCircle size={15} color="rgb(134 239 172)" />
-          <p className="text-green-300">First Name updated successfully!</p>
+          <p className="text-green-500 dark:text-green-100 ">
+            Last Name updated successfully!
+          </p>
         </div>
       )}
     </form>

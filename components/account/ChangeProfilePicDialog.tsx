@@ -1,130 +1,64 @@
-"use client";
-import * as React from "react";
+// ChangeProfilePicClient.tsx
 
-import { cn } from "@/lib/utils";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Check, CheckCircle, Pencil } from "lucide-react";
-import { ChangeUsername } from "@/app/account/actions";
-import Loading from "../ui/loader-spinner";
+"use client"; // This is necessary to make this a client component
 
-export default function ChangeProfilePictureDialog() {
-  const [open, setOpen] = React.useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+import { useState } from "react";
+import { createClient } from "@/app/utils/supabase/client";
+import { Button } from "../ui/button";
 
-  const data = [
-    { title: "Change First Name", description: "Change your first name." },
-  ];
+export default function ChangeProfilePicClient() {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
 
-  if (isDesktop) {
-    return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="ghost" size={"icon"}>
-            <Pencil size={15} />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>{data[0].title}</DialogTitle>
-            <DialogDescription>{data[0].description}</DialogDescription>
-          </DialogHeader>
-          <ProfileForm />
-        </DialogContent>
-      </Dialog>
-    );
-  }
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setSelectedFile(event.target.files[0]);
+    }
+  };
 
-  return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="ghost" size={"icon"}>
-          <Pencil size={15} />
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader className="text-left">
-          <DrawerTitle>{data[0].title}</DrawerTitle>
-          <DrawerDescription>{data[0].description}</DrawerDescription>
-        </DrawerHeader>
-        <ProfileForm className="px-4" />
-        <DrawerFooter className="pt-2">
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
-  );
-}
-
-function ProfileForm({ className }: React.ComponentProps<"form">) {
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
-  const [success, setSuccess] = React.useState(false);
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(false);
-
-    const formData = new FormData(event.currentTarget);
+  const handleSave = async () => {
+    if (!selectedFile) return;
 
     try {
-      await ChangeUsername(formData);
-      setSuccess(true);
-      // Optionally close the drawer or dialog here if you want to hide the form after success
-    } catch (err: any) {
-      setError(err.message || "An error occurred");
-    } finally {
-      setLoading(false);
+      const fileData = await selectedFile.arrayBuffer();
+      const fileName = `${Date.now()}-${selectedFile.name}`; // Optionally prepend a timestamp to avoid overwrites
+
+      // Upload the file to Supabase storage
+      const supabase = createClient();
+      const { data, error } = await supabase.storage
+        .from("avatars")
+        .upload(fileName, fileData, {
+          cacheControl: "3600", // Optionally set cache control
+          upsert: true, // Prevent overwriting existing files
+        });
+
+      if (error) {
+        setUploadError("Error uploading file: " + error.message);
+      } else {
+        setUploadSuccess(true);
+        setUploadError(null);
+        console.log("File uploaded successfully:", data);
+        // Optionally, update the profile picture URL in the database here
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred:", err);
+      setUploadError("An unexpected error occurred.");
     }
   };
 
   return (
-    <form
-      className={cn("grid items-start gap-4", className)}
-      onSubmit={handleSubmit}
-    >
-      <div className="grid gap-2">
-        <Label htmlFor="username">Username</Label>
-        <Input
-          id="username"
-          name="username"
-          placeholder="Enter your new first name"
-        />
+    <>
+      <div className="mt-4">
+        <input type="file" onChange={handleFileChange} />
       </div>
-      <Button type="submit" disabled={loading}>
-        {loading ? <Loading /> : "Update Username"}
-      </Button>
-      {error && <p className="text-red-500">{error}</p>}
-      {success && (
-        <div className="bg-green-500/50 flex items-center gap-2 max-w-fit px-2 rounded-md">
-          <CheckCircle size={15} color="rgb(134 239 172)" />
-          <p className="text-green-300">Username updated successfully!</p>
-        </div>
+      <div className="mt-4 flex justify-end">
+        <Button onClick={handleSave}>Save</Button>
+      </div>
+      {uploadError && <p className="mt-2 text-red-500">{uploadError}</p>}
+      {uploadSuccess && (
+        <p className="mt-2 text-green-500">File uploaded successfully!</p>
       )}
-    </form>
+    </>
   );
 }

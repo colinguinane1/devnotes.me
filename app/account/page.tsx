@@ -74,7 +74,7 @@ export default async function AccountPage() {
               </div>
               <div className="text-sm">
                 <h1 className="font-bold py-2 text-lg">Email</h1>
-                <div className="flex items-center gap-4 justify-between">
+                <div className="flex items-center gap-4 justify-between mr-2">
                   <p>{author.email}</p>
                   <CheckCircle2 color="green" />
                 </div>

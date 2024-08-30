@@ -80,6 +80,33 @@ export async function ChangeFirstName(formData: FormData) {
 
         revalidatePath('/account', 'layout');
     }
+export async function ChangeLastName(formData: FormData) {
+    const supabase = createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        console.log('User not found');
+        throw new Error("User not authenticated");
+    }
+
+    const last_name = formData.get('last_name') as string | null;
+
+    if (!last_name) {
+        console.log('Last Name is missing');
+        throw new Error("Last Name is required");
+    }
+
+  
+        await prisma.author.update({
+            where: { id: user.id },
+            data: {
+                last_name,
+            },
+        });
+
+        revalidatePath('/account', 'layout');
+    }
 
    
 

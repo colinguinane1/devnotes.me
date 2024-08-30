@@ -109,10 +109,13 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
     >
       <div className="grid gap-2">
         <Label htmlFor="username">Username</Label>
+
         <Input
           id="username"
           name="username"
           placeholder="Enter your new username"
+          pattern="^[a-zA-Z0-9]+$"
+          title="Username can only contain letters and numbers"
         />
       </div>
       <Button type="submit" disabled={loading}>
