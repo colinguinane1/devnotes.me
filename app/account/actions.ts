@@ -109,43 +109,40 @@ export async function ChangeLastName(formData: FormData) {
     }
 
 
-export async function ChangeProfilePicture() {
-    const supabase = createClient();
 
-    const { data: { user } } = await supabase.auth.getUser();
+export async function ChangeProfilePicture(fileName: string) {
+  const supabase = createClient();
 
-    if (!user) {
-        console.log('User not found');
-        throw new Error("User not authenticated");
-    }
+  const { data: { user } } = await supabase.auth.getUser();
 
-    // Retrieve the public URL for the avatar
-    const { data: publicUrlData } = supabase.storage
-        .from('avatars')
-        .getPublicUrl(`${user.id}/avatar`);
+  if (!user) {
+    console.log('User not found');
+    throw new Error("User not authenticated");
+  }
 
+  // Retrieve the public URL for the newly uploaded avatar
+  const { data: publicUrlData } = supabase.storage
+    .from('avatars')
+    .getPublicUrl(fileName);
 
+  const image_url = publicUrlData.publicUrl;
+  console.log("Public URL:", image_url);
 
-    const image_url = publicUrlData.publicUrl;
-    console.log("Public URL:", image_url);
+  try {
+    await prisma.author.update({
+      where: { id: user.id },
+      data: {
+        image_url,
+      },
+    });
 
-    try {
-        await prisma.author.update({
-            where: { id: user.id },
-            data: {
-                image_url,
-            },
-        });
-
-        revalidatePath('/account', 'layout');
-        console.log("Profile picture updated successfully");
-    } catch (error) {
-        console.error("Error updating profile picture:", error);
-        throw error;
-    }
+    revalidatePath('/account', 'layout');
+    console.log("Profile picture updated successfully");
+  } catch (error) {
+    console.error("Error updating profile picture:", error);
+    throw error;
+  }
 }
-
-
    
 
 

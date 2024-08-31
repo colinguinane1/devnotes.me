@@ -17,6 +17,8 @@ import ChangeProfilePictureDialog from "@/components/account/ChangeProfilePicDia
 import ChangeLastNameDialog from "@/components/account/ChangeLastName";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { defaultAvatar } from "@/data/SiteData";
 
 export default async function AccountPage() {
   const supabase = createClient();
@@ -63,13 +65,12 @@ export default async function AccountPage() {
                 <h1 className="font-bold py-2 text-lg">Avatar</h1>
                 <div className="flex items-center gap-4 justify-between">
                   <p>
-                    <Image
-                      src={author.image_url || "Cant find image"}
-                      className="rounded-full"
-                      width={50}
-                      height={50}
-                      alt={"pfp"}
-                    ></Image>
+                    {author.image_url && (
+                      <Avatar>
+                        <AvatarImage src={author.image_url}></AvatarImage>
+                        <AvatarFallback>{defaultAvatar}</AvatarFallback>
+                      </Avatar>
+                    )}
                   </p>
                   <ChangeProfilePictureDialog />
                 </div>

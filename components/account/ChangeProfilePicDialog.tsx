@@ -1,5 +1,3 @@
-// ChangeProfilePicClient.tsx
-
 "use client";
 
 import { useState } from "react";
@@ -27,15 +25,11 @@ import {
 } from "@/components/ui/drawer";
 import { Pencil } from "lucide-react";
 import { Input } from "../ui/input";
+import Loading from "../ui/loader-spinner";
 
 export default function ChangeProfilePicClient() {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [open, setOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [uploadError, setUploadError] = useState<string | null>(null);
-  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
-
-  const data = [{ title: "Change Avatar", description: "Change your avatar." }];
 
   if (isDesktop) {
     return (
@@ -47,7 +41,7 @@ export default function ChangeProfilePicClient() {
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{data[0].title}</DialogTitle>
+            <DialogTitle>Change Avatar</DialogTitle>
           </DialogHeader>
           <ProfilePicForm />
         </DialogContent>
@@ -64,7 +58,7 @@ export default function ChangeProfilePicClient() {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className="text-left">
-          <DrawerTitle>{data[0].title}</DrawerTitle>
+          <DrawerTitle>Change Avatar</DrawerTitle>
         </DrawerHeader>
         <ProfilePicForm className="px-4" />
         <DrawerFooter className="pt-2">
@@ -81,6 +75,8 @@ function ProfilePicForm({ className }: React.ComponentProps<"form">) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
@@ -91,6 +87,7 @@ function ProfilePicForm({ className }: React.ComponentProps<"form">) {
     if (!selectedFile) return;
 
     try {
+      setLoading(true);
       const supabase = createClient();
 
       // Ensure the user is authenticated
@@ -100,10 +97,11 @@ function ProfilePicForm({ className }: React.ComponentProps<"form">) {
         return;
       }
 
-      const user = session?.session?.user.id;
+      const userId = session?.session?.user.id;
 
       const fileData = await selectedFile.arrayBuffer();
-      const fileName = `${user}/avatar`;
+      const timestamp = new Date().getTime();
+      const fileName = `${userId}/avatar_${timestamp}`; // Appending timestamp
 
       const mimeType = selectedFile.type || "application/octet-stream";
 
@@ -116,18 +114,23 @@ function ProfilePicForm({ className }: React.ComponentProps<"form">) {
         });
 
       if (error) {
+        setLoading(false);
         setUploadError("Error uploading file: " + error.message);
       } else {
+        setLoading(false);
         setUploadSuccess(true);
         setUploadError(null);
         console.log("File uploaded successfully:", data);
-        ChangeProfilePicture();
+
+        // Trigger server-side function to update profile picture URL in the database
+        await ChangeProfilePicture(fileName);
       }
     } catch (err) {
       console.error("An unexpected error occurred:", err);
       setUploadError("An unexpected error occurred.");
     }
   };
+
   return (
     <div className="p-4">
       <div className="mt-4">
@@ -135,8 +138,11 @@ function ProfilePicForm({ className }: React.ComponentProps<"form">) {
       </div>
       <div className="mt-4 flex justify-end">
         <p></p>
-        <Button className="w-full" onClick={handleSave}>
-          Save
+        <Button disabled={loading} className="w-full" onClick={handleSave}>
+          <div className="flex items-center gap-2">
+            {loading && <Loading />}
+            Save
+          </div>
         </Button>
       </div>
       {uploadError && <p className="mt-2 text-red-500">{uploadError}</p>}
