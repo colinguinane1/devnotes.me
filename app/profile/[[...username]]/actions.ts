@@ -4,6 +4,41 @@ import prisma from "@/prisma/db";
 import { revalidatePath } from "next/cache";
 
 
+export async function uploadProfilePicture(userId: string, file: File) {
+const supabase = createClient();
+const filePath = `/${userId}/profile/${file.name}`;
+
+try{
+    const { error } = await supabase.storage.from("profile-pictures").upload(filePath, file)
+    if (error) {
+        console.error("Error uploading file:", error);
+        throw error;
+    }
+    const { data } = supabase.storage.from("profile-pictures").getPublicUrl(filePath);
+    if(!data){
+        console.error("Error getting public URL:", error);
+        throw error;
+    }
+
+    await prisma.author.update({
+        where: { id: userId },
+        data: {
+            image_url: data.publicUrl
+        }
+    });
+
+    return { success: true, publicUrl: data.publicUrl}
+    } catch(error)
+    {
+        console.error("Error uploading profile picture:", error);
+        throw error;
+    }
+}
+
+
+
+
+
 export async function subscribe(subscriberId: string, subscribedToId: string) {
       const supabase = createClient();
 

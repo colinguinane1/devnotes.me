@@ -52,11 +52,24 @@ export default async function blog({ params }: { params: { slug: string } }) {
 
   incrementViews(blog.id);
   return (
-    <section className="p-4  py-8 min-h-screen">
-      <div>
-        <div className="border-b ">
-          <div className="flex  items-center">
+    <section className="p-4  py-8 min-h-screen  flex flex-col items-center ">
+      <div className="max-w-[40rem] w-full">
+        <div className=" ">
+          <div className="flex  items-center justify-between ">
             <h1 className="text-4xl pb-2 font-bold">{blog.title}</h1>
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center w-full gap-2">
+                {" "}
+                <p className="flex items-center gap-1">
+                  <EyeIcon size={15} />
+                  {blog.views}{" "}
+                </p>
+                <p className="flex items-center gap-1">
+                  <Heart size={15} />
+                  {blog.likes}{" "}
+                </p>
+              </div>
+            </div>
           </div>
           <div className="flex    p-2 w-full   justify-between items-center  gap-2">
             <div className="flex items-center gap-2">
@@ -99,26 +112,15 @@ export default async function blog({ params }: { params: { slug: string } }) {
         </div>{" "}
         <div className=" text-sm text-gray-400">
           <div className="justify-between mt-1 flex items-center">
-            <div className="flex items-center gap-2">
-              {" "}
-              <p className="flex items-center gap-1">
-                <EyeIcon size={15} />
-                {blog.views}{" "}
-              </p>
-              <p className="flex items-center gap-1">
-                <Heart size={15} />
-                {blog.likes}{" "}
-              </p>
-            </div>
             <div>
               {" "}
               <p>{calculateReadingTime(blog.content)} minute read</p>
             </div>
           </div>
         </div>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center w-full">
           <div
-            className="prose text-black  dark:text-gray-400 dark:prose-headings:text-white "
+            className="prose text-black w-full  dark:text-gray-400 dark:prose-headings:text-white "
             dangerouslySetInnerHTML={{ __html: blog.content }}
           ></div>
         </div>

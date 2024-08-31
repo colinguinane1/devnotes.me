@@ -7,6 +7,8 @@ import { Post } from "@prisma/client";
 import { Author } from "@prisma/client";
 import { Heart } from "lucide-react";
 import BlogDropdown from "../buttons/BlogDropdown";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { defaultAvatar } from "@/data/SiteData";
 
 interface BlogCardProps {
   post: Post;
@@ -37,13 +39,12 @@ export default function BlogCard({ post, author }: BlogCardProps) {
       </Link>
       <div className="flex absolute  border-t p-2 w-full bottom-1 left-0  justify-between items-center pr-4 gap-2">
         <div className="flex items-center gap-2">
-          <Image
-            className="rounded-full"
-            alt="user"
-            src={author.image_url || ""}
-            width={32}
-            height={32}
-          ></Image>
+          {author.image_url && (
+            <Avatar>
+              <AvatarImage src={author.image_url}></AvatarImage>
+              <AvatarFallback>{defaultAvatar}</AvatarFallback>
+            </Avatar>
+          )}
           <div className="text-sm">
             <p>{author.username}</p>{" "}
             <p className="text-gray-400">{formatDate(post.createdAt)}</p>

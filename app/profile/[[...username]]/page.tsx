@@ -6,12 +6,15 @@ import { formatDate } from "@/data/SiteData";
 import BlogCard from "@/components/global/BlogCard";
 import { createClient } from "@/app/utils/supabase/server";
 import { subscribe } from "./actions";
+import ProfilePictureUpload from "@/components/buttons/ProfilePictureUpload";
 import {
   SubscribeButton,
   UnsubscribeButton,
 } from "@/components/buttons/SubscribeButton";
 import UserCard from "@/components/global/UserCard";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { defaultAvatar } from "@/data/SiteData";
 
 const prisma = new PrismaClient();
 
@@ -80,17 +83,23 @@ export default async function ProfilePage({
     <main className=" overflow-y-auto min-h-screen  p-4">
       {author && (
         <div className="">
-          <Image
-            src={author?.image_url || "/default-avatar.png"}
-            alt="User Avatar"
-            className="rounded-full"
-            width={100}
-            height={100}
-          />
-          <h1 className="font-bold text-2xl py-3">{author.username}</h1>
+          <div className="flex items-center gap-4">
+            {author.image_url && (
+              <Avatar>
+                <AvatarImage src={author.image_url}></AvatarImage>
+                <AvatarFallback>{defaultAvatar}</AvatarFallback>
+              </Avatar>
+            )}
+            <div>
+              <div className="flex items-center gap-2 text-2xl font-bold">
+                <h1>{author.first_name !== "Null" && author.first_name}</h1>
+                <h1>{author.last_name !== "Null" && author.last_name}</h1>
+              </div>
+              <p className="">{author.username}</p>
+            </div>
+          </div>
           <p>Joined on: {formatDate(author?.created_at)}</p>
-          <p>UUiD: {author.id}</p>
-          <p>Email: {author.email}</p>{" "}
+
           {user?.id !== author?.id ? (
             <div className="pt-2">
               {user ? (
@@ -116,7 +125,7 @@ export default async function ProfilePage({
           ) : (
             <div className="pt-2">
               <Button disabled variant={"outline"}>
-                Can&apos;t Subscribe To Own Account
+                Subscribe
               </Button>
             </div>
           )}
