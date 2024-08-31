@@ -17,8 +17,8 @@ export default async function Header() {
     data: { user },
   } = await supabase.auth.getUser();
   return (
-    <div className="fixed  w-screen   z-30 p-2    top-0 py-3 ">
-      <div className="bg-opacity-85 bg-card/50  backdrop-blur-2xl relative  border rounded-lg p-2">
+    <div className="fixed  w-screen   z-30    top-0  ">
+      <div className="bg-opacity-85 bg-card/50  backdrop-blur-2xl relative    p-2">
         <ul className="flex items-center  text-lg font-semibold justify-between">
           <div className="hidden md:block ">
             <Link href="/">

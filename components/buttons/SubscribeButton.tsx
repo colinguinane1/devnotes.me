@@ -28,14 +28,14 @@ export function SubscribeButton({
   };
 
   return (
-    <Button onClick={handleSubscribe} disabled={isPending}>
+    <Button variant={"outline"} onClick={handleSubscribe} disabled={isPending}>
       {isPending ? (
         <div className="flex items-center gap-2">
           <Loading />
-          <p>Subscribing...</p>
+          <p>Following...</p>
         </div>
       ) : (
-        "Subscribe"
+        "Follow +"
       )}
     </Button>
   );
@@ -60,17 +60,18 @@ export function UnsubscribeButton({
 
   return (
     <Button
-      variant={"destructive"}
+      variant={"outline"}
       onClick={handleUnsubscribe}
       disabled={isPending}
+      className="hover:bg-red-200"
     >
       {isPending ? (
         <div className="flex items-center gap-2">
           <Loading />
-          <p>Unsubscribing...</p>
+          <p>Unfollowing...</p>
         </div>
       ) : (
-        "Unsubscribe"
+        "Following"
       )}
     </Button>
   );

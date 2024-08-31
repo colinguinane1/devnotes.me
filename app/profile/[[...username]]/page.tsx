@@ -15,6 +15,16 @@ import UserCard from "@/components/global/UserCard";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { defaultAvatar } from "@/data/SiteData";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  TwitterIcon,
+  LinkedinIcon,
+  GithubIcon,
+  HeartIcon,
+  Heart,
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { CalendarDaysIcon } from "lucide-react";
 
 const prisma = new PrismaClient();
 
@@ -70,7 +80,7 @@ export default async function ProfilePage({
     },
   });
 
-  const authorSubscribedTo = await prisma.subscription.findMany({
+  const authorFollowing = await prisma.subscription.findMany({
     where: {
       subscriberId: author.id,
     },
@@ -79,85 +89,124 @@ export default async function ProfilePage({
     },
   });
 
-  return (
-    <main className=" overflow-y-auto min-h-screen  p-4">
-      {author && (
-        <div className="">
-          <div className="flex items-center gap-4">
-            {author.image_url && (
-              <Avatar>
-                <AvatarImage src={author.image_url}></AvatarImage>
-                <AvatarFallback>{defaultAvatar}</AvatarFallback>
-              </Avatar>
-            )}
-            <div>
-              <div className="flex items-center gap-2 text-2xl font-bold">
-                <h1>{author.first_name !== "Null" && author.first_name}</h1>
-                <h1>{author.last_name !== "Null" && author.last_name}</h1>
-              </div>
-              <p className="">{author.username}</p>
-            </div>
-          </div>
-          <p>Joined on: {formatDate(author?.created_at)}</p>
+  const authorFollowers = await prisma.subscription.findMany({
+    where: {
+      subscribedToId: author.id,
+    },
+    include: {
+      subscriber: true, // Include the full Author object
+    },
+  });
 
-          {user?.id !== author?.id ? (
-            <div className="pt-2">
-              {user ? (
-                <div>
-                  {!isSubscribed ? (
-                    <SubscribeButton
-                      subscriberId={user.id}
-                      subscribeToId={author.id}
-                    />
-                  ) : (
-                    <UnsubscribeButton
-                      subscriberId={user.id}
-                      subscribeToId={author.id}
-                    />
-                  )}
-                </div>
-              ) : (
-                <Button>
-                  <Link href="/login">Sign In To Subscribe</Link>
-                </Button>
-              )}
+  return (
+    <div className="w-full min-h-screen mt-10 p-4 max-w-3xl mx-auto">
+      <div className="flex items-center gap-6 mb-8">
+        {author.image_url && (
+          <Avatar className="w-20 h-20">
+            <AvatarImage src={author.image_url} alt="@shadcn" />
+            <AvatarFallback>JD</AvatarFallback>
+          </Avatar>
+        )}
+        <div className="grid gap-2">
+          {author.first_name || author.last_name ? (
+            <div>
+              <h2 className="text-2xl font-bold">
+                {author.first_name} {author.last_name}
+              </h2>
+              <h2 className="">{author.username}</h2>
             </div>
           ) : (
-            <div className="pt-2">
-              <Button disabled variant={"outline"}>
-                Subscribe
-              </Button>
-            </div>
+            <h2 className="text-2xl font-bold">{author.username}</h2>
           )}
-          <div className="w-full overflow-hidden overflow-x-auto mt-4">
-            <h1 className="text-left text-2xl">User Posts</h1>
-            <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
-              {posts.map((post) => (
-                <BlogCard key={post.id} post={post} author={author} />
-              ))}
-            </div>
-          </div>
-          <div className="w-full overflow-hidden overflow-x-auto mt-4">
-            <h1 className="text-left text-2xl">Liked Posts</h1>
-            <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
-              {likedPosts.map((post) => (
-                <BlogCard key={post.id} post={post} author={author} />
-              ))}
-            </div>
-          </div>
-          <div className="w-full overflow-hidden overflow-x-auto mt-4">
-            <h1 className="text-left text-2xl">Subscriptions</h1>
-            <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
-              {authorSubscribedTo.map((subscriptions) => (
-                <UserCard
-                  key={subscriptions.id}
-                  author={subscriptions.subscribedTo}
-                />
-              ))}
-            </div>
+
+          <p className="text-muted-foreground">
+            I'm a passionate writer and blogger, sharing my thoughts on
+            technology, design, and the world around us.
+          </p>
+          <div className="flex items-center gap-4 text-muted-foreground">
+            <Link href="#" className="hover:underline" prefetch={false}>
+              <TwitterIcon className="w-5 h-5" />
+            </Link>
+            <Link href="#" className="hover:underline" prefetch={false}>
+              <LinkedinIcon className="w-5 h-5" />
+            </Link>
+            <Link href="#" className="hover:underline" prefetch={false}>
+              <GithubIcon className="w-5 h-5" />
+            </Link>
+            {user?.id !== author?.id ? (
+              <div className="">
+                {user ? (
+                  <div>
+                    {!isSubscribed ? (
+                      <SubscribeButton
+                        subscriberId={user.id}
+                        subscribeToId={author.id}
+                      />
+                    ) : (
+                      <UnsubscribeButton
+                        subscriberId={user.id}
+                        subscribeToId={author.id}
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <Button>
+                    <Link href="/login">Sign In To Subscribe</Link>
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div className="">
+                <Button disabled variant={"outline"}>
+                  Subscribe
+                </Button>
+              </div>
+            )}
           </div>
         </div>
-      )}
-    </main>
+      </div>
+      <Tabs defaultValue="posts" className="w-full">
+        <TabsList className="grid grid-cols-4 bg-card gap-2 mb-6">
+          <TabsTrigger value="posts">Posts ({posts.length})</TabsTrigger>
+          <TabsTrigger value="liked">
+            <Heart size={15} className="mr-1" />({likedPosts.length})
+          </TabsTrigger>
+          <TabsTrigger value="followers">
+            Followers ({authorFollowers.length})
+          </TabsTrigger>
+          <TabsTrigger value="following">
+            Following({authorFollowing.length})
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="posts">
+          <div className="grid gap-6 ">
+            {posts.map((post) => (
+              <BlogCard key={post.id} post={post} author={author} />
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="liked">
+          <div className="grid gap-6 ">
+            {likedPosts.map((post) => (
+              <BlogCard key={post.id} post={post} author={post.author} />
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="followers">
+          <div className="grid gap-4">
+            {authorFollowers.map((subscriber) => (
+              <UserCard key={subscriber.id} author={subscriber.subscriber} />
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="following">
+          <div className="grid gap-4">
+            {authorFollowing.map((subscriber) => (
+              <UserCard key={subscriber.id} author={subscriber.subscribedTo} />
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 }

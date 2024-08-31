@@ -13,13 +13,13 @@ export default async function TopBlogCarousel() {
   });
 
   return (
-    <div className="w-full overflow-hidden overflow-x-auto p-4">
-      <h1 className="text-left text-2xl">Top Blogs</h1>
-      <div className="flex gap-4 py-6 overflow-x-auto overflow-y-hidden h-[17rem]">
+    <section className="p-4">
+      <div className="grid gap-4 place-content-center md:grid-cols-2 ">
+        <h1 className="text-left text-2xl py-4">Trending</h1>
         {posts.map((post) => (
           <BlogCard key={post.id} post={post} author={post.author} />
         ))}
       </div>
-    </div>
+    </section>
   );
 }

@@ -9,9 +9,6 @@ const Home = () => {
     <>
       <HeroLanding />
       <TopBlogCarousel />
-      <MostRecentBlogs />
-      <MostLikedBlogs />
-      <TopAuthors />
     </>
   );
 };
