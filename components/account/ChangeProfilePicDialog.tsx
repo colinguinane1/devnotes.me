@@ -1,10 +1,11 @@
 // ChangeProfilePicClient.tsx
 
-"use client"; // This is necessary to make this a client component
+"use client";
 
 import { useState } from "react";
 import { createClient } from "@/app/utils/supabase/client";
 import { Button } from "../ui/button";
+import { ChangeProfilePicture } from "@/app/account/actions";
 
 export default function ChangeProfilePicClient() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -21,16 +22,28 @@ export default function ChangeProfilePicClient() {
     if (!selectedFile) return;
 
     try {
-      const fileData = await selectedFile.arrayBuffer();
-      const fileName = `${Date.now()}-${selectedFile.name}`; // Optionally prepend a timestamp to avoid overwrites
-
-      // Upload the file to Supabase storage
       const supabase = createClient();
+
+      // Ensure the user is authenticated
+      const { data: session } = await supabase.auth.getSession();
+      if (!session) {
+        setUploadError("You must be logged in to upload a file.");
+        return;
+      }
+
+      const user = session?.session?.user.id;
+
+      const fileData = await selectedFile.arrayBuffer();
+      const fileName = `${user}/avatar`;
+
+      const mimeType = selectedFile.type || "application/octet-stream";
+
       const { data, error } = await supabase.storage
         .from("avatars")
         .upload(fileName, fileData, {
-          cacheControl: "3600", // Optionally set cache control
-          upsert: true, // Prevent overwriting existing files
+          cacheControl: "3600",
+          upsert: true,
+          contentType: mimeType,
         });
 
       if (error) {
@@ -39,7 +52,7 @@ export default function ChangeProfilePicClient() {
         setUploadSuccess(true);
         setUploadError(null);
         console.log("File uploaded successfully:", data);
-        // Optionally, update the profile picture URL in the database here
+        ChangeProfilePicture();
       }
     } catch (err) {
       console.error("An unexpected error occurred:", err);
@@ -53,6 +66,7 @@ export default function ChangeProfilePicClient() {
         <input type="file" onChange={handleFileChange} />
       </div>
       <div className="mt-4 flex justify-end">
+        <p></p>
         <Button onClick={handleSave}>Save</Button>
       </div>
       {uploadError && <p className="mt-2 text-red-500">{uploadError}</p>}

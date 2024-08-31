@@ -26,6 +26,10 @@ const nextConfig = { reactStrictMode: true ,  images: {
       {
         protocol: 'https',
         hostname: 'external-content.duckduckgo.com',
+      },
+      {
+protocol: 'https',
+hostname: 'gktuazxnjcwahdrwuchb.supabase.co'
       }
     ],
   },

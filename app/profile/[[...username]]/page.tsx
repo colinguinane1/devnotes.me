@@ -81,18 +81,24 @@ export default async function ProfilePage({
     <main className=" overflow-y-auto min-h-screen  p-4">
       {author && (
         <div className="">
-          <Image
-            src={author?.image_url || "/default-avatar.png"}
-            alt="User Avatar"
-            className="rounded-full"
-            width={100}
-            height={100}
-          />
-          {user?.id === author?.id && <ProfilePictureUpload userId={user.id} />}
-          <h1 className="font-bold text-2xl py-3">{author.username}</h1>
+          <div className="flex items-center gap-4">
+            <Image
+              src={author?.image_url || "/default-avatar.png"}
+              alt="User Avatar"
+              className="rounded-full"
+              width={100}
+              height={100}
+            />
+            <div>
+              <div className="flex items-center gap-2 text-2xl font-bold">
+                <h1>{author.first_name !== "Null" && author.first_name}</h1>
+                <h1>{author.last_name !== "Null" && author.last_name}</h1>
+              </div>
+              <p className="">{author.username}</p>
+            </div>
+          </div>
           <p>Joined on: {formatDate(author?.created_at)}</p>
-          <p>UUiD: {author.id}</p>
-          <p>Email: {author.email}</p>{" "}
+
           {user?.id !== author?.id ? (
             <div className="pt-2">
               {user ? (
@@ -118,7 +124,7 @@ export default async function ProfilePage({
           ) : (
             <div className="pt-2">
               <Button disabled variant={"outline"}>
-                Can&apos;t Subscribe To Own Account
+                Subscribe
               </Button>
             </div>
           )}
