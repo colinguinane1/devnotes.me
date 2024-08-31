@@ -19,6 +19,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { defaultAvatar } from "@/data/SiteData";
+import { useToast } from "@/components/ui/use-toast";
+import CopyUserID from "@/components/account/CopyUserID";
 
 export default async function AccountPage() {
   const supabase = createClient();
@@ -116,10 +118,11 @@ export default async function AccountPage() {
                 </div>
               </div>
               <div className="">
-                <Label htmlFor="uuid">User ID</Label>
-                <div className="flex items-center">
-                  <Input placeholder={user.id} id="uuid" disabled></Input>
-                  <Button>Copy</Button>
+                <h1 className="font-bold py-2 text-lg">User ID</h1>
+
+                <div className="flex items-center justify-between">
+                  <p className="text-sm">{user.id}</p>
+                  <CopyUserID id={author.id} />
                 </div>
               </div>
             </CardContent>

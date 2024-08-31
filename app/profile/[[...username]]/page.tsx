@@ -13,6 +13,8 @@ import {
 } from "@/components/buttons/SubscribeButton";
 import UserCard from "@/components/global/UserCard";
 import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { defaultAvatar } from "@/data/SiteData";
 
 const prisma = new PrismaClient();
 
@@ -82,13 +84,12 @@ export default async function ProfilePage({
       {author && (
         <div className="">
           <div className="flex items-center gap-4">
-            <Image
-              src={author?.image_url || "/default-avatar.png"}
-              alt="User Avatar"
-              className="rounded-full"
-              width={100}
-              height={100}
-            />
+            {author.image_url && (
+              <Avatar>
+                <AvatarImage src={author.image_url}></AvatarImage>
+                <AvatarFallback>{defaultAvatar}</AvatarFallback>
+              </Avatar>
+            )}
             <div>
               <div className="flex items-center gap-2 text-2xl font-bold">
                 <h1>{author.first_name !== "Null" && author.first_name}</h1>
