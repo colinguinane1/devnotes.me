@@ -15,6 +15,8 @@ import ChangeFirstNameDialog from "@/components/account/ChangeFirstName";
 import Image from "next/image";
 import ChangeProfilePictureDialog from "@/components/account/ChangeProfilePicDialog";
 import ChangeLastNameDialog from "@/components/account/ChangeLastName";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default async function AccountPage() {
   const supabase = createClient();
@@ -110,6 +112,13 @@ export default async function AccountPage() {
                     {author.last_name}
                   </p>
                   <ChangeLastNameDialog />
+                </div>
+              </div>
+              <div className="">
+                <Label htmlFor="uuid">User ID</Label>
+                <div className="flex items-center">
+                  <Input placeholder={user.id} id="uuid" disabled></Input>
+                  <Button>Copy</Button>
                 </div>
               </div>
             </CardContent>
