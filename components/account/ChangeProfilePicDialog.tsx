@@ -6,12 +6,81 @@ import { useState } from "react";
 import { createClient } from "@/app/utils/supabase/client";
 import { Button } from "../ui/button";
 import { ChangeProfilePicture } from "@/app/account/actions";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Pencil } from "lucide-react";
+import { Input } from "../ui/input";
 
 export default function ChangeProfilePicClient() {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [open, setOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
 
+  const data = [{ title: "Change Avatar", description: "Change your avatar." }];
+
+  if (isDesktop) {
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button variant="ghost" size={"icon"}>
+            <Pencil size={15} />
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{data[0].title}</DialogTitle>
+          </DialogHeader>
+          <ProfilePicForm />
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <Button variant="ghost" size={"icon"}>
+          <Pencil size={15} />
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader className="text-left">
+          <DrawerTitle>{data[0].title}</DrawerTitle>
+        </DrawerHeader>
+        <ProfilePicForm className="px-4" />
+        <DrawerFooter className="pt-2">
+          <DrawerClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+}
+
+function ProfilePicForm({ className }: React.ComponentProps<"form">) {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
@@ -59,20 +128,21 @@ export default function ChangeProfilePicClient() {
       setUploadError("An unexpected error occurred.");
     }
   };
-
   return (
-    <>
+    <div className="p-4">
       <div className="mt-4">
-        <input type="file" onChange={handleFileChange} />
+        <Input className="flex" type="file" onChange={handleFileChange} />
       </div>
       <div className="mt-4 flex justify-end">
         <p></p>
-        <Button onClick={handleSave}>Save</Button>
+        <Button className="w-full" onClick={handleSave}>
+          Save
+        </Button>
       </div>
       {uploadError && <p className="mt-2 text-red-500">{uploadError}</p>}
       {uploadSuccess && (
         <p className="mt-2 text-green-500">File uploaded successfully!</p>
       )}
-    </>
+    </div>
   );
 }
