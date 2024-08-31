@@ -22,6 +22,11 @@ import {
   GithubIcon,
   HeartIcon,
   Heart,
+  Link2,
+  Link2Off,
+  ArrowBigRight,
+  ChevronRight,
+  ChevronRightIcon,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { CalendarDaysIcon } from "lucide-react";
@@ -120,7 +125,7 @@ export default async function ProfilePage({
           )}
 
           <p className="text-muted-foreground">
-            I'm a passionate writer and blogger, sharing my thoughts on
+            Im a passionate writer and blogger, sharing my thoughts on
             technology, design, and the world around us.
           </p>
           <div className="flex items-center gap-4 text-muted-foreground">
@@ -166,15 +171,17 @@ export default async function ProfilePage({
         </div>
       </div>
       <Tabs defaultValue="posts" className="w-full">
-        <TabsList className="grid grid-cols-4 bg-card gap-2 mb-6">
-          <TabsTrigger value="posts">Posts ({posts.length})</TabsTrigger>
-          <TabsTrigger value="liked">
-            <Heart size={15} className="mr-1" />({likedPosts.length})
+        <TabsList className="grid grid-cols-4  bg-card gap-2 mb-6">
+          <TabsTrigger className="text-sm" value="posts">
+            Posts ({posts.length})
           </TabsTrigger>
-          <TabsTrigger value="followers">
+          <TabsTrigger className="text-sm" value="liked">
+            Likes ({likedPosts.length})
+          </TabsTrigger>
+          <TabsTrigger className="text-sm" value="followers">
             Followers ({authorFollowers.length})
           </TabsTrigger>
-          <TabsTrigger value="following">
+          <TabsTrigger className="text-sm" value="following">
             Following({authorFollowing.length})
           </TabsTrigger>
         </TabsList>
@@ -195,14 +202,40 @@ export default async function ProfilePage({
         <TabsContent value="followers">
           <div className="grid gap-4">
             {authorFollowers.map((subscriber) => (
-              <UserCard key={subscriber.id} author={subscriber.subscriber} />
+              <div
+                className="flex items-center justify-between"
+                key={subscriber.id}
+              >
+                <UserCard author={subscriber.subscriber} />
+                <Link
+                  className="flex items-center"
+                  href={`/profile/${subscriber.subscriber.username}`}
+                >
+                  <Button variant={"ghost"}>
+                    Profile <ChevronRightIcon size={15} />
+                  </Button>
+                </Link>
+              </div>
             ))}
           </div>
         </TabsContent>
         <TabsContent value="following">
           <div className="grid gap-4">
             {authorFollowing.map((subscriber) => (
-              <UserCard key={subscriber.id} author={subscriber.subscribedTo} />
+              <div
+                className="flex items-center justify-between"
+                key={subscriber.id}
+              >
+                <UserCard author={subscriber.subscribedTo} />
+                <Link
+                  className="flex items-center"
+                  href={`/profile/${subscriber.subscribedTo.username}`}
+                >
+                  <Button variant={"ghost"}>
+                    Profile <ChevronRightIcon size={15} />
+                  </Button>
+                </Link>
+              </div>
             ))}
           </div>
         </TabsContent>

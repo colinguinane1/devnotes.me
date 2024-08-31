@@ -14,8 +14,8 @@ export default async function TopBlogCarousel() {
 
   return (
     <section className="p-4">
+      <h1 className="text-2xl text-center py-4 font-medium">Trending</h1>
       <div className="grid gap-4 place-content-center md:grid-cols-2 ">
-        <h1 className="text-left text-2xl py-4">Trending</h1>
         {posts.map((post) => (
           <BlogCard key={post.id} post={post} author={post.author} />
         ))}

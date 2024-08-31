@@ -9,6 +9,7 @@ import UserIcon from "../buttons/UserIcon";
 import { Button } from "../ui/button";
 import { createClient } from "@/app/utils/supabase/server";
 import { signOut } from "@/app/login/actions";
+import Image from "next/image";
 
 export default async function Header() {
   const supabase = await createClient();
@@ -20,20 +21,27 @@ export default async function Header() {
     <div className="fixed  w-screen   z-30    top-0  ">
       <div className="bg-opacity-85 bg-card/50  backdrop-blur-2xl relative    p-2">
         <ul className="flex items-center  text-lg font-semibold justify-between">
-          <div className="hidden md:block ">
-            <Link href="/">
+          <div className="flex items-center ">
+            <Link href="/" className="">
               <h1 className="font-extrabold dark:text-secondary-dark text-primary-light text-blue-400">
-                {Logo}
+                <Image
+                  src="/icon.png"
+                  alt="logo"
+                  width={40}
+                  height={40}
+                  quality={100}
+                />
               </h1>
-            </Link>
+            </Link>{" "}
+            <Sidebar />
           </div>
-          <Sidebar />
+
           <div className="absolute md:hidden flex items-center justify-center w-full">
-            <Link href="/">
+            {/* <Link href="/">
               <h1 className="font-extrabold dark:text-secondary-dark text-primary-light text-blue-400">
                 devnotes
               </h1>
-            </Link>
+            </Link> */}
           </div>
 
           <div className=" gap-4  hidden md:flex">

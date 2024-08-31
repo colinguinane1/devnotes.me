@@ -14,22 +14,28 @@ interface UserCardProps {
 
 export default function UserCard({ author }: UserCardProps) {
   return (
-    <div
-      className="bg-card  rounded-lg shadow-lg relative h-full w-[15rem] flex-shrink-0 p-3"
-      key={author.id}
-    >
+    <div className=" " key={author.id}>
       <Link
-        className="flex flex-col mt-4 justify-center items-center"
+        className="flex  mt-4 justify-center gap-2 items-center"
         href={`/profile/${author.username}`}
       >
         <Image
           className="rounded-full"
           src={author.image_url || ""}
           alt="pfp"
-          width={100}
-          height={100}
+          width={50}
+          height={50}
         ></Image>
-        <h1 className="font-semibold capitalize text-lg ">{author.username}</h1>
+        {author.first_name || author.last_name ? (
+          <div>
+            <h2 className="text-lg font-bold">
+              {author.first_name} {author.last_name}
+            </h2>
+            <h2 className="">@{author.username?.toLowerCase()}</h2>
+          </div>
+        ) : (
+          <h2>{author.username}</h2>
+        )}
 
         <div className="absolute text-sm bottom-16 right-1">
           {/* <div className="flex items-center gap-1">
@@ -42,13 +48,6 @@ export default function UserCard({ author }: UserCardProps) {
           </div>{" "} */}
         </div>
       </Link>
-      <div className="flex absolute  border-t p-2 w-full bottom-1 left-0  justify-between items-center pr-4 gap-2">
-        {" "}
-        <p className="font-light relative h-full w-full text-sm text-gray-400">
-          Member since:<br></br>
-          {formatDate(author.created_at)}
-        </p>{" "}
-      </div>
     </div>
   );
 }
