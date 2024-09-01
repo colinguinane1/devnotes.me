@@ -25,7 +25,8 @@ export default async function Header() {
             <Link href="/" className="">
               <h1 className="font-extrabold dark:text-secondary-dark text-primary-light text-blue-400">
                 <Image
-                  src="/icon.png"
+                  className="rounded-md shadow-3xl"
+                  src="/icon2.png"
                   alt="logo"
                   width={40}
                   height={40}
