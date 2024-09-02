@@ -29,7 +29,7 @@ export default async function Header() {
               <h1 className="font-extrabold dark:text-secondary-dark text-primary-light text-blue-400">
                 <Image
                   className="rounded-md shadow-3xl"
-                  src="/icon2.png"
+                  src="/icon8.png"
                   alt="logo"
                   width={40}
                   height={40}
