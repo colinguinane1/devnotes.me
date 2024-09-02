@@ -42,7 +42,7 @@ export default function Sidebar() {
                 key={nav.href}
               >
                 <SheetClose asChild>
-                  <Link className="font-medium " href={nav.href}>
+                  <Link className="font-medium w-full h-full" href={nav.href}>
                     {nav.name}
                   </Link>
                 </SheetClose>
