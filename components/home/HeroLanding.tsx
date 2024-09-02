@@ -12,16 +12,17 @@ import WordPullUp from "../magicui/word-pull-up";
 import DotPattern from "../magicui/dot-pattern";
 import { FadeText } from "../magicui/fade-text";
 import AnimatedGridPattern from "../magicui/animated-grid-pattern";
+import { RxMagnifyingGlass } from "react-icons/rx";
 
 export default function HeroLanding() {
   return (
     <div className="grid  w-screen place-content-center -mt-20 text-4xl font-semibold">
       <div className="z-10 flex pb-4  items-center justify-center"></div>{" "}
       <div>
-        <div className="relative flex h-[600px]  w-screen flex-col items-center justify-center overflow-hidden  ">
+        <div className="relative w-screen flex h-[600px] flex-col items-center justify-center overflow-hidden  ">
           <div
             className={cn(
-              "group rounded-full  border  z-10  bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200  dark:bg-neutral-900 dark:hover:bg-neutral-800 "
+              "group rounded-full   border  z-10  bg-neutral-100 text-base text-white transition-all ease-in hover:cursor-pointer hover:bg-neutral-200  dark:bg-neutral-900 dark:hover:bg-neutral-800 "
             )}
           >
             <div className="">
@@ -49,32 +50,17 @@ export default function HeroLanding() {
                 text="Let's get started on your next blog."
               />
             </p>
-            <div className="flex justify-between gap-4 py-8  mx-16">
+            <div className="flex justify-between gap-4 p-4 ">
               <Button
-                className="flex items-center group z-[100] w-[10rem] gap-1"
+                className="flex items-center group z-[100] w-full gap-1"
                 variant={"default"}
               >
                 <Link href="/explore" className="flex items-center gap-1">
-                  Learn More
-                  <ArrowRight
-                    className="group-hover:ml-1 transition-all scale-105"
+                  <RxMagnifyingGlass
+                    className="group-hover:mr-1 transition-all group-hover:scale-125"
                     size={12}
                   />
-                </Link>
-              </Button>
-              <Button
-                className="flex items-center group w-[10rem] gap-1"
-                variant={"outline"}
-              >
-                <Link
-                  href="/explore"
-                  className="flex  text-black dark:text-white items-center gap-1"
-                >
-                  See Docs
-                  <ArrowRight
-                    className="group-hover:ml-1 transition-all scale-105"
-                    size={12}
-                  />
+                  Explore
                 </Link>
               </Button>
             </div>
@@ -86,7 +72,7 @@ export default function HeroLanding() {
             repeatDelay={1}
             className={cn(
               "[mask-image:radial-gradient(500px_circle_at_center,white,transparent)]",
-              "inset-x-0 inset-y-[-30%] h-[150%] skew-y-12"
+              "inset-x-0 inset-y-[-30%]  h-[150%] skew-y-12"
             )}
           />
         </div>
