@@ -98,7 +98,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {blog.author.image_url && (
-                <Avatar className="w-20 h-20">
+                <Avatar className="w-10 h-10">
                   <AvatarImage src={blog.author.image_url} alt="@shadcn" />
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>

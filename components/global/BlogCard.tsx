@@ -20,7 +20,7 @@ interface BlogCardProps {
 export default function BlogCard({ post, author }: BlogCardProps) {
   return (
     <Card
-      className="w-full max-w-lg rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl"
+      className="w-full max-w-lg rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
       key={post.id}
     >
       <Link

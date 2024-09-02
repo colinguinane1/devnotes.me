@@ -13,7 +13,8 @@ export default function Loading() {
         <div className="h-screen w-screen bg-gradient-to-r  animate-spin-around">
           <div className="grid place-content-center h-[90vh]">
             <div className="flex items-center flex-col gap-2">
-              <span className="loading loading-ball loading-lg scale-150"></span>
+              <span className="loading bg-primary loading-ball loading-lg scale-150"></span>
+              {/* <p className="animate-pulse">Loading...</p> */}
             </div>
           </div>
         </div>
