@@ -36,7 +36,7 @@ export default function BlogCard({ post, author }: BlogCardProps) {
           className="w-full h-52 object-cover transition-all group-hover:scale-105"
           style={{ aspectRatio: "800/450", objectFit: "cover" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
       </Link>
       <CardContent className="p-6 space-y-4">
         <div className="space-y-2">
