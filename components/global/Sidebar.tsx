@@ -25,7 +25,7 @@ export default function Sidebar() {
     <>
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" size={"icon"}>
+          <Button variant="outline" className="bg-card" size={"icon"}>
             <LucideMenu />
           </Button>
         </SheetTrigger>
@@ -35,13 +35,18 @@ export default function Sidebar() {
         >
           <div className="flex flex-col gap-6">
             {NavigationData.map((nav) => (
-              <SheetClose key={nav.href} asChild>
-                <Button variant={"outline"} type="submit">
-                  <Link className="font-medium" href={nav.href}>
+              <Button
+                className="bg-card"
+                variant={"outline"}
+                type="submit"
+                key={nav.href}
+              >
+                <SheetClose asChild>
+                  <Link className="font-medium " href={nav.href}>
                     {nav.name}
                   </Link>
-                </Button>
-              </SheetClose>
+                </SheetClose>
+              </Button>
             ))}
           </div>
           <SheetFooter>

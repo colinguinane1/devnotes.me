@@ -42,7 +42,7 @@ export default async function UserIcon() {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button
-              className="flex  items-center justify-center "
+              className="flex  items-center justify-center bg-card"
               variant={"outline"}
             >
               <div className="flex items-center space-x-2">
