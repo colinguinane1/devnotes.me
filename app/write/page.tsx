@@ -100,7 +100,8 @@ export default function Home() {
             <div className="pb-4">
               <label>Description:</label>
               <input
-                maxLength={25}
+                maxLength={250}
+                required
                 minLength={10}
                 name="description"
                 className="border rounded-md p-1 w-full"

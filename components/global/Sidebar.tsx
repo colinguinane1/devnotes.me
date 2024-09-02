@@ -1,45 +1,57 @@
-"use client";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "../ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { RiMenu2Line } from "react-icons/ri";
-import { NavigationData } from "@/data/SiteData";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { NavigationData } from "@/data/SiteData";
 
-const Sidebar = () => {
-  const pathname = usePathname();
+import { BsMenuButton } from "react-icons/bs";
+import { CiMenuBurger } from "react-icons/ci";
+import { LucideMenu } from "lucide-react";
+import UserIcon from "../buttons/UserIcon";
+import { ModeToggle } from "../buttons/ThemeSwitcher";
+
+export default function Sidebar() {
   return (
-    <div className="block md:hidden z-10">
-      {" "}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant={"ghost"} size="icon" className="outline-none">
-            <RiMenu2Line size={20} />
+    <>
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="outline" size={"icon"}>
+            <LucideMenu />
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          className="bg-transparent backdrop-blur-lg"
-          align="start"
+        </SheetTrigger>
+        <SheetContent
+          side="left"
+          className="flex flex-col justify-between h-full w-fit rounded-lg backdrop-blur-md bg-card/90"
         >
-          {NavigationData.map((nav) => (
-            <DropdownMenuItem
-              className={`${pathname === nav.href && "bg-secondary"}`}
-              key={nav.href}
-            >
-              <Link prefetch={false} href={nav.href}>
-                {" "}
-                {nav.name}
-              </Link>
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+          <div className="flex flex-col gap-6">
+            {NavigationData.map((nav) => (
+              <SheetClose asChild>
+                <Button variant={"outline"} type="submit">
+                  <Link className="font-medium" href={nav.href}>
+                    {nav.name}
+                  </Link>
+                </Button>
+              </SheetClose>
+            ))}
+          </div>
+          <SheetFooter>
+            <div className="flex items-center justify-between gap-2">
+              <ModeToggle />
+              <UserIcon />
+            </div>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+    </>
   );
-};
-export default Sidebar;
+}

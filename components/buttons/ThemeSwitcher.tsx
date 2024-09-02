@@ -20,7 +20,7 @@ export function ModeToggle() {
   return (
     <Button
       onClick={() => themeCheck()}
-      variant={"ghost"}
+      variant={"outline"}
       size="icon"
       className="outline-none z-10"
     >

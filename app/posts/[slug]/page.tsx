@@ -12,6 +12,7 @@ import {
   HeartIcon,
 } from "lucide-react";
 import { Metadata } from "next";
+import { Textarea } from "@/components/ui/textarea";
 
 import { CiWarning } from "react-icons/ci";
 import { incrementViews } from "@/lib/actions";
@@ -24,6 +25,8 @@ import { calculateReadingTime, formatDate } from "@/data/SiteData";
 import BlogNotFound from "@/components/global/BlogNotFound";
 import { createClient } from "@/app/utils/supabase/server";
 import { checkPostLiked, likePost, removeLike } from "./actions";
+import { ClockIcon } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   const blog = await prisma.post.findUnique({
@@ -52,79 +55,73 @@ export default async function blog({ params }: { params: { slug: string } }) {
 
   incrementViews(blog.id);
   return (
-    <section className="p-4  py-8 min-h-screen  flex flex-col items-center ">
-      <div className="max-w-[40rem] w-full">
-        <div className=" ">
-          <div className="flex  items-center justify-between ">
-            <h1 className="text-4xl pb-2 font-bold">{blog.title}</h1>
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center w-full gap-2">
-                {" "}
-                <p className="flex items-center gap-1">
-                  <EyeIcon size={15} />
-                  {blog.views}{" "}
-                </p>
-                <p className="flex items-center gap-1">
-                  <Heart size={15} />
-                  {blog.likes}{" "}
-                </p>
+    <div className="container  mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16 lg:py-24">
+      <div className="grid grid-cols-1   md:grid-cols-[2fr_1fr] gap-8 md:gap-12">
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <ClockIcon className="h-5 w-5 text-muted-foreground" />
+              <span className="text-sm font-medium">
+                {calculateReadingTime(blog.content)} minute read
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <HeartIcon className="h-5 w-5 text-primary" />
+              <span className="text-sm font-medium">{blog.likes}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <EyeIcon className="h-5 w-5 text-muted-foreground" />
+              <span className="text-sm font-medium">{blog.views} views</span>
+            </div>
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+            {blog.title}
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground mb-8">
+            {blog.description}
+          </p>
+          <article className="prose min-h-[60vh] dark:prose-invert">
+            <p dangerouslySetInnerHTML={{ __html: blog.content }}></p>
+          </article>
+        </div>
+        <div className="mt-8 bg-card rounded-lg p-6 md:p-8 lg:p-10 space-y-4">
+          <h3 className="text-lg font-semibold">Leave a Comment</h3>
+          <div className="flex gap-2">
+            <Textarea
+              placeholder="Write your comment..."
+              className="flex-1 min-h-[100px]"
+            />
+            <Button>Submit</Button>
+          </div>
+        </div>
+        <div className="bg-card h-fit rounded-lg p-6 md:p-8 lg:p-10 space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {blog.author.image_url && (
+                <Avatar className="w-20 h-20">
+                  <AvatarImage src={blog.author.image_url} alt="@shadcn" />
+                  <AvatarFallback>JD</AvatarFallback>
+                </Avatar>
+              )}
+              <div>
+                <div className="text-sm font-medium">
+                  {blog.author.username}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Published on {formatDate(blog.createdAt)}
+                </div>
               </div>
             </div>
+            <Link
+              href={`/profile/${blog.author.username}`}
+              className="text-sm font-medium text-primary hover:underline"
+              prefetch={false}
+            >
+              Read more
+            </Link>
           </div>
-          <div className="flex    p-2 w-full   justify-between items-center  gap-2">
-            <div className="flex items-center gap-2">
-              <Link
-                className="flex items-center gap-2"
-                href={`/profile/${blog.author.username}`}
-              >
-                <Image
-                  className="rounded-full"
-                  alt="user"
-                  src={blog.author.image_url || ""}
-                  width={32}
-                  height={32}
-                ></Image>
-                <div className="text-sm">
-                  <p>{blog.author.username}</p>{" "}
-                  <p className="text-gray-400">{formatDate(blog.createdAt)}</p>
-                </div>
-              </Link>
-            </div>{" "}
-            <div className="flex items-center">
-              {user ? (
-                <div>
-                  {postLiked ? (
-                    <PostLikedManager postId={blog.id} />
-                  ) : (
-                    <RemovePostLikeManager postId={blog.id} />
-                  )}
-                </div>
-              ) : (
-                <Button size={"icon"}>
-                  <Link href="/login">
-                    <Heart />
-                  </Link>
-                </Button>
-              )}
-              <BlogDropdown slug={blog.slug} author={blog.author} />
-            </div>
-          </div>
-        </div>{" "}
-        <div className=" text-sm text-gray-400">
-          <div className="justify-between mt-1 flex items-center">
-            <div>
-              {" "}
-              <p>{calculateReadingTime(blog.content)} minute read</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center w-full">
-          <div
-            className="prose text-black w-full  dark:text-gray-400 dark:prose-headings:text-white "
-            dangerouslySetInnerHTML={{ __html: blog.content }}
-          ></div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

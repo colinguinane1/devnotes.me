@@ -30,6 +30,10 @@ export default async function UserIcon() {
     },
   });
 
+  if (!userExists) {
+    return null;
+  }
+
   return (
     <div className="z-10">
       {!user ? (
@@ -38,11 +42,11 @@ export default async function UserIcon() {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button
-              className="flex  items-center z-[100]"
-              variant={"ghost"}
-              size={"icon"}
+              className="flex  items-center justify-center "
+              variant={"outline"}
             >
               <div className="flex items-center space-x-2">
+                <p>Logged In as</p>
                 {userExists?.image_url && (
                   <Image
                     className="rounded-full"
@@ -57,7 +61,7 @@ export default async function UserIcon() {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="bg-transparent backdrop-blur-md"
-            align="end"
+            align="start"
           >
             <DropdownMenuItem className="cursor-pointer flex">
               <Link className="flex items-center" href="/account">

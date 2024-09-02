@@ -20,19 +20,7 @@ export async function checkSlug(slug: string) {
     return false;
 }
 
-export async function checkDescription(description: string | null, formData: FormData) {
-    if (description && description.trim() !== "") {
-        // Return the existing description if it is provided and not empty
-        return description;
-    }
 
-    const content = formData.get('content') as string;
-    if (!content) {
-        throw new Error("Content is required to generate a description");
-    }
-
-    return generateDescription(content);
-}
 
 // Server action for creating a post
 export async function createPost(formData: FormData) {
@@ -48,8 +36,8 @@ export async function createPost(formData: FormData) {
 
   try {
     const title = formData.get('title') as string;
-    const descriptionInput = formData.get('description') as string | null;
-    const description = await checkDescription(descriptionInput, formData);
+    const description = formData.get('description') as string;
+
    
     const slug = generateSlug(title);
     const content = formData.get('content') as string;

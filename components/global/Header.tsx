@@ -18,10 +18,13 @@ export default async function Header() {
     data: { user },
   } = await supabase.auth.getUser();
   return (
-    <div className="fixed  w-screen   z-30    top-0  ">
-      <div className="bg-opacity-85 bg-card/50  backdrop-blur-2xl relative    p-2">
+    <div className="fixed  w-screen  border-b  z-30    top-0  ">
+      <div className="bg-opacity-85 bg-card/50  backdrop-blur-2xl relative  px-4  py-2">
         <ul className="flex items-center  text-lg font-semibold justify-between">
-          <div className="flex items-center ">
+          <div className="flex md:hidden items-center ">
+            <Sidebar />
+          </div>{" "}
+          <div className="flex items-center gap-2">
             <Link href="/" className="">
               <h1 className="font-extrabold dark:text-secondary-dark text-primary-light text-blue-400">
                 <Image
@@ -34,9 +37,7 @@ export default async function Header() {
                 />
               </h1>
             </Link>{" "}
-            <Sidebar />
           </div>
-
           <div className="absolute md:hidden flex items-center justify-center w-full">
             {/* <Link href="/">
               <h1 className="font-extrabold dark:text-secondary-dark text-primary-light text-blue-400">
@@ -44,11 +45,10 @@ export default async function Header() {
               </h1>
             </Link> */}
           </div>
-
           <div className=" gap-4  hidden md:flex">
             {NavigationData.map((nav, index) => (
               <Link
-                className=" transition hover:text-blue-500 dark:hover:text-blue-300 dark:hover:bg-slate-700 hover:bg-slate-200 hover:bg-opacity-40 p-2 px-4 rounded-full "
+                className=" transition hover:text-blue-500 dark:hover:text-blue-300 dark:hover:bg-slate-700 hover:bg-slate-200 hover:bg-opacity-40 p-2 px-4 rounded-md "
                 key={index}
                 href={nav.href}
               >
@@ -56,7 +56,7 @@ export default async function Header() {
               </Link>
             ))}
           </div>
-          <div className="flex items-center gap-2 z-10">
+          {/* <div className="flex items-center gap-2 z-10">
             <ModeToggle />
             <div className="">
               {user !== null ? (
@@ -69,7 +69,7 @@ export default async function Header() {
                 </Button>
               )}
             </div>
-          </div>
+          </div> */}
         </ul>
       </div>
     </div>
