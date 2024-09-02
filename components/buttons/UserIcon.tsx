@@ -23,10 +23,17 @@ export default async function UserIcon() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  if (!user?.email) {
+    return (
+      <Button asChild>
+        <Link href="/login">Sign In</Link>
+      </Button>
+    );
+  }
 
   const userExists = await prisma.author.findUnique({
     where: {
-      email: user?.email,
+      email: user.email, // At this point, we know user.email is not undefined
     },
   });
 

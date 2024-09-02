@@ -21,8 +21,13 @@ export default async function Header() {
     <div className="fixed  w-screen  border-b  z-30    top-0  ">
       <div className="bg-opacity-85 bg-card/50  backdrop-blur-2xl relative  px-4  py-2">
         <ul className="flex items-center  text-lg font-semibold justify-between">
-          <div className="flex md:hidden items-center ">
+          <div className="flex md:hidden items-center gap-2 ">
             <Sidebar />
+            {!user && (
+              <Button>
+                <Link href="/login">Sign In</Link>
+              </Button>
+            )}
           </div>{" "}
           <div className="flex items-center gap-2">
             <Link href="/" className="">

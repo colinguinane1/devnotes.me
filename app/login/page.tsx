@@ -155,7 +155,7 @@ export default function Login({
                     <motion.p layout>Log In</motion.p>
                   </Button>
 
-                  {/* <OAuthButtons />   --  disabled for the moment*/}
+                  <OAuthButtons />
                 </form>
               </CardContent>
             </Card>
@@ -273,7 +273,7 @@ export default function Login({
                     </motion.p>
                   </Button>
 
-                  {/* <OAuthButtons />   --  disabled for the moment*/}
+                  <OAuthButtons />
                 </form>
               </CardContent>
             </Card>
