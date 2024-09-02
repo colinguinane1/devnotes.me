@@ -35,7 +35,7 @@ export default function Sidebar() {
         >
           <div className="flex flex-col gap-6">
             {NavigationData.map((nav) => (
-              <SheetClose asChild>
+              <SheetClose key={nav.href} asChild>
                 <Button variant={"outline"} type="submit">
                   <Link className="font-medium" href={nav.href}>
                     {nav.name}
