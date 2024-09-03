@@ -52,10 +52,13 @@ export default async function ProfilePage({
   const author = await prisma.author.findUnique({
     where: { username },
   });
+  if (!author) {
+    return notFound();
+  }
 
   const posts = await prisma.post.findMany({
     where: {
-      user_id: user?.id,
+      user_id: author.id,
     },
     include: {
       author: true,
@@ -66,7 +69,7 @@ export default async function ProfilePage({
     where: {
       likedBy: {
         some: {
-          id: user?.id,
+          id: author.id,
         },
       },
     },
@@ -75,17 +78,14 @@ export default async function ProfilePage({
     },
   });
 
-  // If user not found, return a 404 page
-  if (!author) {
-    return notFound();
-  }
-
-  const isSubscribed = await prisma.subscription.findFirst({
-    where: {
-      subscribedToId: author.id,
-      subscriberId: user?.id,
-    },
-  });
+  const isSubscribed = user
+    ? await prisma.subscription.findFirst({
+        where: {
+          subscribedToId: author.id,
+          subscriberId: user?.id,
+        },
+      })
+    : null;
 
   const authorFollowing = await prisma.subscription.findMany({
     where: {
@@ -157,7 +157,7 @@ export default async function ProfilePage({
                   </div>
                 ) : (
                   <Button>
-                    <Link href="/login">Sign In To Subscribe</Link>
+                    <Link href="/login">Follow</Link>
                   </Button>
                 )}
               </div>
@@ -175,19 +175,20 @@ export default async function ProfilePage({
       <Tabs defaultValue="posts" className="w-full">
         <TabsList className="grid grid-cols-4  bg-card gap-2 mb-6">
           <TabsTrigger className="text-sm" value="posts">
-            Posts ({posts.length})
+            Posts
           </TabsTrigger>
           <TabsTrigger className="text-sm" value="liked">
-            Likes ({likedPosts.length})
+            Likes
           </TabsTrigger>
           <TabsTrigger className="text-sm" value="followers">
-            Followers ({authorFollowers.length})
+            Followers
           </TabsTrigger>
           <TabsTrigger className="text-sm" value="following">
-            Following({authorFollowing.length})
+            Following
           </TabsTrigger>
         </TabsList>
         <TabsContent value="posts">
+          <h1 className="pb-4 text-2xl">Posts ({posts.length})</h1>
           <div className="grid gap-6 ">
             {posts.map((post) => (
               <BlogCard key={post.id} post={post} author={author} />
@@ -195,6 +196,7 @@ export default async function ProfilePage({
           </div>
         </TabsContent>
         <TabsContent value="liked">
+          <h1 className="pb-4 text-2xl">Liked Posts ({likedPosts.length})</h1>
           <div className="grid gap-6 ">
             {likedPosts.map((post) => (
               <BlogCard key={post.id} post={post} author={post.author} />
@@ -202,6 +204,9 @@ export default async function ProfilePage({
           </div>
         </TabsContent>
         <TabsContent value="followers">
+          <h1 className="pb-4 text-2xl">
+            Followers ({authorFollowers.length})
+          </h1>
           <div className="grid gap-4">
             {authorFollowers.map((subscriber) => (
               <div
@@ -222,6 +227,9 @@ export default async function ProfilePage({
           </div>
         </TabsContent>
         <TabsContent value="following">
+          <h1 className="pb-4 text-2xl">
+            Following ({authorFollowing.length})
+          </h1>
           <div className="grid gap-4">
             {authorFollowing.map((subscriber) => (
               <div
@@ -233,7 +241,7 @@ export default async function ProfilePage({
                   className="flex items-center"
                   href={`/profile/${subscriber.subscribedTo.username}`}
                 >
-                  <Button variant={"ghost"}>
+                  <Button className="mt-4" variant={"ghost"}>
                     Profile <ChevronRightIcon size={15} />
                   </Button>
                 </Link>
