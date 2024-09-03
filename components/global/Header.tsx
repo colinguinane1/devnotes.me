@@ -37,7 +37,7 @@ export default async function Header() {
                 />
               </h1>
             </Link>{" "}
-            <UserIcon />
+          
           </div>
           <div className="absolute md:hidden flex items-center justify-center w-full">
             {/* <Link href="/">
