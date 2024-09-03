@@ -107,37 +107,41 @@ export async function signup(formData: FormData) {
 }
 
 export async function checkAuthorExists(user: any) {
+    if (!user || !user.id) {
+        console.error('Invalid user object, cannot check author existence');
+        return;
+    }
+
     const author = await prisma.author.findUnique({
         where: {
-            id: user?.id,
-        }
-        
-    })
-    
+            email: user.email,  // Use email for checking existence instead of id
+        },
+    });
+
     if (!author) {
-        console.log("User doesnt exist, creating author...")
-        createAuthor(user)
+        console.log("User doesn't exist, creating author...");
+        await createAuthor(user);
+    } else {
+        console.log("User already exists in the database");
     }
 }
 
 export async function createAuthor(user: any) {
-      try{
+    try {
         await prisma.author.create({
-        data: {
-        id: user?.id,
-        email: user.email,
-      first_name: user.user_metadata?.first_name || "null",
-                    last_name: user.user_metadata?.last_name || "null",
-                    image_url: user.user_metadata?.avatar_url || defaultAvatar,
-                    username: user.user_metadata?.username || "null",
-      
-    },
-    
-})} catch (error) {
-    console.error('Error creating user in database:', error);
-    return redirect('/login?m=Error creating user in database.&type=error&form=signup');
-}
-console.log('User created! :', user?.id);
+            data: {
+                id: user.id,
+                email: user.email,
+                full_name: user.user_metadata?.full_name || user.email,
+                image_url: user.user_metadata?.avatar_url || defaultAvatar,
+                username: user.user_metadata?.username || `user_${Date.now()}`,
+            },
+        });
+        console.log('User created:', user.id);
+    } catch (error) {
+        console.error('Error creating user in database:', error);
+    }
+    console.log("Author created successfully" + user.id)
 }
 
 
@@ -167,23 +171,11 @@ export async function oAuthSignIn(provider: Provider) {
         return redirect('/login?m=Could not authenticate user')
     }
 
+    console.log("here")
+
     return redirect(data.url)
 }
-export async function handleOAuthCallback() {
-    const supabase = createClient();
 
-    // Get the logged-in user
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (error || !user) {
-        return redirect('/login?m=Could not retrieve user after OAuth')
-    }
-
-    // Check if the author exists
-    await checkAuthorExists(user);
-
-    // Redirect to the homepage or a dashboard
-    return redirect('/');
-}
 
 
 export async function signInWithGithub() {

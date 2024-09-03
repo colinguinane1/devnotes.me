@@ -24,7 +24,7 @@ export default function BlogCard({ post, author }: BlogCardProps) {
       key={post.id}
     >
       <Link
-        href={`/posts/${post.slug}`}
+        href={`https://devnotes.me/posts/${post.slug}`}
         className="group block relative overflow-hidden"
         prefetch={false}
       >

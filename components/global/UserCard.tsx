@@ -26,11 +26,9 @@ export default function UserCard({ author }: UserCardProps) {
           width={50}
           height={50}
         ></Image>
-        {author.first_name || author.last_name ? (
+        {author.full_name ? (
           <div>
-            <h2 className="text-lg font-bold">
-              {author.first_name} {author.last_name}
-            </h2>
+            <h2 className="text-lg font-bold">{author.full_name}</h2>
             <h2 className="">@{author.username?.toLowerCase()}</h2>
           </div>
         ) : (

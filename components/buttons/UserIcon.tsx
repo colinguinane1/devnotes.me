@@ -33,7 +33,7 @@ export default async function UserIcon() {
 
   const userExists = await prisma.author.findUnique({
     where: {
-      email: user.email, // At this point, we know user.email is not undefined
+      id: user.id, // At this point, we know user.email is not undefined
     },
   });
 

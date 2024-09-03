@@ -27,6 +27,7 @@ import {
   ArrowBigRight,
   ChevronRight,
   ChevronRightIcon,
+  CheckCircle,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { CalendarDaysIcon } from "lucide-react";
@@ -114,17 +115,16 @@ export default async function ProfilePage({
           </Avatar>
         )}
         <div className="grid gap-2">
-          {author.first_name || author.last_name ? (
+          {author.full_name ? (
             <div>
               <h2 className="text-2xl font-bold">
-                {author.first_name} {author.last_name}
+                {author.full_name} {author.verified && <CheckCircle />}
               </h2>
               <h2 className="">@{author.username}</h2>
             </div>
           ) : (
             <h2 className="text-2xl font-bold">{author.username}</h2>
           )}
-
           <p className="text-muted-foreground">
             Im a passionate writer and blogger, sharing my thoughts on
             technology, design, and the world around us.
@@ -171,7 +171,7 @@ export default async function ProfilePage({
           </div>
         </div>
       </div>
-      <FollowingDrawer authorFollowers={authorFollowers} />
+
       <Tabs defaultValue="posts" className="w-full">
         <TabsList className="grid grid-cols-4  bg-card gap-2 mb-6">
           <TabsTrigger className="text-sm" value="posts">

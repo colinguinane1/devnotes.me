@@ -11,17 +11,25 @@ generator client {
 }
 
 model Author {
-  id              String    @id @unique
-  first_name      String?
-  last_name       String?
-  image_url       String?
-  last_sign_in_at DateTime?
-  created_at      DateTime  @default(now())
-  updated_at      DateTime? @updatedAt
-  username        String?   @unique
-  email           String    @unique
-  Posts           Post[]    @relation("author")
-  likedPosts      Post[]    @relation("likedBy")
+  id                   String    @id @unique
+  full_name            String?
+  verified             Boolean?  @default(false)
+  bio                  String?
+  pref_displayFullName Boolean?  @default(true)
+  pref_displayEmail    Boolean?  @default(false)
+  pref_displayBio      Boolean?  @default(true)
+  pref_twitterLink     String?
+  pref_githubLink      String?
+  pref_linkedinLink    String?
+  pref_discordLink     String?
+  image_url            String?
+  last_sign_in_at      DateTime?
+  created_at           DateTime  @default(now())
+  updated_at           DateTime? @updatedAt
+  username             String?   @unique
+  email                String    @unique
+  Posts                Post[]    @relation("author")
+  likedPosts           Post[]    @relation("likedBy")
 
   // Relationships
   subscribers   Subscription[] @relation("Subscriptions")

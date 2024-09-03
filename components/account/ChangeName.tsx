@@ -25,19 +25,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Check, CheckCircle, Pencil } from "lucide-react";
-import {
-  ChangeFirstName,
-  ChangeLastName,
-  ChangeUsername,
-} from "@/app/account/actions";
+import { ChangeName } from "@/app/account/actions";
 import Loading from "../ui/loader-spinner";
 
-export default function ChangeLastNameDialog() {
+export default function ChangeNameDialog() {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const data = [
-    { title: "Change First Name", description: "Change your first name." },
+    { title: "Change Name", description: "Change your first name." },
   ];
 
   if (isDesktop) {
@@ -51,7 +47,6 @@ export default function ChangeLastNameDialog() {
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>{data[0].title}</DialogTitle>
-            <DialogDescription>{data[0].description}</DialogDescription>
           </DialogHeader>
           <ProfileForm />
         </DialogContent>
@@ -69,7 +64,6 @@ export default function ChangeLastNameDialog() {
       <DrawerContent>
         <DrawerHeader className="text-left">
           <DrawerTitle>{data[0].title}</DrawerTitle>
-          <DrawerDescription>{data[0].description}</DrawerDescription>
         </DrawerHeader>
         <ProfileForm className="px-4" />
         <DrawerFooter className="pt-2">
@@ -96,7 +90,7 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
     const formData = new FormData(event.currentTarget);
 
     try {
-      await ChangeLastName(formData);
+      await ChangeName(formData);
       setSuccess(true);
       // Optionally close the drawer or dialog here if you want to hide the form after success
     } catch (err: any) {
@@ -112,23 +106,17 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
       onSubmit={handleSubmit}
     >
       <div className="grid gap-2">
-        <Label htmlFor="username">First Name</Label>
-        <Input
-          id="last_name"
-          name="last_name"
-          placeholder="Enter your new last name"
-        />
+        <Label htmlFor="name">Name</Label>
+        <Input id="name" name="name" placeholder="Enter your new name" />
       </div>
       <Button type="submit" disabled={loading}>
-        {loading ? <Loading /> : "Update Last Name"}
+        {loading ? <Loading /> : "Update Name"}
       </Button>
       {error && <p className="text-red-500">{error}</p>}
       {success && (
-        <div className="bg-green-300 dark:bg-green-500/90 flex items-center gap-2 max-w-fit px-2 rounded-md">
+        <div className="bg-green-500/50 flex items-center gap-2 max-w-fit px-2 rounded-md">
           <CheckCircle size={15} color="rgb(134 239 172)" />
-          <p className="text-green-500 dark:text-green-100 ">
-            Last Name updated successfully!
-          </p>
+          <p className="text-green-300">Name updated successfully!</p>
         </div>
       )}
     </form>

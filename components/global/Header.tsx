@@ -23,11 +23,6 @@ export default async function Header() {
         <ul className="flex items-center  text-lg font-semibold justify-between">
           <div className="flex md:hidden items-center gap-2 ">
             <Sidebar />
-            {!user && (
-              <Button>
-                <Link href="/login">Sign In</Link>
-              </Button>
-            )}
           </div>{" "}
           <div className="flex items-center gap-2">
             <Link href="/" className="">
@@ -42,6 +37,7 @@ export default async function Header() {
                 />
               </h1>
             </Link>{" "}
+            <UserIcon />
           </div>
           <div className="absolute md:hidden flex items-center justify-center w-full">
             {/* <Link href="/">

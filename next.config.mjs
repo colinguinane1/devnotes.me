@@ -30,6 +30,10 @@ const nextConfig = { reactStrictMode: true ,  images: {
       {
 protocol: 'https',
 hostname: 'gktuazxnjcwahdrwuchb.supabase.co'
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com'
       }
     ],
   },

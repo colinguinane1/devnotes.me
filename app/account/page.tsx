@@ -11,10 +11,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, Pencil } from "lucide-react";
 import ChangeUsername from "@/components/account/ChangeUsername";
-import ChangeFirstNameDialog from "@/components/account/ChangeFirstName";
+import ChangeNameDialog from "@/components/account/ChangeName";
 import Image from "next/image";
 import ChangeProfilePictureDialog from "@/components/account/ChangeProfilePicDialog";
-import ChangeLastNameDialog from "@/components/account/ChangeLastName";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -92,31 +92,19 @@ export default async function AccountPage() {
                 </div>
               </div>
               <div className="text-sm">
-                <h1 className="font-bold py-2 text-lg">First Name</h1>
+                <h1 className="font-bold py-2 text-lg">Name</h1>
                 <div className="flex items-center gap-4 justify-between">
                   <p
                     className={`${
-                      author.first_name === "null" && "text-gray-400"
+                      author.full_name === "null" && "text-gray-400"
                     }`}
                   >
-                    {author.first_name}
+                    {author.full_name}
                   </p>
-                  <ChangeFirstNameDialog />
+                  <ChangeNameDialog />
                 </div>
               </div>
-              <div className="text-sm">
-                <h1 className="font-bold py-2 text-lg">Last Name</h1>
-                <div className="flex items-center gap-4 justify-between">
-                  <p
-                    className={`${
-                      author.last_name === "null" && "text-gray-400"
-                    }`}
-                  >
-                    {author.last_name}
-                  </p>
-                  <ChangeLastNameDialog />
-                </div>
-              </div>
+
               <div className="">
                 <h1 className="font-bold py-2 text-lg">User ID</h1>
 
