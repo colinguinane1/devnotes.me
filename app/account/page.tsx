@@ -15,12 +15,20 @@ import ChangeNameDialog from "@/components/account/ChangeName";
 import Image from "next/image";
 import ChangeProfilePictureDialog from "@/components/account/ChangeProfilePicDialog";
 
-import { Input } from "@/components/ui/input";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { defaultAvatar } from "@/data/SiteData";
-import { useToast } from "@/components/ui/use-toast";
-import CopyUserID from "@/components/account/CopyUserID";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ChevronRightIcon } from "lucide-react";
+import { formatDate } from "@/data/SiteData";
+import ChangeBioDialog from "@/components/account/ChangeBio";
+import VerifiedUser from "@/components/ui/verified";
 
 export default async function AccountPage() {
   const supabase = createClient();
@@ -46,76 +54,131 @@ export default async function AccountPage() {
 
   if (!author) {
     <section className="min-h-screen grid place-content-center">
-      <div className="-mt-32">
+      <div className="-mt-30">
         <h1>Account</h1>
         <p>Author Profile cannot be found. {user.id}</p>
       </div>
     </section>;
   } else
     return (
-      <section className="min-h-screen  grid place-content-center">
-        <div className="-mt-32 ">
-          <Card className="w-[95vw]">
-            <CardHeader>
-              <CardTitle>Account</CardTitle>
-              <CardDescription>
-                Change your account details here.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-sm">
-                <h1 className="font-bold py-2 text-lg">Avatar</h1>
-                <div className="flex items-center gap-4 justify-between">
-                  <p>
-                    {author.image_url && (
-                      <Avatar>
-                        <AvatarImage src={author.image_url}></AvatarImage>
-                        <AvatarFallback>{defaultAvatar}</AvatarFallback>
-                      </Avatar>
-                    )}
-                  </p>
-                  <ChangeProfilePictureDialog />
+      <div className="flex flex-col w-full -mt-2 min-h-screen bg-background">
+        <header className="bg-card py-6 px-4 md:px-6">
+          <div className="container mx-auto max-w-5xl">
+            <h1 className="text-2xl font-bold text-foreground">
+              Account Settings
+            </h1>
+          </div>
+        </header>
+        <main className="flex-1 py-8 px-4 md:px-6">
+          <div className="container mx-auto max-w-5xl">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr]">
+              <div className="bg-card rounded-lg p-6">
+                <div className="flex items-center gap-4">
+                  {author.image_url && (
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage src={author.image_url} alt="User Avatar" />
+                      <AvatarFallback>JD</AvatarFallback>
+                    </Avatar>
+                  )}
+                  <div>
+                    <div className="text-lg font-medium text-foreground">
+                      {author.full_name ? (
+                        <div>
+                          <h2 className="flex items-center gap-2">
+                            {author.full_name}{" "}
+                            {author.verified && <VerifiedUser />}
+                          </h2>
+                          <h2 className="">@{author.username}</h2>
+                        </div>
+                      ) : (
+                        <h2 className="">{author.username}</h2>
+                      )}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {author.email}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="text-sm">
-                <h1 className="font-bold py-2 text-lg">Email</h1>
-                <div className="flex items-center gap-4 justify-between mr-2">
-                  <p>{author.email}</p>
-                  <CheckCircle2 color="green" />
-                </div>
+              <div className="bg-card rounded-lg p-6">
+                <Collapsible className="grid gap-4">
+                  <CollapsibleTrigger className="flex items-center justify-between text-lg font-medium text-foreground [&[data-state=open]>svg]:rotate-90">
+                    Personal Information
+                    <ChevronRightIcon className="h-5 w-5 transition-transform" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="grid gap-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="name">Name</Label>
+                        <div className="flex items-center justify-between">
+                          <p>{author.full_name ? author.full_name : "-"}</p>
+                          <ChangeNameDialog />
+                        </div>
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="name">Email</Label>
+                        <div className=" flex-col">
+                          <p>{author.email}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+                <Collapsible className="grid gap-4">
+                  <CollapsibleTrigger className="flex items-center justify-between text-lg font-medium text-foreground [&[data-state=open]>svg]:rotate-90">
+                    Security
+                    <ChevronRightIcon className="h-5 w-5 transition-transform" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="grid gap-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                          id="password"
+                          type="password"
+                          defaultValue="********"
+                        />
+                      </div>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+                <Collapsible className="grid gap-4">
+                  <CollapsibleTrigger className="flex items-center justify-between text-lg font-medium text-foreground [&[data-state=open]>svg]:rotate-90">
+                    Notifications
+                    <ChevronRightIcon className="h-5 w-5 transition-transform" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="grid gap-4">
+                      <div className="flex items-center gap-2">
+                        <Checkbox id="email-notifications" defaultChecked />
+                        <Label htmlFor="email-notifications">
+                          Email Notifications
+                        </Label>
+                      </div>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+                <Collapsible className="grid gap-4">
+                  <CollapsibleTrigger className="flex items-center justify-between text-lg font-medium text-foreground [&[data-state=open]>svg]:rotate-90">
+                    Profile
+                    <ChevronRightIcon className="h-5 w-5 transition-transform" />
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="grid gap-4">
+                      <div className="flex flex-col">
+                        {" "}
+                        <Label>Profile Bio</Label>
+                        <div className="flex items-center justify-between">
+                          {author.bio ? author.bio : "-"} <ChangeBioDialog />
+                        </div>
+                      </div>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
               </div>
-              <div className="text-sm">
-                <h1 className="font-bold py-2 text-lg">Username</h1>
-                <div className="flex items-center gap-4 justify-between">
-                  <p>{author.username}</p>
-                  <ChangeUsername />
-                </div>
-              </div>
-              <div className="text-sm">
-                <h1 className="font-bold py-2 text-lg">Name</h1>
-                <div className="flex items-center gap-4 justify-between">
-                  <p
-                    className={`${
-                      author.full_name === "null" && "text-gray-400"
-                    }`}
-                  >
-                    {author.full_name}
-                  </p>
-                  <ChangeNameDialog />
-                </div>
-              </div>
-
-              <div className="">
-                <h1 className="font-bold py-2 text-lg">User ID</h1>
-
-                <div className="flex items-center justify-between">
-                  <p className="text-sm">{user.id}</p>
-                  <CopyUserID id={author.id} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
+            </div>
+          </div>
+        </main>
+      </div>
     );
 }

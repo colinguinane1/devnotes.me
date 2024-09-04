@@ -111,7 +111,7 @@ export default async function ProfilePage({
     <div className="w-full min-h-screen mt-10 p-4 max-w-3xl mx-auto">
       <div className="flex items-center gap-6 mb-8">
         {author.image_url && (
-          <Avatar className="w-32 h-32">
+          <Avatar className="w-20 h-20">
             <AvatarImage src={author.image_url} alt="@shadcn" />
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
@@ -127,10 +127,7 @@ export default async function ProfilePage({
           ) : (
             <h2 className="text-2xl font-bold">{author.username}</h2>
           )}
-          <p className="text-muted-foreground">
-            Im a passionate writer and blogger, sharing my thoughts on
-            technology, design, and the world around us.
-          </p>
+          <p className="text-muted-foreground">{author.bio}</p>
           <div className="flex items-center gap-4 text-muted-foreground">
             <Link href="#" className="hover:underline" prefetch={false}>
               <TwitterIcon className="w-5 h-5" />
