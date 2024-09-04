@@ -41,7 +41,7 @@ export default function BlogCard({ post, author }: BlogCardProps) {
       </Link>
       <CardContent className="p-6 space-y-4">
         <div className="space-y-2">
-          <Link href={`posts/${post.slug}`} className="block" prefetch={false}>
+          <Link href={`/posts/${post.slug}`} className="block" prefetch={false}>
             <h3 className="text-xl font-semibold transition-colors group-hover:text-primary">
               {post.title}
             </h3>
