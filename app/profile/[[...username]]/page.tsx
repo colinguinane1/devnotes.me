@@ -32,6 +32,8 @@ import {
 import { Card } from "@/components/ui/card";
 import { CalendarDaysIcon } from "lucide-react";
 import FollowingDrawer from "@/components/profile/FollowingDrawer";
+import { AiTwotoneCheckCircle } from "react-icons/ai";
+import VerifiedUser from "@/components/ui/verified";
 
 const prisma = new PrismaClient();
 
@@ -109,16 +111,16 @@ export default async function ProfilePage({
     <div className="w-full min-h-screen mt-10 p-4 max-w-3xl mx-auto">
       <div className="flex items-center gap-6 mb-8">
         {author.image_url && (
-          <Avatar className="w-20 h-20">
+          <Avatar className="w-32 h-32">
             <AvatarImage src={author.image_url} alt="@shadcn" />
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
         )}
-        <div className="grid gap-2">
+        <div className="grid gap-1">
           {author.full_name ? (
             <div>
-              <h2 className="text-2xl font-bold">
-                {author.full_name} {author.verified && <CheckCircle />}
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                {author.full_name} {author.verified && <VerifiedUser />}
               </h2>
               <h2 className="">@{author.username}</h2>
             </div>

@@ -12,6 +12,7 @@ import { defaultAvatar } from "@/data/SiteData";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { EyeIcon, HeartIcon } from "lucide-react";
+import VerifiedUser from "../ui/verified";
 interface BlogCardProps {
   post: Post;
   author: Author;
@@ -24,7 +25,7 @@ export default function BlogCard({ post, author }: BlogCardProps) {
       key={post.id}
     >
       <Link
-        href={`https://devnotes.me/posts/${post.slug}`}
+        href={`/posts/${post.slug}`}
         className="group block relative overflow-hidden"
         prefetch={false}
       >
@@ -56,7 +57,10 @@ export default function BlogCard({ post, author }: BlogCardProps) {
               </Avatar>
             )}
             <div className="flex flex-col">
-              <span className="font-medium">{author.username}</span>
+              <span className="font-medium flex gap-1 items-center">
+                {author.username}
+                {author.verified && <VerifiedUser />}
+              </span>
               <span className="text-sm text-muted-foreground">
                 Published on {formatDate(post.createdAt)}
               </span>

@@ -7,6 +7,7 @@ import { Post } from "@prisma/client";
 import { Author } from "@prisma/client";
 import { Heart } from "lucide-react";
 import BlogDropdown from "../buttons/BlogDropdown";
+import VerifiedUser from "../ui/verified";
 
 interface UserCardProps {
   author: Author;
@@ -28,11 +29,16 @@ export default function UserCard({ author }: UserCardProps) {
         ></Image>
         {author.full_name ? (
           <div>
-            <h2 className="text-lg font-bold">{author.full_name}</h2>
+            <h2 className="text-lg font-bold flex items-center gap-1">
+              {author.full_name} {author.verified && <VerifiedUser />}
+            </h2>
             <h2 className="">@{author.username?.toLowerCase()}</h2>
           </div>
         ) : (
-          <h2>{author.username}</h2>
+          <h2 className="flex items-center gap-1">
+            @{author.username}
+            {author.verified && <VerifiedUser />}
+          </h2>
         )}
 
         <div className="absolute text-sm bottom-16 right-1">

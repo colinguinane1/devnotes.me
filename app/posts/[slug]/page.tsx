@@ -27,6 +27,7 @@ import { createClient } from "@/app/utils/supabase/server";
 import { checkPostLiked, likePost, removeLike } from "./actions";
 import { ClockIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import VerifiedUser from "@/components/ui/verified";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   const blog = await prisma.post.findUnique({
@@ -104,8 +105,9 @@ export default async function blog({ params }: { params: { slug: string } }) {
                 </Avatar>
               )}
               <div>
-                <div className="text-sm font-medium">
-                  {blog.author.username}
+                <div className="text-sm font-medium flex items-center gap-1">
+                  {blog.author.username}{" "}
+                  {blog.author.verified && <VerifiedUser />}
                 </div>
                 <div className="text-xs text-muted-foreground">
                   Published on {formatDate(blog.createdAt)}
