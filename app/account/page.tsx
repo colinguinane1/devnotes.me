@@ -29,6 +29,7 @@ import { ChevronRightIcon } from "lucide-react";
 import { formatDate } from "@/data/SiteData";
 import ChangeBioDialog from "@/components/account/ChangeBio";
 import VerifiedUser from "@/components/ui/verified";
+import ChangeUsernameDialog from "@/components/account/ChangeUsername";
 
 export default async function AccountPage() {
   const supabase = createClient();
@@ -62,16 +63,9 @@ export default async function AccountPage() {
   } else
     return (
       <div className="flex flex-col w-full -mt-2 min-h-screen bg-background">
-        <header className="bg-card py-6 px-4 md:px-6">
-          <div className="container mx-auto max-w-5xl">
-            <h1 className="text-2xl font-bold text-foreground">
-              Account Settings
-            </h1>
-          </div>
-        </header>
-        <main className="flex-1 py-8 px-4 md:px-6">
-          <div className="container mx-auto max-w-5xl">
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-[200px_1fr]">
+        <main className="flex ">
+          <div className=" w-full">
+            <div className="grid grid-cols-1 gap-8">
               <div className="bg-card rounded-lg p-6">
                 <div className="flex items-center gap-4">
                   {author.image_url && (
@@ -165,6 +159,15 @@ export default async function AccountPage() {
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <div className="grid gap-4">
+                      {" "}
+                      <div className="flex flex-col">
+                        {" "}
+                        <Label>Username</Label>
+                        <div className="flex items-center justify-between">
+                          {author.username ? author.username : "-"}{" "}
+                          <ChangeUsernameDialog />
+                        </div>
+                      </div>
                       <div className="flex flex-col">
                         {" "}
                         <Label>Profile Bio</Label>
