@@ -35,7 +35,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Analytics />
           <Header />
-          <div className="pt-[4.5rem]">{children}</div>
+          <div className="pt-[3.8rem]">{children}</div>
           <Footer />
           <Toaster />
         </ThemeProvider>
