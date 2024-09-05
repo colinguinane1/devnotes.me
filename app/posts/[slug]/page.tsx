@@ -144,7 +144,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
                             </p>
                           </div>
                           <p>
-                            This blog post is absolutely hilarious! I can't
+                            This blog post is absolutely hilarious! I cant
                             believe the king actually tried to tax jokes. What a
                             ridiculous idea.
                           </p>
@@ -168,7 +168,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
                             </p>
                           </div>
                           <p>
-                            I can't wait to read more about Jokester and his
+                            I cant wait to read more about Jokester and his
                             adventures. This is such a fun and creative story!
                           </p>
                         </div>
