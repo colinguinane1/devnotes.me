@@ -95,6 +95,15 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+              "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      
                "spin-around": {
           "0%": {
             transform: "translateZ(0) rotate(0)",
@@ -122,14 +131,7 @@ const config = {
             "background-position": "calc(100% + var(--shimmer-width)) 0",
           },
         },
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
+      
            meteor: {
           "0%": { transform: "rotate(215deg) translateX(0)",},
        
@@ -139,6 +141,7 @@ const config = {
            }},
       },
       animation: {
+        
                 "spin-around": "spin-around calc(var(--speed) * 2) infinite linear",
         slide: "slide var(--speed) ease-in-out infinite alternate",
       
