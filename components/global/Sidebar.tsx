@@ -36,15 +36,17 @@ export default function Sidebar() {
         >
           <div className="flex flex-col gap-6">
             <SheetHeader>
-              <SheetTitle className="flex items-center gap-2">
+              <SheetTitle className="flex items-baseline gap-2">
                 <Image
                   src="/icon8.png"
                   className="shadow-2xl rounded-lg"
-                  width={40}
-                  height={40}
+                  width={30}
+                  height={30}
                   alt={"logo"}
                 ></Image>
-                <span>devnotes.me</span>
+                <span className="font-bold  text-4xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
+                  Devnotes
+                </span>
               </SheetTitle>
               <SheetDescription>Navigation Links</SheetDescription>
             </SheetHeader>
