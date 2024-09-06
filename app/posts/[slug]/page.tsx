@@ -112,12 +112,8 @@ export default async function blog({ params }: { params: { slug: string } }) {
           <AccordionItem value="comments">
             <AccordionTrigger className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-bold">Comments</h3>
-                <p className="text-muted-foreground">
-                  Share your thoughts on this blog post.
-                </p>
+                <h3 className="text-2xl font-bold ">Comments (0)</h3>
               </div>
-              <ChevronDownIcon className="h-5 w-5 text-muted-foreground" />
             </AccordionTrigger>
             <AccordionContent>
               <div className="space-y-6">
@@ -127,52 +123,54 @@ export default async function blog({ params }: { params: { slug: string } }) {
                     collapsible
                     className="mt-4 space-y-4"
                   >
-                    <AccordionItem value="comment-1">
-                      <AccordionTrigger className="flex items-start gap-4">
-                        <Avatar className="h-10 w-10 shrink-0 border">
-                          <AvatarImage
-                            src="/placeholder-user.jpg"
-                            alt="@shadcn"
-                          />
-                          <AvatarFallback>AC</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-medium">Acme Inc</h4>
-                            <p className="text-sm text-muted-foreground">
-                              2 days ago
-                            </p>
-                          </div>
-                          <p>
-                            This blog post is absolutely hilarious! I cant
-                            believe the king actually tried to tax jokes. What a
-                            ridiculous idea.
+                    <AccordionItem
+                      className="flex items-start gap-4 pb-4"
+                      value="comment-1"
+                    >
+                      <Avatar className="h-10 w-10 shrink-0 border">
+                        <AvatarImage
+                          src="/placeholder-user.jpg"
+                          alt="@shadcn"
+                        />
+                        <AvatarFallback>AC</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-medium">Acme Inc</h4>
+                          <p className="text-sm text-muted-foreground text-left">
+                            2 days ago
                           </p>
                         </div>
-                      </AccordionTrigger>
+                        <p className="text-left">
+                          This blog post is absolutely hilarious! I cant believe
+                          the king actually tried to tax jokes. What a
+                          ridiculous idea.
+                        </p>
+                      </div>
                     </AccordionItem>
-                    <AccordionItem value="comment-2">
-                      <AccordionTrigger className="flex items-start gap-4">
-                        <Avatar className="h-10 w-10 shrink-0 border">
-                          <AvatarImage
-                            src="/placeholder-user.jpg"
-                            alt="@shadcn"
-                          />
-                          <AvatarFallback>JD</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-medium">John Doe</h4>
-                            <p className="text-sm text-muted-foreground">
-                              3 days ago
-                            </p>
-                          </div>
-                          <p>
-                            I cant wait to read more about Jokester and his
-                            adventures. This is such a fun and creative story!
+                    <AccordionItem
+                      className="flex items-start gap-4 pb-4"
+                      value="comment-2"
+                    >
+                      <Avatar className="h-10 w-10 shrink-0 border">
+                        <AvatarImage
+                          src="/placeholder-user.jpg"
+                          alt="@shadcn"
+                        />
+                        <AvatarFallback>JD</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 space-y-2">
+                        <div className="flex items-center justify-between">
+                          <h4 className="font-medium">John Doe</h4>
+                          <p className="text-sm text-muted-foreground">
+                            3 days ago
                           </p>
                         </div>
-                      </AccordionTrigger>
+                        <p className="text-left">
+                          I cant wait to read more about Jokester and his
+                          adventures. This is such a fun and creative story!
+                        </p>
+                      </div>
                     </AccordionItem>
                   </Accordion>
                 </div>
@@ -187,9 +185,6 @@ export default async function blog({ params }: { params: { slug: string } }) {
                       <Button type="submit">Submit</Button>
                     </div>
                   </form>
-                </div>
-                <div className="flex justify-center">
-                  <Button variant="outline">Show all comments</Button>
                 </div>
               </div>
             </AccordionContent>

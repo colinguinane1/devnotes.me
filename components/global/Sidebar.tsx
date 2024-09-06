@@ -19,6 +19,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { LucideMenu } from "lucide-react";
 import UserIcon from "../buttons/UserIcon";
 import { ModeToggle } from "../buttons/ThemeSwitcher";
+import Image from "next/image";
 
 export default function Sidebar() {
   return (
@@ -31,9 +32,22 @@ export default function Sidebar() {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="flex flex-col justify-between h-full w-fit rounded-lg backdrop-blur-md bg-card/90"
+          className="flex flex-col justify-between h-full w-fit rounded-tr-lg rounded-br-lg backdrop-blur-md bg-card/90"
         >
           <div className="flex flex-col gap-6">
+            <SheetHeader>
+              <SheetTitle className="flex items-center gap-2">
+                <Image
+                  src="/icon8.png"
+                  className="shadow-2xl rounded-lg"
+                  width={40}
+                  height={40}
+                  alt={"logo"}
+                ></Image>
+                <span>devnotes.me</span>
+              </SheetTitle>
+              <SheetDescription>Navigation Links</SheetDescription>
+            </SheetHeader>
             {NavigationData.map((nav) => (
               <Button
                 className="bg-card"
