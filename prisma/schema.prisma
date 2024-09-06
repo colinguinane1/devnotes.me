@@ -34,6 +34,8 @@ model Author {
   // Relationships
   subscribers   Subscription[] @relation("Subscriptions")
   subscriptions Subscription[] @relation("Subscribers")
+  Comment       Comment[]
+  Reply         Reply[]
 
   @@schema("public")
 }
@@ -50,20 +52,46 @@ model Subscription {
 }
 
 model Post {
-  id          String   @id @default(cuid())
-  mdx         Boolean? @default(false)
+  id          String    @id @default(cuid())
+  mdx         Boolean?  @default(false)
   description String?
-  slug        String   @unique
+  slug        String    @unique
   title       String
   content     String
-  views       Int      @default(0)
-  likes       Int      @default(0)
-  author      Author   @relation("author", fields: [user_id], references: [id])
-  published   Boolean? @default(false)
-  updatedAt   DateTime @default(now())
-  createdAt   DateTime @default(now())
+  views       Int       @default(0)
+  likes       Int       @default(0)
+  author      Author    @relation("author", fields: [user_id], references: [id])
+  published   Boolean?  @default(false)
+  updatedAt   DateTime  @default(now())
+  createdAt   DateTime  @default(now())
   user_id     String
-  likedBy     Author[] @relation("likedBy")
+  likedBy     Author[]  @relation("likedBy")
+  Comments    Comment[]
+
+  @@schema("public")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  authorId  String
+  postId    String
+  author    Author   @relation(fields: [authorId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  Reply     Reply[]
+
+  @@schema("public")
+}
+
+model Reply {
+  id        String   @id @default(cuid())
+  content   String
+  authorId  String
+  commentId String
+  author    Author   @relation(fields: [authorId], references: [id])
+  comment   Comment  @relation(fields: [commentId], references: [id])
+  createdAt DateTime @default(now())
 
   @@schema("public")
 }
