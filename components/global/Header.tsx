@@ -37,7 +37,10 @@ export default async function Header() {
                 />
               </h1>
             </Link>{" "}
-          
+            <div className="flex items-center gap-3">
+              <UserIcon />
+              <ModeToggle />
+            </div>
           </div>
           <div className="absolute md:hidden flex items-center justify-center w-full">
             {/* <Link href="/">

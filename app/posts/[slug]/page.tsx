@@ -104,96 +104,98 @@ export default async function blog({ params }: { params: { slug: string } }) {
             {blog.title}
           </h1>
           <p className="text-muted-foreground">{blog.description}</p>
-          <p dangerouslySetInnerHTML={{ __html: blog.content }}></p>
-        </article>
-      </div>
-      <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16">
-        <Accordion type="single" collapsible className="grid gap-6">
-          <AccordionItem value="comments">
-            <AccordionTrigger className="flex items-center justify-between">
-              <div>
-                <h3 className="text-2xl font-bold ">Comments (0)</h3>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="space-y-6">
+          <p
+            className="prose dark:prose-invert "
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          ></p>
+          <Accordion type="single" collapsible>
+            <AccordionItem value="comments">
+              <AccordionTrigger className="flex items-center justify-between">
                 <div>
-                  <Accordion
-                    type="single"
-                    collapsible
-                    className="mt-4 space-y-4"
-                  >
-                    <AccordionItem
-                      className="flex items-start gap-4 pb-4"
-                      value="comment-1"
+                  <h3 className="text-2xl font-bold ">Comments (0)</h3>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="space-y-6">
+                  <div>
+                    <Accordion
+                      type="single"
+                      collapsible
+                      className="mt-4 space-y-4"
                     >
-                      <Avatar className="h-10 w-10 shrink-0 border">
-                        <AvatarImage
-                          src="/placeholder-user.jpg"
-                          alt="@shadcn"
-                        />
-                        <AvatarFallback>AC</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 space-y-2">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium">Acme Inc</h4>
-                          <p className="text-sm text-muted-foreground text-left">
-                            2 days ago
+                      <AccordionItem
+                        className="flex items-start gap-4 pb-4"
+                        value="comment-1"
+                      >
+                        <Avatar className="h-10 w-10 shrink-0 border">
+                          <AvatarImage
+                            src="/placeholder-user.jpg"
+                            alt="@shadcn"
+                          />
+                          <AvatarFallback>AC</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-medium">Acme Inc</h4>
+                            <p className="text-sm text-muted-foreground text-left">
+                              2 days ago
+                            </p>
+                          </div>
+                          <p className="text-left">
+                            This blog post is absolutely hilarious! I cant
+                            believe the king actually tried to tax jokes. What a
+                            ridiculous idea.
                           </p>
                         </div>
-                        <p className="text-left">
-                          This blog post is absolutely hilarious! I cant believe
-                          the king actually tried to tax jokes. What a
-                          ridiculous idea.
-                        </p>
-                      </div>
-                    </AccordionItem>
-                    <AccordionItem
-                      className="flex items-start gap-4 pb-4"
-                      value="comment-2"
-                    >
-                      <Avatar className="h-10 w-10 shrink-0 border">
-                        <AvatarImage
-                          src="/placeholder-user.jpg"
-                          alt="@shadcn"
-                        />
-                        <AvatarFallback>JD</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1 space-y-2">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium">John Doe</h4>
-                          <p className="text-sm text-muted-foreground">
-                            3 days ago
+                      </AccordionItem>
+                      <AccordionItem
+                        className="flex items-start gap-4 pb-4"
+                        value="comment-2"
+                      >
+                        <Avatar className="h-10 w-10 shrink-0 border">
+                          <AvatarImage
+                            src="/placeholder-user.jpg"
+                            alt="@shadcn"
+                          />
+                          <AvatarFallback>JD</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-medium">John Doe</h4>
+                            <p className="text-sm text-muted-foreground">
+                              3 days ago
+                            </p>
+                          </div>
+                          <p className="text-left">
+                            I cant wait to read more about Jokester and his
+                            adventures. This is such a fun and creative story!
                           </p>
                         </div>
-                        <p className="text-left">
-                          I cant wait to read more about Jokester and his
-                          adventures. This is such a fun and creative story!
-                        </p>
+                      </AccordionItem>
+                    </Accordion>
+                  </div>
+
+                  <div>
+                    <h3 className="text-2xl font-bold">Leave a Comment</h3>
+                    <form className="mt-4 space-y-4">
+                      <Textarea
+                        placeholder="Write your comment here..."
+                        className="h-24"
+                      />
+                      <div className="flex justify-end">
+                        <Button type="submit">Submit</Button>
                       </div>
-                    </AccordionItem>
-                  </Accordion>
+                    </form>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold">Leave a Comment</h3>
-                  <form className="mt-4 space-y-4">
-                    <Textarea
-                      placeholder="Write your comment here..."
-                      className="h-24"
-                    />
-                    <div className="flex justify-end">
-                      <Button type="submit">Submit</Button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>{" "}
+        </article>{" "}
       </div>
       <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16 flex justify-center">
-        <div className="w-full max-w-md shrink-0">
-          <div className="flex items-center justify-between">
+        <div className="w-full max-w-md bg-card p-4 rounded-lg hover:shadow-2xl shadow shrink-0">
+          <div className="flex bg items-center justify-between">
             <div className="flex items-center gap-2">
               {blog.author.image_url && (
                 <Avatar className="w-10 h-10">
