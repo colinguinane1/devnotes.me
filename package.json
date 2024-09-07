@@ -60,6 +60,7 @@
     "react-loader-spinner": "^6.1.6",
     "react-markdown-editor-lite": "^1.3.4",
     "rehype-pretty-code": "^0.13.2",
+    "rehype-sanitize": "^6.0.0",
     "shiki": "^1.12.0",
     "sonner": "^1.5.0",
     "supabase": "^1.190.0",

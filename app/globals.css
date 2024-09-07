@@ -5,6 +5,11 @@
 .gradient {
   @apply bg-gradient-to-r from-blue-500 to-cyan-500 inline-block text-transparent bg-clip-text;
 }
+body .w-md-editor-text-pre>code,
+body .w-md-editor-text-input {
+  font-size: 18px !important;
+  line-height: 24px !important;
+}
 
 @layer base {
   :root {
