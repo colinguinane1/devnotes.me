@@ -44,11 +44,10 @@ export default function Sidebar() {
                   height={30}
                   alt={"logo"}
                 ></Image>
-                <span className="font-bold  text-4xl bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
-                  Devnotes
+                <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
+                  devnotes.me
                 </span>
               </SheetTitle>
-              <SheetDescription>Navigation Links</SheetDescription>
             </SheetHeader>
             {NavigationData.map((nav) => (
               <Button

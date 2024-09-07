@@ -19,7 +19,7 @@ export default async function Header() {
   } = await supabase.auth.getUser();
   return (
     <div className="fixed  w-screen   z-30     top-0  ">
-      <div className="bg-opacity-85 bg-card/50 h-16 border-b backdrop-blur-2xl relative  px-4  py-2">
+      <div className="bg-opacity-85 bg-card/50 h-16 border-b backdrop-blur-2xl relative   px-4 py-3">
         <ul className="flex items-center  text-lg font-semibold justify-between">
           <div className="flex md:hidden items-center gap-2 ">
             <Sidebar />
