@@ -46,6 +46,7 @@ import remarkRehype from "remark-rehype";
 import { read } from "to-vfile";
 import { unified } from "unified";
 import { reporter } from "vfile-reporter";
+import remarkGfm from "remark-gfm";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   const blog = await prisma.post.findUnique({
@@ -75,16 +76,19 @@ export default async function blog({ params }: { params: { slug: string } }) {
   let markdownContent = "";
 
   if (blog.mdx) {
-    const file = await read(blog.content); // Reading the markdown content (if it's stored as a file)
+    const content = blog.content; // Assuming this is the markdown content stored in the database
+
+    // Process markdown content with support for tables and other advanced features
     const processedContent = await unified()
       .use(remarkParse) // Parses markdown to an AST
+      .use(remarkGfm) // Adds support for GitHub flavored markdown (tables, strikethrough, etc.)
       .use(remarkRehype) // Converts markdown AST to HTML AST
       .use(rehypeDocument) // Adds a document structure
       .use(rehypeFormat) // Formats the HTML output
       .use(rehypeStringify) // Converts the HTML AST to a string
-      .process(file);
+      .process(content);
 
-    markdownContent = String(processedContent);
+    markdownContent = String(processedContent); // Convert the processed content to a string
   }
 
   incrementViews(blog.id);
@@ -129,7 +133,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
           <p className="text-muted-foreground">{blog.description}</p>
           {blog.mdx ? (
             <p
-              className="prose dark:prose-invert "
+              className=""
               dangerouslySetInnerHTML={{ __html: markdownContent }}
             ></p>
           ) : (
