@@ -10,10 +10,7 @@ export default function EditorDialog() {
             Choose Your Blog Editor
           </h1>
           <p className="max-w-3xl mx-auto mt-4 text-lg text-muted-foreground">
-            Select the blog editor that best fits your needs. The simple editor
-            provides a basic writing experience using Notion-style commands,
-            while the advanced editor offers a powerful Markdown-based writing
-            experience for experienced bloggers.
+            Select the blog editor that best fits your needs. 
           </p>
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
