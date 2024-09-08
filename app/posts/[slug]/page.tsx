@@ -38,6 +38,14 @@ import {
 } from "@/components/ui/accordion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import rehypeDocument from "rehype-document";
+import rehypeFormat from "rehype-format";
+import rehypeStringify from "rehype-stringify";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { read } from "to-vfile";
+import { unified } from "unified";
+import { reporter } from "vfile-reporter";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   const blog = await prisma.post.findUnique({
@@ -63,6 +71,21 @@ export default async function blog({ params }: { params: { slug: string } }) {
     title: blog.title,
     description: blog.description,
   };
+
+  let markdownContent = "";
+
+  if (blog.mdx) {
+    const file = await read(blog.content); // Reading the markdown content (if it's stored as a file)
+    const processedContent = await unified()
+      .use(remarkParse) // Parses markdown to an AST
+      .use(remarkRehype) // Converts markdown AST to HTML AST
+      .use(rehypeDocument) // Adds a document structure
+      .use(rehypeFormat) // Formats the HTML output
+      .use(rehypeStringify) // Converts the HTML AST to a string
+      .process(file);
+
+    markdownContent = String(processedContent);
+  }
 
   incrementViews(blog.id);
   return (
@@ -104,10 +127,17 @@ export default async function blog({ params }: { params: { slug: string } }) {
             {blog.title}
           </h1>
           <p className="text-muted-foreground">{blog.description}</p>
-          <p
-            className="prose dark:prose-invert "
-            dangerouslySetInnerHTML={{ __html: blog.content }}
-          ></p>
+          {blog.mdx ? (
+            <p
+              className="prose dark:prose-invert "
+              dangerouslySetInnerHTML={{ __html: markdownContent }}
+            ></p>
+          ) : (
+            <p
+              className="prose dark:prose-invert "
+              dangerouslySetInnerHTML={{ __html: blog.content }}
+            ></p>
+          )}
           <Accordion type="single" collapsible>
             <AccordionItem value="comments">
               <AccordionTrigger className="flex items-center justify-between">
