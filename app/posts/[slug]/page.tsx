@@ -47,6 +47,7 @@ import { read } from "to-vfile";
 import { unified } from "unified";
 import { reporter } from "vfile-reporter";
 import remarkGfm from "remark-gfm";
+import rehypePrettyCode from "rehype-pretty-code";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   const blog = await prisma.post.findUnique({
@@ -78,19 +79,22 @@ export default async function blog({ params }: { params: { slug: string } }) {
   if (blog.mdx) {
     const content = blog.content; // Assuming this is the markdown content stored in the database
 
-    // Process markdown content with support for tables and other advanced features
+    // Process markdown content with pretty code highlighting
     const processedContent = await unified()
-      .use(remarkParse) // Parses markdown to an AST
-      .use(remarkGfm) // Adds support for GitHub flavored markdown (tables, strikethrough, etc.)
-      .use(remarkRehype) // Converts markdown AST to HTML AST
-      .use(rehypeDocument) // Adds a document structure
-      .use(rehypeFormat) // Formats the HTML output
-      .use(rehypeStringify) // Converts the HTML AST to a string
+      .use(remarkParse) // Parse markdown to an AST
+      .use(remarkGfm) // Add support for GitHub flavored markdown (tables, etc.)
+      .use(remarkRehype) // Convert markdown AST to HTML AST
+      .use(rehypePrettyCode, {
+        theme: "one-dark-pro", // Specify a theme
+        keepBackground: true, // Optionally keep the code block background color
+      })
+      .use(rehypeDocument) // Add a document structure
+      .use(rehypeFormat) // Format the HTML output
+      .use(rehypeStringify) // Convert the HTML AST to a string
       .process(content);
 
-    markdownContent = String(processedContent); // Convert the processed content to a string
+    markdownContent = String(processedContent);
   }
-
   incrementViews(blog.id);
   return (
     <div className="bg-background">
@@ -133,7 +137,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
           <p className="text-muted-foreground">{blog.description}</p>
           {blog.mdx ? (
             <p
-              className=""
+              className="prose"
               dangerouslySetInnerHTML={{ __html: markdownContent }}
             ></p>
           ) : (
