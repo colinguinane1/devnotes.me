@@ -1,14 +1,15 @@
 "use client";
-import React from "react";
-import BlogEditor from "./editor"; // BlogEditor is now a client component
-import { Button } from "/Users/colin/blogchain/components/ui/button.tsx";
-import { createPost } from "../actions";
-import { useState } from "react";
-import Loading from "/Users/colin/blogchain/components/ui/loader-spinner.tsx";
-import { Check, X } from "lucide-react";
-import { useToast } from "/Users/colin/blogchain/components/ui/use-toast.ts";
 
-export default function Home() {
+import BlogEditor from "./editor"; // BlogEditor is now a client component
+import { createPost } from "../write/actions";
+import { useState } from "react";
+import { Button } from "./button";
+import { Loading } from "./loader-spinner";
+
+import { Check, X } from "lucide-react";
+import { useToast } from "@components/ui/use-toast";
+
+export default function Editor() {
   const { toast } = useToast();
   const [content, setContent] = useState<string>(
     "Type for commands or start writing..."
