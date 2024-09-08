@@ -19,6 +19,7 @@ export default function App() {
       description: "Blog posted successfully!",
     });
   };
+  const markdown = true;
 
   const [value, setValue] = useState("**Hello world!!!**");
 
@@ -32,7 +33,7 @@ export default function App() {
 
     try {
       setLoading("true");
-      await createPost(formData); // Call your server action
+      await createPost(formData, markdown); // Call your server action
       console.log("Post created successfully");
       setLoading("success");
       successToast();
@@ -72,6 +73,7 @@ export default function App() {
           <label>Content:</label>
           <MDEditor
             height="100%"
+            className="min-h-[500px]"
             preview="edit"
             value={value}
             previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}

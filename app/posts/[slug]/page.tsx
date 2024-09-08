@@ -27,6 +27,7 @@ import { createClient } from "@/app/utils/supabase/server";
 import { checkPostLiked, likePost, removeLike } from "./actions";
 import { ClockIcon } from "lucide-react";
 import { MessageCircleIcon, ChevronDownIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import VerifiedUser from "@/components/ui/verified";
 
@@ -48,6 +49,7 @@ import { unified } from "unified";
 import { reporter } from "vfile-reporter";
 import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeToc from "rehype-toc";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   const blog = await prisma.post.findUnique({
@@ -76,7 +78,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
 
   let markdownContent = "";
 
-  if (blog.mdx) {
+  if (blog.markdown) {
     const content = blog.content; // Assuming this is the markdown content stored in the database
 
     // Process markdown content with pretty code highlighting
@@ -85,9 +87,11 @@ export default async function blog({ params }: { params: { slug: string } }) {
       .use(remarkGfm) // Add support for GitHub flavored markdown (tables, etc.)
       .use(remarkRehype) // Convert markdown AST to HTML AST
       .use(rehypePrettyCode, {
-        theme: "one-dark-pro", // Specify a theme
+        theme: "aurora-x", // Specify a theme
         keepBackground: true, // Optionally keep the code block background color
       })
+      .use(rehypeToc, {}) // Add a table of contents
+
       .use(rehypeDocument) // Add a document structure
       .use(rehypeFormat) // Format the HTML output
       .use(rehypeStringify) // Convert the HTML AST to a string
@@ -135,7 +139,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
             {blog.title}
           </h1>
           <p className="text-muted-foreground">{blog.description}</p>
-          {blog.mdx ? (
+          {blog.markdown ? (
             <p
               className="prose"
               dangerouslySetInnerHTML={{ __html: markdownContent }}

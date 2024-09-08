@@ -23,7 +23,7 @@ export async function checkSlug(slug: string) {
 
 
 // Server action for creating a post
-export async function createPost(formData: FormData) {
+export async function createPost(formData: FormData, markdown: boolean) {
   const supabase = createClient();
 
   // Get the logged-in user
@@ -53,6 +53,7 @@ export async function createPost(formData: FormData) {
     await prisma.post.create({
       data: {
         title,
+        markdown: markdown,
         description,
         slug,
         content,

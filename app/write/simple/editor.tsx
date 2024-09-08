@@ -14,7 +14,7 @@ import { ImageResizer, handleCommandNavigation } from "novel/extensions";
 import { defaultExtensions } from "./extensions";
 import { NodeSelector } from "./selectors/node-selector";
 import { LinkSelector } from "./selectors/link-selector";
-import { ColorSelector } from "./selectors/color-selector";
+import { ColorSelector } from "./color-selector";
 
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
