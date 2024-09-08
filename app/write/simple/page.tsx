@@ -1,13 +1,13 @@
 "use client";
 
 import BlogEditor from "./editor"; // BlogEditor is now a client component
-import { createPost } from "../write/actions";
+import { createPost } from "../actions";
 import { useState } from "react";
-import { Button } from "./button";
-import { Loading } from "./loader-spinner";
+import { Button } from "@/components/ui/button";
+import Loading from "@/components/ui/loader-spinner";
 
 import { Check, X } from "lucide-react";
-import { useToast } from "@components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Editor() {
   const { toast } = useToast();
