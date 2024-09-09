@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatDate } from "@/data/SiteData";
+import { formatDate, getTagColor } from "@/data/SiteData";
 import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post } from "@prisma/client";
@@ -68,15 +68,18 @@ export default function BlogCard({ post, author }: BlogCardProps) {
           </Link>
           {post.tags && (
             <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <Badge
-                  key={tag}
-                  variant="outline"
-                  className="bg-primary-foreground text-primary"
-                >
-                  {tag}
-                </Badge>
-              ))}
+              {post.tags.map((tag) => {
+                const tagColor = getTagColor(tag);
+                return (
+                  <Badge
+                    key={tag}
+                    variant="outline"
+                    className={`bg-${tagColor} text-white`}
+                  >
+                    #{tag}
+                  </Badge>
+                );
+              })}
             </div>
           )}
           <div className="flex items-center gap-4">
