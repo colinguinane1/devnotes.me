@@ -91,7 +91,6 @@ export default async function blog({ params }: { params: { slug: string } }) {
         keepBackground: true, // Optionally keep the code block background color
       })
       .use(rehypeToc, {}) // Add a table of contents
-
       .use(rehypeDocument) // Add a document structure
       .use(rehypeFormat) // Format the HTML output
       .use(rehypeStringify) // Convert the HTML AST to a string
