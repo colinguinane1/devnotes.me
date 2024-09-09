@@ -30,7 +30,7 @@ export async function getBlogBySlug(slug: string) {
 
   return blog;
 }
-export async function updatePost(slug: string, title: string, content: string, description: string) {
+export async function updatePost(slug: string, title: string, content: string, description: string, tags: string[]) {
   try {
     const updatedPost = await prisma.post.update({
       where: {
@@ -38,6 +38,7 @@ export async function updatePost(slug: string, title: string, content: string, d
       },
       data: {
         title,
+        tags,
         content,
         description,
       },

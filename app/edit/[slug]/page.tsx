@@ -15,6 +15,8 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [markdown, setMarkdown] = useState<boolean | null>(false);
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
   const router = useRouter();
 
   const { slug } = params;
@@ -25,6 +27,7 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
       try {
         const post = await getBlogBySlug(slug); // Call the server action
         setTitle(post.title);
+        setTags(post.tags);
         setContent(post.content);
         setDescription(post.description || "");
         setMarkdown(post.markdown);
@@ -37,13 +40,27 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
     fetchPostData();
   }, [slug]);
 
+  const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && tagInput.trim()) {
+      e.preventDefault(); // Prevent form submission on Enter key
+      if (!tags.includes(tagInput.trim())) {
+        setTags([...tags, tagInput.trim()]); // Add the new tag if it's not already in the list
+        setTagInput(""); // Clear the input field
+      }
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove)); // Remove the tag
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      await updatePost(slug, title, content, description); // Use another server action to update the post
+      await updatePost(slug, title, content, description, tags); // Use another server action to update the post
       router.push(`/posts/${slug}`); // Redirect to the updated blog post
     } catch (error) {
       setError("Failed to update post");
@@ -78,6 +95,34 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
+          />
+        </div>
+        <div className="pb-4">
+          <label>Tags:</label>
+          <div className="flex items-center flex-wrap gap-2 mb-2">
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="bg-gray-200 text-black px-2 py-1 rounded-full text-sm flex items-center gap-1"
+              >
+                {tag}
+                <button
+                  type="button"
+                  onClick={() => removeTag(tag)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  ×
+                </button>
+              </span>
+            ))}
+          </div>
+          <input
+            value={tagInput}
+            disabled={tags.length >= 5}
+            onChange={(e) => setTagInput(e.target.value)}
+            onKeyDown={handleTagInputKeyDown}
+            className="border rounded-md p-1 w-full"
+            placeholder="Type a tag and press Enter"
           />
         </div>
         <div className="mb-4">
