@@ -71,11 +71,7 @@ export default function BlogCard({ post, author }: BlogCardProps) {
               {post.tags.map((tag) => {
                 const tagColor = getTagColor(tag);
                 return (
-                  <Badge
-                    key={tag}
-                    variant="outline"
-                    className={`bg-${tagColor} text-white`}
-                  >
+                  <Badge key={tag} variant="outline">
                     #{tag}
                   </Badge>
                 );
