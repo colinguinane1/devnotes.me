@@ -134,11 +134,19 @@ export default async function blog({ params }: { params: { slug: string } }) {
               <span>{calculateReadingTime(blog.content)} min read</span>
             </div>
             <div className="flex items-center gap-2">
-              {postLiked ? (
+              {!user ? (
+                <Button variant={"ghost"} size={"icon"}>
+                  <Link href="/login">
+                    {" "}
+                    <HeartIcon className="h-4 w-4" />
+                  </Link>
+                </Button>
+              ) : postLiked ? (
                 <PostLikedManager postId={blog.id} />
               ) : (
                 <RemovePostLikeManager postId={blog.id} />
               )}
+
               <span>{blog.likes}</span>
               <Button variant="ghost" size="icon">
                 <MessageCircleIcon className="h-4 w-4" />
