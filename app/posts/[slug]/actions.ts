@@ -133,5 +133,33 @@ else{
 }
 }
 
+export async function addComment(postId: string, content: string){
+    const supabase = createClient();
+
+  // Get the logged-in user
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    console.log('User not found');
+    throw new Error("User not authenticated");
+  }
+
+  try{
+    await prisma.comment.create({
+      data: {
+        content,
+        postId,
+        authorId: user.id
+    
+        }
+      })
+    }
+    catch (error) {
+      console.log("Error adding comment:", error);
+  }
+  console.log("Comment added successfully");
+  revalidatePath(`/posts/${postId}`)
+}
+
 
 

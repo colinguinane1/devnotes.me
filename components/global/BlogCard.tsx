@@ -66,20 +66,19 @@ export default function BlogCard({ post, author }: BlogCardProps) {
               </span>
             </div>
           </Link>
-          <div className="flex flex-wrap gap-2">
-            <Badge
-              variant="outline"
-              className="bg-primary-foreground text-primary"
-            >
-              Technology
-            </Badge>
-            <Badge
-              variant="outline"
-              className="bg-secondary-foreground text-secondary"
-            >
-              Back End
-            </Badge>
-          </div>
+          {post.tags && (
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant="outline"
+                  className="bg-primary-foreground text-primary"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          )}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1 text-muted-foreground">
               <EyeIcon className="w-4 h-4" />

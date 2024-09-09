@@ -21,6 +21,30 @@ export function formatDate(dateString: Date | string): string {
   });
 }
 
+export function formatCommentDate(dateString: Date | string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInMs = now.getTime() - date.getTime();
+  const diffInMins = Math.floor(diffInMs / (1000 * 60));
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+  if (diffInMins < 60) {
+    return `${diffInMins} mins ago`;
+  } else if (diffInHours < 24) {
+    return `${diffInHours} hours ago`;
+  } else if (diffInDays < 30) {
+    return `${diffInDays} days ago`;
+  } else {
+    // Format as Day/Month/Year
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+}
+
 export function generateSlug(title: string): string {
   const slug = title
     .toLowerCase() // Convert the title to lowercase

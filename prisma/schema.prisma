@@ -57,6 +57,7 @@ model Post {
   description String?
   slug        String    @unique
   title       String
+  tags        String[]
   content     String
   views       Int       @default(0)
   likes       Int       @default(0)

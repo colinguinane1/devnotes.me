@@ -9,9 +9,11 @@ import { useTheme } from "next-themes";
 
 export default function App() {
   const [loading, setLoading] = useState("false");
-  const { setTheme, theme, resolvedTheme, themes } = useTheme();
+  const { setTheme, theme, resolvedTheme } = useTheme();
   const { toast } = useToast();
 
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagInput, setTagInput] = useState("");
   const successToast = () => {
     toast({
       variant: "success",
@@ -19,8 +21,8 @@ export default function App() {
       description: "Blog posted successfully!",
     });
   };
-  const markdown = true;
 
+  const markdown = true;
   const [value, setValue] = useState("**Hello world!!!**");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -28,8 +30,7 @@ export default function App() {
 
     const formData = new FormData(event.currentTarget);
     formData.append("content", value);
-
-    // Add the content (markdown) to the FormData
+    formData.append("tags", JSON.stringify(tags)); // Add tags as JSON string
 
     try {
       setLoading("true");
@@ -41,6 +42,20 @@ export default function App() {
       setLoading("error");
       console.error("Error creating post:", error);
     }
+  };
+
+  const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && tagInput.trim()) {
+      e.preventDefault(); // Prevent form submission on Enter key
+      if (!tags.includes(tagInput.trim())) {
+        setTags([...tags, tagInput.trim()]); // Add the new tag if it's not already in the list
+        setTagInput(""); // Clear the input field
+      }
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter((tag) => tag !== tagToRemove)); // Remove the tag
   };
 
   return (
@@ -70,6 +85,35 @@ export default function App() {
               placeholder="Enter your description"
             />
           </div>
+          <div className="pb-4">
+            <label>Tags:</label>
+            <div className="flex items-center flex-wrap gap-2 mb-2">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="bg-gray-200 text-black px-2 py-1 rounded-full text-sm flex items-center gap-1"
+                >
+                  {tag}
+                  <button
+                    type="button"
+                    onClick={() => removeTag(tag)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+            <input
+              value={tagInput}
+              disabled={tags.length >= 5}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={handleTagInputKeyDown}
+              className="border rounded-md p-1 w-full"
+              placeholder="Type a tag and press Enter"
+            />
+          </div>
+
           <label>Content:</label>
           <MDEditor
             height="100%"
