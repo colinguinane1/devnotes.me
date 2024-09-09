@@ -86,8 +86,10 @@ export default async function UserIcon() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
-              <CiBookmark className="mr-1" />
-              Blogs
+              <Link className="flex items-center" href={`/blogs`}>
+                <CiBookmark className="mr-1" />
+                Blogs
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
               <form>

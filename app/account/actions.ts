@@ -144,6 +144,48 @@ export async function ChangeProfilePicture(fileName: string) {
     throw error;
   }
 }
+
+export async function deletePost(slug: string){
+    const supabase = createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        console.log('User not found');
+        throw new Error("User not authenticated");
+    }
+
+    const post = await prisma.post.findUnique({
+        where: {
+            slug
+        },
+        include: {
+            author: true
+        }
+    });
+
+    if(user?.id !== post?.author.id ){
+        throw new Error("User is not the author of this post");
+    }
+
+    if (!post) {
+        throw new Error(`No post found for slug: ${slug}`);
+    }
+
+    try {
+        await prisma.post.delete({
+            where: {
+                slug
+            }
+        });
+
+        revalidatePath('/account', 'layout');
+        console.log("Post deleted successfully");
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        throw error;
+    }
+}
    
 
 
