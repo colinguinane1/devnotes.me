@@ -19,6 +19,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { LucideMenu } from "lucide-react";
 import UserIcon from "../buttons/UserIcon";
 import { ModeToggle } from "../buttons/ThemeSwitcher";
+import { BiMenuAltLeft } from "react-icons/bi";
 import Image from "next/image";
 
 export default function Sidebar() {
@@ -26,8 +27,8 @@ export default function Sidebar() {
     <>
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" className="bg-card" size={"icon"}>
-            <LucideMenu />
+          <Button variant="ghost" size={"icon"}>
+            <BiMenuAltLeft size={30} />
           </Button>
         </SheetTrigger>
         <SheetContent

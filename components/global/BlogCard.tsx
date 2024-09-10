@@ -78,14 +78,17 @@ export default function BlogCard({ post, author }: BlogCardProps) {
               })}
             </div>
           )}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1 text-muted-foreground">
+          <div className="flex items-center justify-between gap-10">
+            <div className="flex items-center gap-2 text-muted-foreground">
               <EyeIcon className="w-4 h-4" />
-              <span>{post.views}</span>
+              <span>{post.views}</span>{" "}
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <HeartIcon className="w-4 h-4" />
+                <span>{post.likes}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-1 text-muted-foreground">
-              <HeartIcon className="w-4 h-4" />
-              <span>{post.likes}</span>
+            <div>
+              <BlogDropdown slug={post.slug} author={author} />
             </div>
           </div>
         </div>
