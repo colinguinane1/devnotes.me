@@ -15,6 +15,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DeletePostDialog from "@/components/buttons/DeleteBlog";
 import Link from "next/link";
+import HorizontalBlogCard from "@/components/global/HorizontalBlogCard";
+import ManageBlogDropdown from "@/components/buttons/ManageBlogDropdown";
 export default async function BlogsPage() {
   const supabase = createClient();
   const {
@@ -61,15 +63,22 @@ export default async function BlogsPage() {
           <div className="grid place-content-center gap-4 min-h-screen">
             <p className="text-2xl">Published ({posts.length})</p>
             {posts.map((post) => (
-              <div key={post.id} className="p-4 rounded-lg bg-card">
-                <BlogCard key={post.id} author={post.author} post={post} />
-                <div className="w-full flex gap-2 items-center pt-3">
+              <div className="relative" key={post.id}>
+                <HorizontalBlogCard
+                  key={post.id}
+                  author={post.author}
+                  post={post}
+                />
+                <div className="absolute bottom-2 right-2 ">
+                  <ManageBlogDropdown slug={post.slug} author={post.author} />{" "}
+                </div>
+                {/* <div className="w-full flex gap-2 items-center pt-3">
                   <Link className="w-full" href={`/edit/${post.slug}`}>
                     <Button className="w-full">Edit Post</Button>
                   </Link>
 
                   <DeletePostDialog slug={post.slug} />
-                </div>
+                </div> */}
               </div>
             ))}
           </div>
