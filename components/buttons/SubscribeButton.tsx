@@ -28,11 +28,10 @@ export function SubscribeButton({
   };
 
   return (
-    <Button variant={"outline"} onClick={handleSubscribe} disabled={isPending}>
+    <Button variant={"outline"} onClick={handleSubscribe}>
       {isPending ? (
         <div className="flex items-center gap-2">
-          <Loading />
-          <p>Following...</p>
+          <p>Following</p>
         </div>
       ) : (
         "Follow +"
@@ -59,16 +58,10 @@ export function UnsubscribeButton({
   };
 
   return (
-    <Button
-      variant={"outline"}
-      onClick={handleUnsubscribe}
-      disabled={isPending}
-      className="hover:bg-red-200"
-    >
+    <Button variant={"outline"} onClick={handleUnsubscribe}>
       {isPending ? (
         <div className="flex items-center gap-2">
-          <Loading />
-          <p>Unfollowing...</p>
+          <p>Follow +</p>
         </div>
       ) : (
         "Following"
