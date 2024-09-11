@@ -173,6 +173,11 @@ export async function deletePost(slug: string){
     }
 
     try {
+        await prisma.comment.deleteMany({
+            where: {
+                postId: post.id
+            }
+        })
         await prisma.post.delete({
             where: {
                 slug

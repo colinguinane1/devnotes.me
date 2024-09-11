@@ -103,7 +103,7 @@ export async function signup(formData: FormData) {
     }
 
     revalidatePath('/', 'layout');
-    return redirect('/login?m=Email%20Verification%20Sent&type=success&form=signup');
+    return redirect('/');
 }
 
 export async function checkAuthorExists(user: any) {
