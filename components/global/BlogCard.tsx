@@ -13,20 +13,26 @@ import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { EyeIcon, HeartIcon } from "lucide-react";
 import VerifiedUser from "../ui/verified";
-import ManageBlogDropdown from "../buttons/ManageBlogDropdown";
+import { createClient } from "@/app/utils/supabase/server";
 interface BlogCardProps {
   post: Post;
   author: Author;
   horizontal?: boolean;
-  dropdown?: string;
+  dropdownType?: string;
 }
 
-export default function BlogCard({
+export default async function BlogCard({
   post,
   author,
   horizontal = false,
-  dropdown = "user",
+  dropdownType = "user",
 }: BlogCardProps) {
+  const supabase = createClient();
+
+  // Get the logged-in user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   return (
     <Card
       className={`w-full max-w-lg rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] ${
@@ -99,17 +105,12 @@ export default function BlogCard({
                 <span>{post.likes}</span>
               </div>
             </div>
-            {dropdown === "user" && (
-              <div>
-                <BlogDropdown slug={post.slug} author={author} />
-              </div>
+
+            {dropdownType === "author" || user?.id === post.user_id ? (
+              <BlogDropdown author={author} slug={post.slug} type="author" />
+            ) : (
+              <BlogDropdown author={author} slug={post.slug} type="user" />
             )}
-            {dropdown === "author" && (
-              <div>
-                <ManageBlogDropdown slug={post.slug} author={author} />
-              </div>
-            )}
-            {dropdown === "false" && <div></div>}
           </div>
         </div>
       </CardContent>

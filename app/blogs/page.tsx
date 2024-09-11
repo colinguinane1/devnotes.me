@@ -15,8 +15,6 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DeletePostDialog from "@/components/buttons/DeleteBlog";
 import Link from "next/link";
-
-import ManageBlogDropdown from "@/components/buttons/ManageBlogDropdown";
 export default async function BlogsPage() {
   const supabase = createClient();
   const {
@@ -69,7 +67,7 @@ export default async function BlogsPage() {
                   author={post.author}
                   post={post}
                   horizontal={true}
-                  dropdown={"author"}
+                  dropdownType={"author"}
                 />
               </div>
             ))}
@@ -84,7 +82,7 @@ export default async function BlogsPage() {
                 author={post.author}
                 post={post}
                 horizontal={true}
-                dropdown={"author"}
+                dropdownType={"author"}
               />
             ))}
           </div>

@@ -56,9 +56,6 @@ export default function DeletePostDialog({ slug }: { slug: string }) {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <p className="text-sm text-destructive"> Delete Post</p>
-      </DrawerTrigger>
       <DrawerContent className="border-destructive">
         <DrawerHeader className="text-left">
           <DrawerTitle className="text-destructive">
