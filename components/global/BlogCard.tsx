@@ -13,15 +13,25 @@ import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { EyeIcon, HeartIcon } from "lucide-react";
 import VerifiedUser from "../ui/verified";
+import ManageBlogDropdown from "../buttons/ManageBlogDropdown";
 interface BlogCardProps {
   post: Post;
   author: Author;
+  horizontal?: boolean;
+  dropdown?: string;
 }
 
-export default function BlogCard({ post, author }: BlogCardProps) {
+export default function BlogCard({
+  post,
+  author,
+  horizontal = false,
+  dropdown = "user",
+}: BlogCardProps) {
   return (
     <Card
-      className="w-full max-w-lg rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+      className={`w-full max-w-lg rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] ${
+        horizontal ? "flex" : ""
+      }`}
       key={post.id}
     >
       <Link
@@ -67,7 +77,9 @@ export default function BlogCard({ post, author }: BlogCardProps) {
             </div>
           </Link>
           {post.tags && (
-            <div className="flex flex-wrap gap-2">
+            <div
+              className={`flex flex-wrap gap-2 ${horizontal ? "hidden" : ""} `}
+            >
               {post.tags.map((tag) => {
                 const tagColor = getTagColor(tag);
                 return (
@@ -87,9 +99,17 @@ export default function BlogCard({ post, author }: BlogCardProps) {
                 <span>{post.likes}</span>
               </div>
             </div>
-            <div>
-              <BlogDropdown slug={post.slug} author={author} />
-            </div>
+            {dropdown === "user" && (
+              <div>
+                <BlogDropdown slug={post.slug} author={author} />
+              </div>
+            )}
+            {dropdown === "author" && (
+              <div>
+                <ManageBlogDropdown slug={post.slug} author={author} />
+              </div>
+            )}
+            {dropdown === "false" && <div></div>}
           </div>
         </div>
       </CardContent>

@@ -39,7 +39,7 @@ export default function DeletePostDialog({ slug }: { slug: string }) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <p> Delete Post</p>
+          <p className="text-destructive text-sm"> Delete Post</p>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -57,7 +57,7 @@ export default function DeletePostDialog({ slug }: { slug: string }) {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <p className="text-sm"> Delete Post</p>
+        <p className="text-sm text-destructive"> Delete Post</p>
       </DrawerTrigger>
       <DrawerContent className="border-destructive">
         <DrawerHeader className="text-left">

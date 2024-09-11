@@ -60,8 +60,8 @@ export default function ManageBlogDropdown({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="bg-transparent backdrop-blur-md"
-        align="start"
+        className="bg-transparent backdrop-blur-3xl"
+        align="end"
       >
         <DropdownMenuItem
           onClick={copyToClipboard}
@@ -95,7 +95,7 @@ export default function ManageBlogDropdown({
             </Link>
           </div>
         </DropdownMenuItem>
-        <div className="w-full flex gap-2 items-center p-2 ">
+        <div className="w-full flex gap-2 cursor-pointer hover:bg-primary rounded-md items-center p-2 ">
           <Delete size={15} />
           <DeletePostDialog slug={slug} />
         </div>

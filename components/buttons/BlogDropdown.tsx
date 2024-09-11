@@ -50,7 +50,7 @@ export default function BlogDropdown({ slug, author }: BlogDropdownProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="bg-transparent backdrop-blur-md"
+        className="bg-transparent backdrop-blur-2xl"
         align="start"
       >
         <DropdownMenuItem
