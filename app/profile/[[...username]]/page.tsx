@@ -15,7 +15,7 @@ import UserCard from "@/components/global/UserCard";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { defaultAvatar } from "@/data/SiteData";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import * as Tabs from "@radix-ui/react-tabs";
 import {
   TwitterIcon,
   LinkedinIcon,
@@ -107,6 +107,8 @@ export default async function ProfilePage({
     },
   });
 
+  const tabsData = [];
+
   return (
     <div className="w-full min-h-screen mt-10  max-w-3xl mx-auto">
       <div className="flex items-center gap-6 p-4 mb-8">
@@ -171,102 +173,111 @@ export default async function ProfilePage({
         </div>
       </div>
 
-      <Tabs defaultValue="posts" className="">
-        <TabsList className="flex overflow-x-auto whitespace-nowrap bg-background scrollbar-hide overflow-y-hidden">
-          <TabsTrigger className="text-sm border-b rounded-none" value="posts">
+      <Tabs.Root defaultValue="posts" className="">
+        <Tabs.List className="flex overflow-x-auto whitespace-nowrap scrollbar-hide w-full border-b">
+          <Tabs.Trigger
+            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
+            value="posts"
+          >
             Posts
-          </TabsTrigger>
-          <TabsTrigger className="text-sm border-b rounded-none" value="liked">
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
+            value="liked"
+          >
             Likes
-          </TabsTrigger>
-          <TabsTrigger
-            className="text-sm border-b rounded-none"
+          </Tabs.Trigger>
+
+          <Tabs.Trigger
+            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
             value="followers"
           >
             Followers
-          </TabsTrigger>
-          <TabsTrigger
-            className="text-sm border-b rounded-none"
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
             value="following"
           >
             Following
-          </TabsTrigger>
-          <TabsTrigger
-            className="text-sm border-b rounded-none"
-            value="following"
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
+            value="comments"
           >
             Comments
-          </TabsTrigger>
-          <TabsTrigger
-            className="text-sm border-b rounded-none"
-            value="following"
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
+            value="drafts"
           >
             Drafts
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="posts" className="p-4">
-          <h1 className="pb-4 text-2xl">Posts ({posts.length})</h1>
-          <div className="grid gap-6 ">
-            {posts.map((post) => (
-              <BlogCard key={post.id} post={post} author={author} />
-            ))}
-          </div>
-        </TabsContent>
-        <TabsContent value="liked">
-          <h1 className="pb-4 text-2xl">Liked Posts ({likedPosts.length})</h1>
-          <div className="grid gap-6 ">
-            {likedPosts.map((post) => (
-              <BlogCard key={post.id} post={post} author={post.author} />
-            ))}
-          </div>
-        </TabsContent>
-        <TabsContent value="followers">
-          <h1 className="pb-4 text-2xl">
-            Followers ({authorFollowers.length})
-          </h1>
-          <div className="grid gap-4">
-            {authorFollowers.map((subscriber) => (
-              <div
-                className="flex items-center justify-between"
-                key={subscriber.id}
-              >
-                <UserCard author={subscriber.subscriber} />
-                <Link
-                  className="flex items-center"
-                  href={`/profile/${subscriber.subscriber.username}`}
+          </Tabs.Trigger>
+        </Tabs.List>
+        <div className="p-4">
+          <Tabs.Content value="posts">
+            <h1 className="pb-4 text-2xl">Posts ({posts.length})</h1>
+            <div className="grid gap-6 ">
+              {posts.map((post) => (
+                <BlogCard key={post.id} post={post} author={author} />
+              ))}
+            </div>
+          </Tabs.Content>
+          <Tabs.Content value="liked">
+            <h1 className="pb-4 text-2xl">Liked Posts ({likedPosts.length})</h1>
+            <div className="grid gap-6 ">
+              {likedPosts.map((post) => (
+                <BlogCard key={post.id} post={post} author={post.author} />
+              ))}
+            </div>
+          </Tabs.Content>
+          <Tabs.Content value="followers">
+            <h1 className="pb-4 text-2xl">
+              Followers ({authorFollowers.length})
+            </h1>
+            <div className="grid gap-4">
+              {authorFollowers.map((subscriber) => (
+                <div
+                  className="flex items-center justify-between"
+                  key={subscriber.id}
                 >
-                  <Button variant={"ghost"}>
-                    Profile <ChevronRightIcon size={15} />
-                  </Button>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </TabsContent>
-        <TabsContent value="following">
-          <h1 className="pb-4 text-2xl">
-            Following ({authorFollowing.length})
-          </h1>
-          <div className="grid gap-4">
-            {authorFollowing.map((subscriber) => (
-              <div
-                className="flex items-center justify-between"
-                key={subscriber.id}
-              >
-                <UserCard author={subscriber.subscribedTo} />
-                <Link
-                  className="flex items-center"
-                  href={`/profile/${subscriber.subscribedTo.username}`}
+                  <UserCard author={subscriber.subscriber} />
+                  <Link
+                    className="flex items-center"
+                    href={`/profile/${subscriber.subscriber.username}`}
+                  >
+                    <Button variant={"ghost"}>
+                      Profile <ChevronRightIcon size={15} />
+                    </Button>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </Tabs.Content>
+          <Tabs.Content value="following">
+            <h1 className="pb-4 text-2xl">
+              Following ({authorFollowing.length})
+            </h1>
+            <div className="grid gap-4">
+              {authorFollowing.map((subscriber) => (
+                <div
+                  className="flex items-center justify-between"
+                  key={subscriber.id}
                 >
-                  <Button className="mt-4" variant={"ghost"}>
-                    Profile <ChevronRightIcon size={15} />
-                  </Button>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
+                  <UserCard author={subscriber.subscribedTo} />
+                  <Link
+                    className="flex items-center"
+                    href={`/profile/${subscriber.subscribedTo.username}`}
+                  >
+                    <Button className="mt-4" variant={"ghost"}>
+                      Profile <ChevronRightIcon size={15} />
+                    </Button>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </Tabs.Content>
+        </div>
+      </Tabs.Root>
     </div>
   );
 }
