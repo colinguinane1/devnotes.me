@@ -108,8 +108,8 @@ export default async function ProfilePage({
   });
 
   return (
-    <div className="w-full   min-h-screen mt-10 max-w-3xl mx-auto">
-      <div className="flex items-center gap-6 mb-8">
+    <div className="w-full min-h-screen mt-10  max-w-3xl mx-auto">
+      <div className="flex items-center gap-6 p-4 mb-8">
         {author.image_url && (
           <Avatar className="w-20 h-20">
             <AvatarImage src={author.image_url} alt="@shadcn" />
@@ -171,48 +171,59 @@ export default async function ProfilePage({
         </div>
       </div>
 
-      <div role="tablist" className="tabs tabs-bordered tabs-scrollable   mb-6">
-        <input
-          type="radio"
-          name="my_tabs_1"
-          role="tab"
-          className="tab "
-          aria-label={`Posts (${posts.length})`}
-        />
-        <div role="tabpanel" className="tab-content p-10">
-          {" "}
+      <Tabs defaultValue="posts" className="">
+        <TabsList className="flex overflow-x-auto whitespace-nowrap bg-background scrollbar-hide overflow-y-hidden">
+          <TabsTrigger className="text-sm border-b rounded-none" value="posts">
+            Posts
+          </TabsTrigger>
+          <TabsTrigger className="text-sm border-b rounded-none" value="liked">
+            Likes
+          </TabsTrigger>
+          <TabsTrigger
+            className="text-sm border-b rounded-none"
+            value="followers"
+          >
+            Followers
+          </TabsTrigger>
+          <TabsTrigger
+            className="text-sm border-b rounded-none"
+            value="following"
+          >
+            Following
+          </TabsTrigger>
+          <TabsTrigger
+            className="text-sm border-b rounded-none"
+            value="following"
+          >
+            Comments
+          </TabsTrigger>
+          <TabsTrigger
+            className="text-sm border-b rounded-none"
+            value="following"
+          >
+            Drafts
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="posts" className="p-4">
           <h1 className="pb-4 text-2xl">Posts ({posts.length})</h1>
           <div className="grid gap-6 ">
             {posts.map((post) => (
               <BlogCard key={post.id} post={post} author={author} />
             ))}
           </div>
-        </div>
-        <input
-          type="radio"
-          name="my_tabs_1"
-          role="tab"
-          className="tab"
-          aria-label={`Liked Posts (${likedPosts.length})`}
-        />
-        <div role="tabpanel" className="tab-content p-10">
-          {" "}
+        </TabsContent>
+        <TabsContent value="liked">
           <h1 className="pb-4 text-2xl">Liked Posts ({likedPosts.length})</h1>
           <div className="grid gap-6 ">
             {likedPosts.map((post) => (
               <BlogCard key={post.id} post={post} author={post.author} />
             ))}
           </div>
-        </div>
-
-        <input
-          type="radio"
-          name="my_tabs_1"
-          role="tab"
-          className="tab"
-          aria-label={`Followers (${authorFollowers.length})`}
-        />
-        <div role="tabpanel" className="tab-content p-10">
+        </TabsContent>
+        <TabsContent value="followers">
+          <h1 className="pb-4 text-2xl">
+            Followers ({authorFollowers.length})
+          </h1>
           <div className="grid gap-4">
             {authorFollowers.map((subscriber) => (
               <div
@@ -231,36 +242,31 @@ export default async function ProfilePage({
               </div>
             ))}
           </div>
-        </div>
-
-        <input
-          type="radio"
-          name="my_tabs_1"
-          role="tab"
-          className="tab"
-          aria-label={`Following (${authorFollowing.length})`}
-        />
-        <div role="tabpanel" className="tab-content p-10">
+        </TabsContent>
+        <TabsContent value="following">
+          <h1 className="pb-4 text-2xl">
+            Following ({authorFollowing.length})
+          </h1>
           <div className="grid gap-4">
-            {authorFollowing.map((subscribed) => (
+            {authorFollowing.map((subscriber) => (
               <div
                 className="flex items-center justify-between"
-                key={subscribed.id}
+                key={subscriber.id}
               >
-                <UserCard author={subscribed.subscribedTo} />
+                <UserCard author={subscriber.subscribedTo} />
                 <Link
                   className="flex items-center"
-                  href={`/profile/${subscribed.subscribedTo.username}`}
+                  href={`/profile/${subscriber.subscribedTo.username}`}
                 >
-                  <Button variant={"ghost"}>
+                  <Button className="mt-4" variant={"ghost"}>
                     Profile <ChevronRightIcon size={15} />
                   </Button>
                 </Link>
               </div>
             ))}
           </div>
-        </div>
-      </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
