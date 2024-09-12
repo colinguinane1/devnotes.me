@@ -108,7 +108,7 @@ export default async function ProfilePage({
   });
 
   return (
-    <div className="w-full min-h-screen mt-10 p-4 max-w-3xl mx-auto">
+    <div className="w-full   min-h-screen mt-10 max-w-3xl mx-auto">
       <div className="flex items-center gap-6 mb-8">
         {author.image_url && (
           <Avatar className="w-20 h-20">
@@ -171,41 +171,48 @@ export default async function ProfilePage({
         </div>
       </div>
 
-      <Tabs defaultValue="posts" className="w-full">
-        <TabsList className="grid grid-cols-4  bg-card gap-2 mb-6">
-          <TabsTrigger className="text-sm" value="posts">
-            Posts
-          </TabsTrigger>
-          <TabsTrigger className="text-sm" value="liked">
-            Likes
-          </TabsTrigger>
-          <TabsTrigger className="text-sm" value="followers">
-            Followers
-          </TabsTrigger>
-          <TabsTrigger className="text-sm" value="following">
-            Following
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="posts">
+      <div role="tablist" className="tabs tabs-bordered tabs-scrollable   mb-6">
+        <input
+          type="radio"
+          name="my_tabs_1"
+          role="tab"
+          className="tab "
+          aria-label={`Posts (${posts.length})`}
+        />
+        <div role="tabpanel" className="tab-content p-10">
+          {" "}
           <h1 className="pb-4 text-2xl">Posts ({posts.length})</h1>
           <div className="grid gap-6 ">
             {posts.map((post) => (
               <BlogCard key={post.id} post={post} author={author} />
             ))}
           </div>
-        </TabsContent>
-        <TabsContent value="liked">
+        </div>
+        <input
+          type="radio"
+          name="my_tabs_1"
+          role="tab"
+          className="tab"
+          aria-label={`Liked Posts (${likedPosts.length})`}
+        />
+        <div role="tabpanel" className="tab-content p-10">
+          {" "}
           <h1 className="pb-4 text-2xl">Liked Posts ({likedPosts.length})</h1>
           <div className="grid gap-6 ">
             {likedPosts.map((post) => (
               <BlogCard key={post.id} post={post} author={post.author} />
             ))}
           </div>
-        </TabsContent>
-        <TabsContent value="followers">
-          <h1 className="pb-4 text-2xl">
-            Followers ({authorFollowers.length})
-          </h1>
+        </div>
+
+        <input
+          type="radio"
+          name="my_tabs_1"
+          role="tab"
+          className="tab"
+          aria-label={`Followers (${authorFollowers.length})`}
+        />
+        <div role="tabpanel" className="tab-content p-10">
           <div className="grid gap-4">
             {authorFollowers.map((subscriber) => (
               <div
@@ -224,31 +231,36 @@ export default async function ProfilePage({
               </div>
             ))}
           </div>
-        </TabsContent>
-        <TabsContent value="following">
-          <h1 className="pb-4 text-2xl">
-            Following ({authorFollowing.length})
-          </h1>
+        </div>
+
+        <input
+          type="radio"
+          name="my_tabs_1"
+          role="tab"
+          className="tab"
+          aria-label={`Following (${authorFollowing.length})`}
+        />
+        <div role="tabpanel" className="tab-content p-10">
           <div className="grid gap-4">
-            {authorFollowing.map((subscriber) => (
+            {authorFollowing.map((subscribed) => (
               <div
                 className="flex items-center justify-between"
-                key={subscriber.id}
+                key={subscribed.id}
               >
-                <UserCard author={subscriber.subscribedTo} />
+                <UserCard author={subscribed.subscribedTo} />
                 <Link
                   className="flex items-center"
-                  href={`/profile/${subscriber.subscribedTo.username}`}
+                  href={`/profile/${subscribed.subscribedTo.username}`}
                 >
-                  <Button className="mt-4" variant={"ghost"}>
+                  <Button variant={"ghost"}>
                     Profile <ChevronRightIcon size={15} />
                   </Button>
                 </Link>
               </div>
             ))}
           </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
     </div>
   );
 }
