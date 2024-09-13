@@ -140,41 +140,42 @@ export default async function ProfilePage({
             <Link href="#" className="hover:underline" prefetch={false}>
               <GithubIcon className="w-5 h-5" />
             </Link>
-            {user?.id !== author?.id ? (
-              <div className="">
-                {user ? (
-                  <div>
-                    {!isSubscribed ? (
-                      <SubscribeButton
-                        subscriberId={user.id}
-                        subscribeToId={author.id}
-                      />
-                    ) : (
-                      <UnsubscribeButton
-                        subscriberId={user.id}
-                        subscribeToId={author.id}
-                      />
-                    )}
-                  </div>
+          </div>{" "}
+        </div>{" "}
+      </div>{" "}
+      <div className="p-4 w-full">
+        {user?.id !== author?.id ? (
+          <div className="">
+            {user ? (
+              <div>
+                {!isSubscribed ? (
+                  <SubscribeButton
+                    subscriberId={user.id}
+                    subscribeToId={author.id}
+                  />
                 ) : (
-                  <Button>
-                    <Link href="/login">Follow</Link>
-                  </Button>
+                  <UnsubscribeButton
+                    subscriberId={user.id}
+                    subscribeToId={author.id}
+                  />
                 )}
               </div>
             ) : (
-              <div className="">
-                <Button disabled variant={"outline"}>
-                  Subscribe
-                </Button>
-              </div>
+              <Button>
+                <Link href="/login">Follow</Link>
+              </Button>
             )}
           </div>
-        </div>
+        ) : (
+          <div className="">
+            <Button className="w-full" disabled variant={"outline"}>
+              Subscribe
+            </Button>
+          </div>
+        )}
       </div>
-
       <Tabs.Root defaultValue="posts" className="">
-        <Tabs.List className="flex overflow-x-auto whitespace-nowrap scrollbar-hide w-full border-b">
+        <Tabs.List className="flex overflow-x-auto px-4 whitespace-nowrap scrollbar-hide w-full border-b">
           <Tabs.Trigger
             className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
             value="posts"
