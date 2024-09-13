@@ -191,6 +191,32 @@ export async function deletePost(slug: string){
         throw error;
     }
 }
+
+export async function ChangeGitHubLink(github_link: string | null) {
+    const supabase = createClient();
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+        console.log('User not found');
+        throw new Error("User not authenticated");
+    }
+
+
+    if (!github_link) {
+        console.log('GitHub link is missing');
+        throw new Error("GitHub link is required");
+    }
+
+    await prisma.author.update({
+        where: { id: user.id },
+        data: {
+         pref_githubLink: github_link,
+        },
+    });
+
+    revalidatePath('/account', 'layout');
+}
    
 
 

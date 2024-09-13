@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   CheckCircle2,
+  Linkedin,
   Pencil,
   SeparatorHorizontal,
   Upload,
@@ -39,8 +40,11 @@ import ChangeUsernameDialog from "@/components/account/ChangeUsername";
 import { Separator } from "@/components/ui/separator";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ChangeBio } from "./actions";
+import { ChangeBio, ChangeGitHubLink } from "./actions";
 import CopyUserID from "@/components/account/CopyUserID";
+import { Textarea } from "@/components/ui/textarea";
+import { BsDiscord, BsGithub, BsTwitterX } from "react-icons/bs";
+import ChangeGitHubLinkDialog from "@/components/account/ChangeGitHubLink";
 
 export default async function AccountPage() {
   const supabase = createClient();
@@ -139,11 +143,74 @@ export default async function AccountPage() {
               <ChangeUsernameDialog />
             </div>
             <div className=" flex items-center pb-6 justify-between">
-              <div className="flex gap-3 flex-col">
+              <div className="flex gap-3 flex-col w-full">
                 <Label htmlFor="name">Profile Bio</Label>
-                <p>{author.bio}</p>
+                <Textarea className="w-full" readOnly>
+                  {author.bio}
+                </Textarea>{" "}
+                <div className="flex justify-between">
+                  <p></p>
+                  <ChangeBioDialog />
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium mb-4">Social Links</h3>
+                  <div className="grid gap-4">
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="github"
+                        className="flex items-center space-x-2"
+                      >
+                        <BsGithub className="w-4 h-4" />
+                        <span>GitHub</span>
+                      </Label>
+                      <div className="flex items-center justify-between w-full">
+                        <p>
+                          {author.pref_githubLink
+                            ? author.pref_githubLink
+                            : "N/A"}
+                        </p>{" "}
+                        <ChangeGitHubLinkDialog />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="twitter"
+                        className="flex items-center space-x-2"
+                      >
+                        <BsTwitterX className="w-4 h-4" />
+                        <span>Twitter</span>
+                      </Label>
+                      <Input
+                        id="twitter"
+                        placeholder="https://twitter.com/username"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="linkedin"
+                        className="flex items-center space-x-2"
+                      >
+                        <Linkedin className="w-4 h-4" />
+                        <span>LinkedIn</span>
+                      </Label>
+                      <Input
+                        id="linkedin"
+                        placeholder="https://linkedin.com/in/username"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="discord"
+                        className="flex items-center space-x-2"
+                      >
+                        <BsDiscord className="w-4 h-4" />
+                        <span>Discord</span>
+                      </Label>
+                      <Input id="discord" placeholder="username#0000" />
+                    </div>
+                  </div>
+                </div>
               </div>
-              <ChangeBioDialog />
             </div>
           </CardContent>
           <CardFooter></CardFooter>
