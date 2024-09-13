@@ -161,7 +161,7 @@ export default async function ProfilePage({
                 )}
               </div>
             ) : (
-              <Button>
+              <Button className="w-full">
                 <Link href="/login">Follow</Link>
               </Button>
             )}

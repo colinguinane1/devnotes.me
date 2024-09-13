@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { subscribe, unsubscribe } from "@/app/profile/[[...username]]/actions"; // Adjust the import path as necessary
 import { useState, useTransition } from "react";
 import Loading from "../ui/loader-spinner";
+import { CheckCircle, CheckCircle2Icon, PlusIcon } from "lucide-react";
+import { BsCheckCircleFill } from "react-icons/bs";
 
 interface SubscribeButtonProps {
   subscriberId: string;
@@ -31,10 +33,14 @@ export function SubscribeButton({
     <Button className="w-full" onClick={handleSubscribe}>
       {isPending ? (
         <div className="flex items-center gap-2">
-          <p>Following</p>
+          <p className="flex items-center gap-2">
+            Following <BsCheckCircleFill />
+          </p>
         </div>
       ) : (
-        "Follow +"
+        <p className="flex items-center gap-2">
+          Follow <PlusIcon size={10} />
+        </p>
       )}
     </Button>
   );
@@ -60,11 +66,13 @@ export function UnsubscribeButton({
   return (
     <Button className="w-full" onClick={handleUnsubscribe}>
       {isPending ? (
-        <div className="flex items-center gap-2">
-          <p>Follow +</p>
-        </div>
+        <p className="flex items-center gap-2">
+          Follow <PlusIcon size={10} />
+        </p>
       ) : (
-        "Following"
+        <p className="flex items-center gap-2">
+          Following <BsCheckCircleFill />
+        </p>
       )}
     </Button>
   );
