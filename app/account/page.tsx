@@ -77,8 +77,8 @@ export default async function AccountPage() {
     </section>;
   } else
     return (
-      <div className="container mx-auto py-10">
-        <Card className="max-w-2xl mx-auto">
+      <div className="container px-4 py-10">
+        <Card className="max-w-3xl">
           <CardHeader>
             <CardTitle>Account Settings</CardTitle>
             <CardDescription>
