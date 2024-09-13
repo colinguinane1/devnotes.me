@@ -28,7 +28,7 @@ export async function emailLogin(formData: FormData) {
     const { data: { user } } = await supabase.auth.getUser();
     await checkAuthorExists(user);
     revalidatePath('/', 'layout');
-    redirect('/login?m=Login%20Success&type=success&form=login');
+    redirect('/');
  
 
      
@@ -103,7 +103,7 @@ export async function signup(formData: FormData) {
     }
 
     revalidatePath('/', 'layout');
-    return redirect('/login?m=Email%20Verification%20Sent&type=success&form=signup');
+    return redirect('/');
 }
 
 export async function checkAuthorExists(user: any) {

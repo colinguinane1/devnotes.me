@@ -53,10 +53,11 @@ model Subscription {
 
 model Post {
   id          String    @id @default(cuid())
-  mdx         Boolean?  @default(false)
+  markdown    Boolean?  @default(false)
   description String?
   slug        String    @unique
   title       String
+  tags        String[]
   content     String
   views       Int       @default(0)
   likes       Int       @default(0)

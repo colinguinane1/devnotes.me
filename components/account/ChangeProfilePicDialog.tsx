@@ -23,7 +23,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Pencil } from "lucide-react";
+import { Pencil, Upload } from "lucide-react";
 import { Input } from "../ui/input";
 import Loading from "../ui/loader-spinner";
 
@@ -35,8 +35,8 @@ export default function ChangeProfilePicClient() {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="ghost" size={"icon"}>
-            <Pencil size={15} />
+          <Button variant="ghost" className="hover:bg-card ">
+            <Upload className="mr-2" size={15} /> Upload
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
@@ -52,8 +52,8 @@ export default function ChangeProfilePicClient() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="ghost" size={"icon"}>
-          <Pencil size={15} />
+        <Button variant="ghost" className="hover:bg-card ">
+          <Upload className="mr-2" size={15} /> Upload
         </Button>
       </DrawerTrigger>
       <DrawerContent>

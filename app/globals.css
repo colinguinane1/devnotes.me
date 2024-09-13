@@ -6,6 +6,29 @@
   @apply bg-gradient-to-r from-blue-500 to-cyan-500 inline-block text-transparent bg-clip-text;
 }
 
+.tabs{
+  @apply px-5 h-[45px] w-[10rem] dark:data-[state=active]:text-white  border-b flex items-center justify-center text-[15px] leading-none text-gray-700 dark:text-gray-500 dark:data-[state=active]:border-white outline-none cursor-pointer transition-colors duration-200 data-[state=active]:text-black data-[state=active]:border-black
+}
+body .w-md-editor-text-pre>code,
+body .w-md-editor-text-input {
+  font-size: 18px !important;
+  line-height: 24px !important;
+}
+
+.tabs-scrollable {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* For Firefox */
+  -ms-overflow-style: none;
+  /* For Internet Explorer and Edge */
+}
+
+.tabs-scrollable::-webkit-scrollbar {
+  display: none;
+  /* For Chrome, Safari, and Opera */
+}
+
 @layer base {
   :root {
     --background: 210 50% 95%;

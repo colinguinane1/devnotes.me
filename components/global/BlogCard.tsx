@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatDate } from "@/data/SiteData";
+import { formatDate, getTagColor } from "@/data/SiteData";
 import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post } from "@prisma/client";
@@ -13,15 +13,31 @@ import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { EyeIcon, HeartIcon } from "lucide-react";
 import VerifiedUser from "../ui/verified";
+import { createClient } from "@/app/utils/supabase/server";
 interface BlogCardProps {
   post: Post;
   author: Author;
+  horizontal?: boolean;
+  dropdownType?: string;
 }
 
-export default function BlogCard({ post, author }: BlogCardProps) {
+export default async function BlogCard({
+  post,
+  author,
+  horizontal = false,
+  dropdownType = "user",
+}: BlogCardProps) {
+  const supabase = createClient();
+
+  // Get the logged-in user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   return (
     <Card
-      className="w-full max-w-lg rounded-xl overflow-hidden shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
+      className={`w-full max-w-sm rounded-md overflow-hidden shadow-lg transition-all hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] ${
+        horizontal ? "flex" : ""
+      }`}
       key={post.id}
     >
       <Link
@@ -66,29 +82,35 @@ export default function BlogCard({ post, author }: BlogCardProps) {
               </span>
             </div>
           </Link>
-          <div className="flex flex-wrap gap-2">
-            <Badge
-              variant="outline"
-              className="bg-primary-foreground text-primary"
+          {post.tags && (
+            <div
+              className={`flex flex-wrap gap-2 ${horizontal ? "hidden" : ""} `}
             >
-              Technology
-            </Badge>
-            <Badge
-              variant="outline"
-              className="bg-secondary-foreground text-secondary"
-            >
-              Back End
-            </Badge>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1 text-muted-foreground">
+              {post.tags.map((tag) => {
+                const tagColor = getTagColor(tag);
+                return (
+                  <Badge key={tag} variant="outline">
+                    #{tag}
+                  </Badge>
+                );
+              })}
+            </div>
+          )}
+          <div className="flex items-center justify-between gap-10">
+            <div className="flex items-center gap-2 text-muted-foreground">
               <EyeIcon className="w-4 h-4" />
-              <span>{post.views}</span>
+              <span>{post.views}</span>{" "}
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <HeartIcon className="w-4 h-4" />
+                <span>{post.likes}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-1 text-muted-foreground">
-              <HeartIcon className="w-4 h-4" />
-              <span>{post.likes}</span>
-            </div>
+
+            {dropdownType === "author" || user?.id === post.user_id ? (
+              <BlogDropdown author={author} slug={post.slug} type="author" />
+            ) : (
+              <BlogDropdown author={author} slug={post.slug} type="user" />
+            )}
           </div>
         </div>
       </CardContent>

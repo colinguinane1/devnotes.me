@@ -21,12 +21,17 @@ import {
   PostLikedManager,
   RemovePostLikeManager,
 } from "@/components/buttons/LikeManager";
-import { calculateReadingTime, formatDate } from "@/data/SiteData";
+import {
+  calculateReadingTime,
+  formatCommentDate,
+  formatDate,
+} from "@/data/SiteData";
 import BlogNotFound from "@/components/global/BlogNotFound";
 import { createClient } from "@/app/utils/supabase/server";
 import { checkPostLiked, likePost, removeLike } from "./actions";
 import { ClockIcon } from "lucide-react";
 import { MessageCircleIcon, ChevronDownIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 
 import VerifiedUser from "@/components/ui/verified";
 
@@ -38,6 +43,19 @@ import {
 } from "@/components/ui/accordion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import rehypeDocument from "rehype-document";
+import rehypeFormat from "rehype-format";
+import rehypeStringify from "rehype-stringify";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
+import { read } from "to-vfile";
+import { unified } from "unified";
+import { reporter } from "vfile-reporter";
+import remarkGfm from "remark-gfm";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeToc from "rehype-toc";
+import AddCommentForm from "@/components/buttons/AddComment";
+import { Badge } from "@/components/ui/badge";
 
 export default async function blog({ params }: { params: { slug: string } }) {
   const blog = await prisma.post.findUnique({
@@ -50,6 +68,16 @@ export default async function blog({ params }: { params: { slug: string } }) {
   if (!blog) {
     return <BlogNotFound />;
   }
+
+  const comments = await prisma.comment.findMany({
+    where: {
+      postId: blog.id,
+    },
+    include: {
+      author: true,
+    },
+  });
+
   const postLiked = await checkPostLiked(blog.id);
 
   const supabase = createClient();
@@ -64,10 +92,32 @@ export default async function blog({ params }: { params: { slug: string } }) {
     description: blog.description,
   };
 
+  let markdownContent = "";
+
+  if (blog.markdown) {
+    const content = blog.content; // Assuming this is the markdown content stored in the database
+
+    // Process markdown content with pretty code highlighting
+    const processedContent = await unified()
+      .use(remarkParse) // Parse markdown to an AST
+      .use(remarkGfm) // Add support for GitHub flavored markdown (tables, etc.)
+      .use(remarkRehype) // Convert markdown AST to HTML AST
+      .use(rehypePrettyCode, {
+        theme: "aurora-x", // Specify a theme
+        keepBackground: true, // Optionally keep the code block background color
+      })
+      .use(rehypeToc, {}) // Add a table of contents
+      .use(rehypeDocument) // Add a document structure
+      .use(rehypeFormat) // Format the HTML output
+      .use(rehypeStringify) // Convert the HTML AST to a string
+      .process(content);
+
+    markdownContent = String(processedContent);
+  }
   incrementViews(blog.id);
   return (
     <div className="bg-background">
-      <div className="relative h-[400px] w-full overflow-hidden">
+      <div className="relative h-[400px] -mt-[4px] md:-mt-0  w-full overflow-hidden">
         <img
           src="/gradient.jpg"
           alt="Blog cover image"
@@ -84,16 +134,25 @@ export default async function blog({ params }: { params: { slug: string } }) {
               <span>{calculateReadingTime(blog.content)} min read</span>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon">
-                <HeartIcon className="h-4 w-4" />
-                <span className="sr-only">Comment</span>
-              </Button>
+              {!user ? (
+                <Button variant={"ghost"} size={"icon"}>
+                  <Link href="/login">
+                    {" "}
+                    <HeartIcon className="h-4 w-4" />
+                  </Link>
+                </Button>
+              ) : postLiked ? (
+                <PostLikedManager postId={blog.id} />
+              ) : (
+                <RemovePostLikeManager postId={blog.id} />
+              )}
+
               <span>{blog.likes}</span>
               <Button variant="ghost" size="icon">
                 <MessageCircleIcon className="h-4 w-4" />
                 <span className="sr-only">Comment</span>
               </Button>
-              <span>12</span>
+              <span>{comments.length}</span>
             </div>
           </div>
         </div>
@@ -103,16 +162,36 @@ export default async function blog({ params }: { params: { slug: string } }) {
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
             {blog.title}
           </h1>
+          <div>
+            {blog.tags && (
+              <div className="flex items-center wrap gap-2">
+                {blog.tags.map((tag, index) => (
+                  <Badge variant={"outline"} key={index}>
+                    #{tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </div>
           <p className="text-muted-foreground">{blog.description}</p>
-          <p
-            className="prose dark:prose-invert "
-            dangerouslySetInnerHTML={{ __html: blog.content }}
-          ></p>
+          {blog.markdown ? (
+            <p
+              className="prose"
+              dangerouslySetInnerHTML={{ __html: markdownContent }}
+            ></p>
+          ) : (
+            <p
+              className="prose dark:prose-invert "
+              dangerouslySetInnerHTML={{ __html: blog.content }}
+            ></p>
+          )}
           <Accordion type="single" collapsible>
             <AccordionItem value="comments">
               <AccordionTrigger className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-2xl font-bold ">Comments (0)</h3>
+                  <h3 id="comments" className="text-2xl  font-bold ">
+                    Comments ({comments.length})
+                  </h3>
                 </div>
               </AccordionTrigger>
               <AccordionContent>
@@ -123,70 +202,57 @@ export default async function blog({ params }: { params: { slug: string } }) {
                       collapsible
                       className="mt-4 space-y-4"
                     >
-                      <AccordionItem
-                        className="flex items-start gap-4 pb-4"
-                        value="comment-1"
-                      >
-                        <Avatar className="h-10 w-10 shrink-0 border">
-                          <AvatarImage
-                            src="/placeholder-user.jpg"
-                            alt="@shadcn"
-                          />
-                          <AvatarFallback>AC</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-medium">Acme Inc</h4>
-                            <p className="text-sm text-muted-foreground text-left">
-                              2 days ago
-                            </p>
+                      {comments.map((comment) => (
+                        <AccordionItem
+                          className="py-4"
+                          key={comment.id}
+                          value="comment"
+                        >
+                          <div className="flex items-start gap-4">
+                            <div className="flex-1</div>">
+                              <div className="flex items-center gap-2">
+                                {" "}
+                                {comment.author.image_url &&
+                                comment.author.username ? (
+                                  <Avatar className="flex-shrink-0">
+                                    <AvatarImage
+                                      className="-mt-[1px]"
+                                      src={comment.author.image_url}
+                                      alt={comment.author.username}
+                                    />
+                                  </Avatar>
+                                ) : (
+                                  <Avatar className="flex-shrink-0">
+                                    <AvatarFallback>
+                                      {comment.author.username
+                                        ? comment.author.username[0]
+                                        : "U"}
+                                    </AvatarFallback>
+                                  </Avatar>
+                                )}
+                                <p className="font-medium text-gray-900 dark:text-white">
+                                  {comment.author.username}
+                                </p>
+                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                  {formatCommentDate(comment.createdAt)}
+                                </span>
+                              </div>
+                              <p className="mt-1 text-gray-700 dark:text-gray-300">
+                                {comment.content}
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-left">
-                            This blog post is absolutely hilarious! I cant
-                            believe the king actually tried to tax jokes. What a
-                            ridiculous idea.
-                          </p>
-                        </div>
-                      </AccordionItem>
-                      <AccordionItem
-                        className="flex items-start gap-4 pb-4"
-                        value="comment-2"
-                      >
-                        <Avatar className="h-10 w-10 shrink-0 border">
-                          <AvatarImage
-                            src="/placeholder-user.jpg"
-                            alt="@shadcn"
-                          />
-                          <AvatarFallback>JD</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <h4 className="font-medium">John Doe</h4>
-                            <p className="text-sm text-muted-foreground">
-                              3 days ago
-                            </p>
-                          </div>
-                          <p className="text-left">
-                            I cant wait to read more about Jokester and his
-                            adventures. This is such a fun and creative story!
-                          </p>
-                        </div>
-                      </AccordionItem>
+                        </AccordionItem>
+                      ))}
                     </Accordion>
                   </div>
-
-                  <div>
-                    <h3 className="text-2xl font-bold">Leave a Comment</h3>
-                    <form className="mt-4 space-y-4">
-                      <Textarea
-                        placeholder="Write your comment here..."
-                        className="h-24"
-                      />
-                      <div className="flex justify-end">
-                        <Button type="submit">Submit</Button>
-                      </div>
-                    </form>
-                  </div>
+                  {user ? (
+                    <AddCommentForm postId={blog.id} />
+                  ) : (
+                    <Button>
+                      <Link href="/login">Sign In To Comment</Link>
+                    </Button>
+                  )}
                 </div>
               </AccordionContent>
             </AccordionItem>

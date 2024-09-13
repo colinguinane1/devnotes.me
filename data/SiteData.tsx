@@ -20,6 +20,45 @@ export function formatDate(dateString: Date | string): string {
     day: "numeric",
   });
 }
+const tagColors = [
+  "red-500",
+  "yellow-500",
+  "green-500",
+  "blue-500",
+  "indigo-500",
+  "purple-500",
+  "pink-500",
+  "gray-500",
+];
+
+export function getTagColor(tag: string): string {
+  const index = Math.floor(Math.random() * tagColors.length);
+  return tagColors[index];
+}
+
+export function formatCommentDate(dateString: Date | string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInMs = now.getTime() - date.getTime();
+  const diffInMins = Math.floor(diffInMs / (1000 * 60));
+  const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+  if (diffInMins < 60) {
+    return `${diffInMins} mins ago`;
+  } else if (diffInHours < 24) {
+    return `${diffInHours} hours ago`;
+  } else if (diffInDays < 30) {
+    return `${diffInDays} days ago`;
+  } else {
+    // Format as Day/Month/Year
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+}
 
 export function generateSlug(title: string): string {
   const slug = title

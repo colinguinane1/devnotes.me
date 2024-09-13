@@ -29,7 +29,7 @@ export default function UserCard({ author }: UserCardProps) {
         ></Image>
         {author.full_name ? (
           <div>
-            <h2 className="text-lg font-bold flex items-center gap-1">
+            <h2 className="font-bold flex items-center gap-1">
               {author.full_name} {author.verified && <VerifiedUser />}
             </h2>
             <h2 className="">@{author.username?.toLowerCase()}</h2>

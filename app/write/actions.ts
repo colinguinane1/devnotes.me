@@ -20,10 +20,7 @@ export async function checkSlug(slug: string) {
     return false;
 }
 
-
-
-// Server action for creating a post
-export async function createPost(formData: FormData) {
+export async function createPost(formData: FormData, markdown: boolean) {
   const supabase = createClient();
 
   // Get the logged-in user
@@ -37,31 +34,51 @@ export async function createPost(formData: FormData) {
   try {
     const title = formData.get('title') as string;
     const description = formData.get('description') as string;
-
-   
-    const slug = generateSlug(title);
     const content = formData.get('content') as string;
+    const tagsString = formData.get('tags') as string;
+    const tags = JSON.parse(tagsString) as string[]; // Parse tags as array
 
-    if (!content) {
-      throw new Error("Content cannot be null");
+    if (!title || !description || !content) {
+      throw new Error("All fields are required");
     }
 
-    if (await checkSlug(slug)) {
+    const slug = generateSlug(title);
+
+    // Check if the slug already exists
+    const existingPost = await prisma.post.findFirst({
+      where: { slug },
+    });
+
+    if (existingPost) {
       throw new Error("Slug already exists");
     }
+
+    console.log({
+  title,
+  description,
+  tags,
+  markdown,
+  slug,
+  content,
+  published: true,
+  createdAt: new Date(),
+  author: {
+    connect: { id: user.id },
+  },
+});
 
     await prisma.post.create({
       data: {
         title,
         description,
+        tags, // Ensure tags are passed correctly
+        markdown,
         slug,
         content,
         published: true,
         createdAt: new Date(),
         author: {
-          connect: {
-            id: user.id,  // Connect the post to the author using the author's ID
-          },
+          connect: { id: user.id },
         },
       },
     });
