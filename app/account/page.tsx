@@ -9,7 +9,12 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Pencil } from "lucide-react";
+import {
+  CheckCircle2,
+  Pencil,
+  SeparatorHorizontal,
+  Upload,
+} from "lucide-react";
 import ChangeUsername from "@/components/account/ChangeUsername";
 import ChangeNameDialog from "@/components/account/ChangeName";
 import Image from "next/image";
@@ -30,6 +35,12 @@ import { formatDate } from "@/data/SiteData";
 import ChangeBioDialog from "@/components/account/ChangeBio";
 import VerifiedUser from "@/components/ui/verified";
 import ChangeUsernameDialog from "@/components/account/ChangeUsername";
+
+import { Separator } from "@/components/ui/separator";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ChangeBio } from "./actions";
+import CopyUserID from "@/components/account/CopyUserID";
 
 export default async function AccountPage() {
   const supabase = createClient();
@@ -62,126 +73,102 @@ export default async function AccountPage() {
     </section>;
   } else
     return (
-      <div className="flex flex-col w-full -mt-2 min-h-screen bg-background">
-        <main className="flex ">
-          <div className=" w-full">
-            <div className="grid grid-cols-1 gap-8">
-              <div className="bg-card rounded-lg p-6">
-                <div className="flex items-center gap-4">
-                  {author.image_url && (
-                    <Avatar className="h-12 w-12">
-                      <AvatarImage src={author.image_url} alt="User Avatar" />
-                      <AvatarFallback>JD</AvatarFallback>
-                    </Avatar>
-                  )}
-                  <div>
-                    <div className="text-lg font-medium text-foreground">
-                      {author.full_name ? (
-                        <div>
-                          <h2 className="flex items-center gap-2">
-                            {author.full_name}{" "}
-                            {author.verified && <VerifiedUser />}
-                          </h2>
-                          <h2 className="">@{author.username}</h2>
-                        </div>
-                      ) : (
-                        <h2 className="">{author.username}</h2>
-                      )}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {author.email}
-                    </div>
+      <div className="container mx-auto py-10">
+        <Card className="max-w-2xl mx-auto">
+          <CardHeader>
+            <CardTitle>Account Settings</CardTitle>
+            <CardDescription>
+              Update your account information here.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="flex items-center space-x-4">
+              {author.image_url && (
+                <Avatar className="w-20 h-20">
+                  <AvatarImage src={author.image_url} alt="User avatar" />
+                  <AvatarFallback>UN</AvatarFallback>
+                </Avatar>
+              )}
+              <div>
+                <Label htmlFor="avatar-upload" className="cursor-pointer">
+                  <div className="flex items-center space-x-2">
+                    <ChangeProfilePictureDialog />
                   </div>
-                </div>
-              </div>
-              <div className="bg-card rounded-lg p-6">
-                <Collapsible className="grid gap-4">
-                  <CollapsibleTrigger className="flex items-center justify-between text-lg font-medium text-foreground [&[data-state=open]>svg]:rotate-90">
-                    Personal Information
-                    <ChevronRightIcon className="h-5 w-5 transition-transform" />
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <div className="grid gap-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
-                        <div className="flex items-center justify-between">
-                          <p>{author.full_name ? author.full_name : "-"}</p>
-                          <ChangeNameDialog />
-                        </div>
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="name">Email</Label>
-                        <div className=" flex-col">
-                          <p>{author.email}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
-                <Collapsible className="grid gap-4">
-                  <CollapsibleTrigger className="flex items-center justify-between text-lg font-medium text-foreground [&[data-state=open]>svg]:rotate-90">
-                    Security
-                    <ChevronRightIcon className="h-5 w-5 transition-transform" />
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <div className="grid gap-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                          id="password"
-                          type="password"
-                          defaultValue="********"
-                        />
-                      </div>
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
-                <Collapsible className="grid gap-4">
-                  <CollapsibleTrigger className="flex items-center justify-between text-lg font-medium text-foreground [&[data-state=open]>svg]:rotate-90">
-                    Notifications
-                    <ChevronRightIcon className="h-5 w-5 transition-transform" />
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <div className="grid gap-4">
-                      <div className="flex items-center gap-2">
-                        <Checkbox id="email-notifications" defaultChecked />
-                        <Label htmlFor="email-notifications">
-                          Email Notifications
-                        </Label>
-                      </div>
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
-                <Collapsible className="grid gap-4">
-                  <CollapsibleTrigger className="flex items-center justify-between text-lg font-medium text-foreground [&[data-state=open]>svg]:rotate-90">
-                    Profile
-                    <ChevronRightIcon className="h-5 w-5 transition-transform" />
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <div className="grid gap-4">
-                      {" "}
-                      <div className="flex flex-col">
-                        {" "}
-                        <Label>Username</Label>
-                        <div className="flex items-center justify-between">
-                          {author.username ? author.username : "-"}{" "}
-                          <ChangeUsernameDialog />
-                        </div>
-                      </div>
-                      <div className="flex flex-col">
-                        {" "}
-                        <Label>Profile Bio</Label>
-                        <div className="flex items-center justify-between">
-                          {author.bio ? author.bio : "-"} <ChangeBioDialog />
-                        </div>
-                      </div>
-                    </div>
-                  </CollapsibleContent>
-                </Collapsible>
+                </Label>
+                <Input
+                  id="avatar-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                />
               </div>
             </div>
-          </div>
-        </main>
+            <div className=" flex items-center justify-between">
+              <div className="flex gap-3 flex-col">
+                <Label htmlFor="name">Name</Label>
+                <p>{author.full_name ? author.full_name : "N/A"}</p>
+              </div>
+              <ChangeNameDialog />
+            </div>
+            <div className=" flex items-center justify-between">
+              <div className="flex gap-3 flex-col">
+                <Label htmlFor="name">User ID</Label>
+                <p>{author.id}</p>
+              </div>
+              <CopyUserID id={author.id} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <p>{author.email}</p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="max-w-2xl mx-auto mt-6">
+          <CardHeader>
+            <CardTitle>Profile Settings</CardTitle>
+            <CardDescription>
+              Update your public profile information.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className=" flex items-center pb-6 justify-between">
+              <div className="flex gap-3 flex-col">
+                <Label htmlFor="name">Username</Label>
+                <p>{author.username}</p>
+              </div>
+              <ChangeUsernameDialog />
+            </div>
+            <div className=" flex items-center pb-6 justify-between">
+              <div className="flex gap-3 flex-col">
+                <Label htmlFor="name">Profile Bio</Label>
+                <p>{author.bio}</p>
+              </div>
+              <ChangeBioDialog />
+            </div>
+          </CardContent>
+          <CardFooter></CardFooter>
+        </Card>
+        <Card className="max-w-2xl mx-auto mt-6">
+          <CardHeader>
+            <CardTitle>Delete Account</CardTitle>
+            <CardDescription>
+              Permanently delete your account and all associated data.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Warning</AlertTitle>
+              <AlertDescription>
+                This action cannot be undone. All your data will be permanently
+                removed.
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+          <CardFooter>
+            <Button variant="destructive">Delete Account</Button>
+          </CardFooter>
+        </Card>
       </div>
     );
 }

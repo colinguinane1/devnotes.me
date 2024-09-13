@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { PrismaClient } from "@prisma/client";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { formatDate } from "@/data/SiteData";
+import { formatCommentDate, formatDate } from "@/data/SiteData";
 import BlogCard from "@/components/global/BlogCard";
 import { createClient } from "@/app/utils/supabase/server";
 import { subscribe } from "./actions";
@@ -30,6 +30,8 @@ import {
   CheckCircle,
   ChevronLeft,
   Settings,
+  Lock,
+  LockIcon,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { CalendarDaysIcon } from "lucide-react";
@@ -100,6 +102,25 @@ export default async function ProfilePage({
     },
   });
 
+  const authorComments = await prisma.comment.findMany({
+    where: {
+      authorId: author.id,
+    },
+    include: {
+      post: true,
+    },
+  });
+
+  const authorDrafts = await prisma.post.findMany({
+    where: {
+      user_id: author.id,
+      published: false,
+    },
+    include: {
+      author: true,
+    },
+  });
+
   const authorFollowers = await prisma.subscription.findMany({
     where: {
       subscribedToId: author.id,
@@ -118,15 +139,19 @@ export default async function ProfilePage({
   ];
 
   return (
-    <div className="w-full min-h-screen mt-10  max-w-3xl mx-auto">
-      <div className="flex items-center pb-10 px-4 justify-between">
-        <Link href="/">
-          <ChevronLeft />
-        </Link>
+    <div className="w-full min-h-screen mt-6  max-w-3xl mx-auto">
+      <div className="flex items-center px-4 justify-between">
+        <div></div>
         {user?.id === author.id && (
-          <Link href="/account">
-            <Settings size={20} />
-          </Link>
+          <Button className="hover:bg-background" asChild variant={"ghost"}>
+            <Link
+              className="text-gray-600 underline flex items-center gap-1"
+              href="/account"
+            >
+              Account
+              <ChevronRight size={20} />
+            </Link>
+          </Button>
         )}
       </div>
       <div className="flex items-center gap-6 p-4 ">
@@ -136,21 +161,31 @@ export default async function ProfilePage({
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
         )}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col items-center  gap-4">
           {author.full_name ? (
-            <div>
-              <h2 className="text-xl font-bold flex items-center gap-2">
+            <div className="mt-4">
+              <h2 className=" font-bold flex items-center gap-2">
                 {author.full_name} {author.verified && <VerifiedUser />}
               </h2>
-              <h2 className="">@{author.username}</h2>
+              <h2 className="text-sm">@{author.username}</h2>{" "}
+              <p className="text-sm">
+                {authorFollowers.length} followers | {authorFollowing.length}{" "}
+                following
+              </p>
             </div>
           ) : (
-            <h2 className="text-2xl font-bold">{author.username}</h2>
-          )}
+            <div>
+              <h2 className="font-bold">@{author.username}</h2>{" "}
+              <p className="text-sm">
+                {authorFollowers.length} followers | {authorFollowing.length}{" "}
+                following
+              </p>
+            </div>
+          )}{" "}
           <div></div>
         </div>{" "}
-        <p className="text-muted-foreground">{author.bio}</p>
       </div>{" "}
+      <p className="text-muted-foreground p-4">{author.bio}</p>
       <div className="flex items-center gap-4 p-4 text-muted-foreground">
         <Link href="#" className="hover:underline" prefetch={false}>
           <TwitterIcon className="w-5 h-5" />
@@ -194,7 +229,7 @@ export default async function ProfilePage({
         )}
       </div>
       <Tabs.Root defaultValue="posts" className="">
-        <Tabs.List className="flex overflow-x-auto px-4 whitespace-nowrap scrollbar-hide w-full">
+        <Tabs.List className="flex overflow-x-auto whitespace-nowrap scrollbar-hide w-full">
           {tabData.map((tab, index) => (
             <Tabs.Trigger
               key={index}
@@ -204,9 +239,14 @@ export default async function ProfilePage({
               {tab.value}
             </Tabs.Trigger>
           ))}
-          <Tabs.Trigger className="tabs" value="drafts">
-            Drafts
-          </Tabs.Trigger>
+          {user?.id === author.id && (
+            <Tabs.Trigger
+              className="tabs flex items-center gap-2"
+              value="drafts"
+            >
+              <Lock size={15} /> Drafts
+            </Tabs.Trigger>
+          )}
         </Tabs.List>
         <div className="p-4">
           <Tabs.Content value="posts">
@@ -267,6 +307,66 @@ export default async function ProfilePage({
                       Profile <ChevronRightIcon size={15} />
                     </Button>
                   </Link>
+                </div>
+              ))}
+            </div>
+          </Tabs.Content>
+          <Tabs.Content value="comments">
+            <h1 className="pb-4 text-2xl">
+              Comments ({authorComments.length})
+            </h1>
+
+            <div className="grid gap-4">
+              {authorComments.map((comment) => (
+                <div
+                  className="flex items-center justify-between"
+                  key={comment.id}
+                >
+                  <div className="flex items-center gap-2">
+                    {author.image_url && (
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage src={author.image_url} alt="@shadcn" />
+                        <AvatarFallback>JD</AvatarFallback>
+                      </Avatar>
+                    )}
+                    <div className="flex flex-col">
+                      <p>
+                        {formatCommentDate(comment.createdAt)}
+                        <span className="text-gray-500">
+                          {" "}
+                          in{" "}
+                          <Link href={`/posts/${comment.post.slug}`}>
+                            {comment.post.title}
+                          </Link>
+                        </span>
+                      </p>
+                      <p>{comment.content}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <Link href={`/posts/${comment.post.slug}`}>
+                      <Button variant={"ghost"}>
+                        View <ChevronRight size={15} />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Tabs.Content>
+          <Tabs.Content value="drafts">
+            <h1 className="pb-4 text-2xl">Drafts ({authorDrafts.length})</h1>
+            <div className="flex items-center gap-2 p-4 border rounded-md bg-gray-500/50 ">
+              <LockIcon />
+              <p>This is only visible to you</p>
+            </div>
+            <div className="grid gap-4">
+              {authorDrafts.map((draft) => (
+                <div
+                  className="flex items-center justify-between"
+                  key={draft.id}
+                >
+                  <BlogCard post={draft} author={draft.author} />
                 </div>
               ))}
             </div>
