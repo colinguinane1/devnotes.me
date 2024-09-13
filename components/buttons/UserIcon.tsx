@@ -46,14 +46,20 @@ export default async function UserIcon() {
       {!user ? (
         <Button>Sign In</Button>
       ) : (
-        <DropdownMenu>
-          <DropdownMenuTrigger>
+        <div className="flex items-center gap-2">
+          <form>
             <Button
-              className="flex  items-center justify-center bg-card"
+              className="flex items-center "
               variant={"outline"}
+              formAction={signOut}
             >
-              <div className="flex items-center space-x-2">
-                <p>Logged In as</p>
+              <p className="text-red-500">Sign Out</p>
+            </Button>
+          </form>
+
+          <div className="flex items-center space-x-2">
+            <Button size={"icon"} variant={"outline"}>
+              <Link href={`/profile/${userExists.username}`}>
                 {userExists?.image_url && (
                   <Image
                     className="rounded-full"
@@ -63,45 +69,10 @@ export default async function UserIcon() {
                     height={30}
                   />
                 )}
-              </div>
+              </Link>
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="bg-transparent backdrop-blur-md"
-            align="start"
-          >
-            <DropdownMenuItem className="cursor-pointer flex">
-              <Link className="flex items-center" href="/account">
-                <CiSettings className="mr-1" />
-                Account
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer flex">
-              <Link
-                className="flex items-center"
-                href={`/profile/${userExists?.username}`}
-              >
-                <RxAvatar className="mr-1" />
-                Profile
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              <Link className="flex items-center" href={`/blogs`}>
-                <CiBookmark className="mr-1" />
-                Blogs
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              <form>
-                <button className="flex items-center " formAction={signOut}>
-                  {" "}
-                  <FaSignOutAlt color="red" className="mr-1" />{" "}
-                  <p className="text-red-500">Sign Out</p>
-                </button>
-              </form>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          </div>
+        </div>
       )}
     </div>
   );

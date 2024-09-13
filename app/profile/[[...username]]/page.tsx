@@ -28,6 +28,8 @@ import {
   ChevronRight,
   ChevronRightIcon,
   CheckCircle,
+  ChevronLeft,
+  Settings,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { CalendarDaysIcon } from "lucide-react";
@@ -107,18 +109,34 @@ export default async function ProfilePage({
     },
   });
 
-  const tabsData = [];
+  const tabData = [
+    { value: "posts" },
+    { value: "liked" },
+    { value: "followers" },
+    { value: "following" },
+    { value: "comments" },
+  ];
 
   return (
     <div className="w-full min-h-screen mt-10  max-w-3xl mx-auto">
-      <div className="flex items-center gap-6 p-4 mb-8">
+      <div className="flex items-center pb-10 px-4 justify-between">
+        <Link href="/">
+          <ChevronLeft />
+        </Link>
+        {user?.id === author.id && (
+          <Link href="/account">
+            <Settings size={20} />
+          </Link>
+        )}
+      </div>
+      <div className="flex items-center gap-6 p-4 ">
         {author.image_url && (
           <Avatar className="w-20 h-20">
             <AvatarImage src={author.image_url} alt="@shadcn" />
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
         )}
-        <div className="grid gap-1">
+        <div className="grid grid-cols-2 gap-4">
           {author.full_name ? (
             <div>
               <h2 className="text-xl font-bold flex items-center gap-2">
@@ -129,19 +147,20 @@ export default async function ProfilePage({
           ) : (
             <h2 className="text-2xl font-bold">{author.username}</h2>
           )}
-          <p className="text-muted-foreground">{author.bio}</p>
-          <div className="flex items-center gap-4 text-muted-foreground">
-            <Link href="#" className="hover:underline" prefetch={false}>
-              <TwitterIcon className="w-5 h-5" />
-            </Link>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              <LinkedinIcon className="w-5 h-5" />
-            </Link>
-            <Link href="#" className="hover:underline" prefetch={false}>
-              <GithubIcon className="w-5 h-5" />
-            </Link>
-          </div>{" "}
+          <div></div>
         </div>{" "}
+        <p className="text-muted-foreground">{author.bio}</p>
+      </div>{" "}
+      <div className="flex items-center gap-4 p-4 text-muted-foreground">
+        <Link href="#" className="hover:underline" prefetch={false}>
+          <TwitterIcon className="w-5 h-5" />
+        </Link>
+        <Link href="#" className="hover:underline" prefetch={false}>
+          <LinkedinIcon className="w-5 h-5" />
+        </Link>
+        <Link href="#" className="hover:underline" prefetch={false}>
+          <GithubIcon className="w-5 h-5" />
+        </Link>
       </div>{" "}
       <div className="p-4 w-full">
         {user?.id !== author?.id ? (
@@ -175,42 +194,17 @@ export default async function ProfilePage({
         )}
       </div>
       <Tabs.Root defaultValue="posts" className="">
-        <Tabs.List className="flex overflow-x-auto px-4 whitespace-nowrap scrollbar-hide w-full border-b">
-          <Tabs.Trigger
-            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
-            value="posts"
-          >
-            Posts
-          </Tabs.Trigger>
-          <Tabs.Trigger
-            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
-            value="liked"
-          >
-            Likes
-          </Tabs.Trigger>
-
-          <Tabs.Trigger
-            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
-            value="followers"
-          >
-            Followers
-          </Tabs.Trigger>
-          <Tabs.Trigger
-            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
-            value="following"
-          >
-            Following
-          </Tabs.Trigger>
-          <Tabs.Trigger
-            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
-            value="comments"
-          >
-            Comments
-          </Tabs.Trigger>
-          <Tabs.Trigger
-            className=" px-5 h-[45px] w-[10rem] flex items-center justify-center text-[15px] leading-none text-mauve11 select-none hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0]   outline-none cursor-pointer"
-            value="drafts"
-          >
+        <Tabs.List className="flex overflow-x-auto px-4 whitespace-nowrap scrollbar-hide w-full">
+          {tabData.map((tab, index) => (
+            <Tabs.Trigger
+              key={index}
+              className="tabs capitalize"
+              value={tab.value}
+            >
+              {tab.value}
+            </Tabs.Trigger>
+          ))}
+          <Tabs.Trigger className="tabs" value="drafts">
             Drafts
           </Tabs.Trigger>
         </Tabs.List>
