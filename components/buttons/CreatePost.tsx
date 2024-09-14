@@ -1,10 +1,14 @@
 import { PlusCircleIcon } from "lucide-react";
 import { Button } from "../ui/button";
+import { BsPencilSquare } from "react-icons/bs";
+import Link from "next/link";
 
 export default function CreatePost() {
   return (
-    <Button className="absolute bottom-4 right-4 shadow-2xl" size={"icon"}>
-      <PlusCircleIcon size={50} />
-    </Button>
+    <Link href="/write/advanced">
+      <Button className="fixed bottom-4 right-4 shadow-2xl" size={"icon"}>
+        <BsPencilSquare size={20} />
+      </Button>
+    </Link>
   );
 }

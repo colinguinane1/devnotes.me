@@ -13,6 +13,7 @@ import { DM_Sans } from "next/font/google";
 import Footer from "@/components/global/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 const dm_sans = DM_Sans({ subsets: ["latin"] });
@@ -32,10 +33,11 @@ export default function RootLayout({
     <html suppressHydrationWarning className={dm_sans.className} lang="en">
       <body className="antialiased  bg-primary-light dark:bg-primary-dark transition-colors">
         {" "}
+        <NextTopLoader />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Analytics />
           <Header />
-          <div className="pt-[3.8rem]">{children}</div>
+          <div className="pt-[3.8rem]">{children} </div>
           <Footer />
           <Toaster />
         </ThemeProvider>
