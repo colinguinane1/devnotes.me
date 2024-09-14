@@ -27,7 +27,7 @@ export default function Sidebar() {
     <>
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="ghost" size={"icon"}>
+          <Button variant="ghost" className="-ml-2" size={"icon"}>
             <BiMenuAltLeft size={30} />
           </Button>
         </SheetTrigger>

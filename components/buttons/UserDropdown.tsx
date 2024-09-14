@@ -121,7 +121,7 @@ export default function UserDropdown({
           </Button>
         </DrawerTrigger>
         <DrawerContent className="bg-card text-left items-start p-4 flex flex-col gap-6 pb-20">
-          <DrawerClose>
+          <DrawerClose asChild>
             <Link
               className="flex items-center gap-2"
               href={`/profile/${author.username}`}
@@ -130,7 +130,7 @@ export default function UserDropdown({
               Profile
             </Link>
           </DrawerClose>
-          <DrawerClose>
+          <DrawerClose asChild>
             <Link className="flex items-center gap-2" href={`/account`}>
               {author.image_url && (
                 <Avatar className="w-6 h-6">
@@ -142,7 +142,7 @@ export default function UserDropdown({
             </Link>
           </DrawerClose>
 
-          <DrawerClose>
+          <DrawerClose asChild>
             <form>
               <button
                 formAction={signOut}

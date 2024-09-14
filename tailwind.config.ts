@@ -18,42 +18,7 @@ const config = {
       },
     },
     extend: {
-       typography: {
-        DEFAULT: {
-          css: {
-            'pre': {
-              backgroundColor: '#f5f5f5',
-              borderRadius: '0.375rem',
-              padding: '1rem',
-              overflowX: 'auto',
-            },
-            'code': {
-              color: '#d73a49', // Change to your preferred color
-              backgroundColor: '#f1f1f1', // Background color of inline code
-              padding: '0.2rem 0.4rem',
-              borderRadius: '0.2rem',
-            },
-            'code[class*="language-"]': {
-              display: 'block',
-              padding: '1rem',
-              fontSize: '0.875rem',
-              lineHeight: '1.5',
-              overflowX: 'auto',
-              backgroundColor: '#2d2d2d', // Background color for code block
-              color: '#f8f8f2', // Text color for code block
-              borderRadius: '0.375rem',
-              border: '1px solid #333',
-            },
-            'pre[class*="language-"]': {
-              backgroundColor: '#2d2d2d', // Background color for code block
-              color: '#f8f8f2', // Text color for code block
-              borderRadius: '0.375rem',
-              border: '1px solid #333',
-              overflowX: 'auto',
-            },
-          },
-        },
-      },
+      
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
