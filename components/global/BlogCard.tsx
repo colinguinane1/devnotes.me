@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post } from "@prisma/client";
 import { Author } from "@prisma/client";
-import { Heart } from "lucide-react";
+import { Heart, MessageCircleIcon } from "lucide-react";
 import BlogDropdown from "../buttons/BlogDropdown";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { defaultAvatar } from "@/data/SiteData";
@@ -14,6 +14,8 @@ import { Badge } from "../ui/badge";
 import { EyeIcon, HeartIcon } from "lucide-react";
 import VerifiedUser from "../ui/verified";
 import { createClient } from "@/app/utils/supabase/server";
+import prisma from "@/prisma/db";
+import { BiComment } from "react-icons/bi";
 interface BlogCardProps {
   post: Post;
   author: Author;
@@ -28,6 +30,10 @@ export default async function BlogCard({
   dropdownType = "user",
 }: BlogCardProps) {
   const supabase = createClient();
+
+  const comments = await prisma.comment.count({
+    where: { postId: post.id },
+  });
 
   // Get the logged-in user
   const {
@@ -96,13 +102,19 @@ export default async function BlogCard({
               })}
             </div>
           )}
-          <div className="flex items-center justify-between gap-10">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <EyeIcon className="w-4 h-4" />
-              <span>{post.views}</span>{" "}
-              <div className="flex items-center gap-2 text-muted-foreground">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                <EyeIcon className="w-4 h-4" />
+                <span>{post.views}</span>{" "}
+              </div>
+              <div className="flex items-center gap-2 pr-2 text-muted-foreground">
                 <HeartIcon className="w-4 h-4" />
                 <span>{post.likes}</span>
+              </div>
+              <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                <MessageCircleIcon className="w-4 h-4" />
+                <span>{comments}</span>
               </div>
             </div>
 

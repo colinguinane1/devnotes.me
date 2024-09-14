@@ -47,16 +47,6 @@ export default async function UserIcon() {
         <Button>Sign In</Button>
       ) : (
         <div className="flex items-center gap-2">
-          <form>
-            <Button
-              className="flex items-center "
-              variant={"outline"}
-              formAction={signOut}
-            >
-              <p className="text-red-500">Sign Out</p>
-            </Button>
-          </form>
-
           <div className="flex items-center space-x-2">
             <Button size={"icon"} variant={"outline"}>
               <Link href={`/profile/${userExists.username}`}>
@@ -70,7 +60,16 @@ export default async function UserIcon() {
                   />
                 )}
               </Link>
-            </Button>
+            </Button>{" "}
+            <form>
+              <Button
+                className="flex items-center "
+                variant={"ghost"}
+                formAction={signOut}
+              >
+                <p className="text-red-500">Sign Out</p>
+              </Button>
+            </form>
           </div>
         </div>
       )}

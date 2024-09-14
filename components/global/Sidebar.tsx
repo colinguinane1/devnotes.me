@@ -33,7 +33,7 @@ export default function Sidebar() {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="flex flex-col justify-between h-full w-fit rounded-tr-lg rounded-br-lg backdrop-blur-md bg-card/90"
+          className="flex text-left flex-col justify-between h-full w-fit rounded-tr-lg rounded-br-lg backdrop-blur-md bg-card/90"
         >
           <div className="flex flex-col gap-6">
             <SheetHeader>
@@ -52,13 +52,16 @@ export default function Sidebar() {
             </SheetHeader>
             {NavigationData.map((nav) => (
               <Button
-                className="bg-card"
-                variant={"outline"}
+                variant={"ghost"}
+                className="hover:bg-transparent hover:text-black dark:hover:text-white"
                 type="submit"
                 key={nav.href}
               >
                 <SheetClose asChild>
-                  <Link className="font-medium w-full h-full" href={nav.href}>
+                  <Link
+                    className="font-bold text-3xl text-left w-full"
+                    href={nav.href}
+                  >
                     {nav.name}
                   </Link>
                 </SheetClose>
