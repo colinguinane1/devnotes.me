@@ -12,6 +12,7 @@ import {
   HeartIcon,
 } from "lucide-react";
 import { Metadata } from "next";
+import { Merriweather } from "next/font/google";
 import { Textarea } from "@/components/ui/textarea";
 
 import { CiWarning } from "react-icons/ci";
@@ -48,6 +49,8 @@ import rehypeFormat from "rehype-format";
 import rehypeStringify from "rehype-stringify";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { read } from "to-vfile";
 import { unified } from "unified";
 import { reporter } from "vfile-reporter";
@@ -56,6 +59,9 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeToc from "rehype-toc";
 import AddCommentForm from "@/components/buttons/AddComment";
 import { Badge } from "@/components/ui/badge";
+import ProgressBar from "@/components/post/progress";
+
+const mwfont = Merriweather({ subsets: ["latin"], weight: ["400"] });
 
 export default async function blog({ params }: { params: { slug: string } }) {
   const blog = await prisma.post.findUnique({
@@ -102,6 +108,10 @@ export default async function blog({ params }: { params: { slug: string } }) {
       .use(remarkParse) // Parse markdown to an AST
       .use(remarkGfm) // Add support for GitHub flavored markdown (tables, etc.)
       .use(remarkRehype) // Convert markdown AST to HTML AST
+      .use(rehypeSlug) // Add unique IDs to headers
+      .use(rehypeAutolinkHeadings, {
+        behavior: "wrap", // Wrap headings in <a> tags
+      })
       .use(rehypePrettyCode, {
         theme: "aurora-x", // Specify a theme
         keepBackground: true, // Optionally keep the code block background color
@@ -115,8 +125,10 @@ export default async function blog({ params }: { params: { slug: string } }) {
     markdownContent = String(processedContent);
   }
   incrementViews(blog.id);
+
   return (
     <div className="bg-background">
+      <ProgressBar />
       <div className="relative h-[400px] -mt-[4px] md:-mt-0  w-full overflow-hidden">
         <img
           src="/gradient.jpg"
@@ -148,9 +160,11 @@ export default async function blog({ params }: { params: { slug: string } }) {
               )}
 
               <span>{blog.likes}</span>
-              <Button variant="ghost" size="icon">
-                <MessageCircleIcon className="h-4 w-4" />
-                <span className="sr-only">Comment</span>
+              <Button asChild variant="ghost" size="icon">
+                <Link href="#comments">
+                  <MessageCircleIcon className="h-4 w-4" />
+                  <span className="sr-only">Comment</span>
+                </Link>
               </Button>
               <span>{comments.length}</span>
             </div>
@@ -158,7 +172,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
         </div>
       </div>
       <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16">
-        <article className="prose prose-gray mx-auto dark:prose-invert">
+        <article className="prose-emerald prose  mx-auto dark:prose-invert ">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
             {blog.title}
           </h1>
@@ -173,23 +187,23 @@ export default async function blog({ params }: { params: { slug: string } }) {
               </div>
             )}
           </div>
-          <p className="text-muted-foreground">{blog.description}</p>
+          <p className="prose">{blog.description}</p>
           {blog.markdown ? (
             <p
-              className="prose"
+              className={`prose prose-a:font-bold prose-invert  dark:prose-invert`}
               dangerouslySetInnerHTML={{ __html: markdownContent }}
             ></p>
           ) : (
             <p
-              className="prose dark:prose-invert "
+              className={`prose dark:prose-invert`}
               dangerouslySetInnerHTML={{ __html: blog.content }}
             ></p>
           )}
-          <Accordion type="single" collapsible>
+          <Accordion id="comments" type="single" collapsible>
             <AccordionItem value="comments">
               <AccordionTrigger className="flex items-center justify-between">
                 <div>
-                  <h3 id="comments" className="text-2xl  font-bold ">
+                  <h3 className="text-2xl  font-bold ">
                     Comments ({comments.length})
                   </h3>
                 </div>
@@ -241,6 +255,10 @@ export default async function blog({ params }: { params: { slug: string } }) {
                                 {comment.content}
                               </p>
                             </div>
+                          </div>{" "}
+                          <div className="flex justify-between mx-4 items-center">
+                            <div></div>
+                            <Button variant={"ghost"}>Reply</Button>
                           </div>
                         </AccordionItem>
                       ))}

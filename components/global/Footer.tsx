@@ -6,6 +6,7 @@ import { NavigationData, siteVersion } from "@/data/SiteData";
 import { Button } from "../ui/button";
 import { usePathname } from "next/navigation";
 import { BsGithub } from "react-icons/bs";
+import { ModeToggle } from "../buttons/ThemeSwitcher";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -26,7 +27,7 @@ export default function Footer() {
               </Button>
             </Link>
           ))}
-        </div>
+        </div>{" "}
         <Link className=" flex items-center  gap-1" href="https://c-g.dev">
           <ShimmerButton className="flex text-xs dark:text-white items-center gap-1">
             A project by
@@ -35,6 +36,7 @@ export default function Footer() {
             </span>
           </ShimmerButton>
         </Link>{" "}
+        <ModeToggle />
         <p className="pt-4">v{siteVersion}</p>
       </div>
     </footer>

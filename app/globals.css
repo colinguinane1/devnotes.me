@@ -6,6 +6,22 @@
   @apply bg-gradient-to-r from-blue-500 to-cyan-500 inline-block text-transparent bg-clip-text;
 }
 
+@layer utilities {
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+}
+
 .tabs{
   @apply px-5 h-[45px] w-[10rem] dark:data-[state=active]:text-white  border-b flex items-center justify-center text-[15px] leading-none text-gray-700 dark:text-gray-500 dark:data-[state=active]:border-white outline-none cursor-pointer transition-colors duration-200 data-[state=active]:text-black data-[state=active]:border-black
 }
@@ -43,7 +59,7 @@ body .w-md-editor-text-input {
     --secondary-foreground: 210 100% 98%;
     --muted: 210 30% 92%;
     --muted-foreground: 215 20% 40%;
-    --accent: 210 80% 60%;
+    --accent: 210 80% 20%;
     --accent-foreground: 210 100% 98%;
     --destructive: 0 70% 55%;
     --destructive-foreground: 210 100% 98%;

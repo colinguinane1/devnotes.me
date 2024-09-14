@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import prisma from "@/prisma/db";
 import { signOut } from "@/app/login/actions";
+import UserDropdown from "./UserDropdown";
 
 export default async function UserIcon() {
   const supabase = createClient();
@@ -41,39 +42,5 @@ export default async function UserIcon() {
     return null;
   }
 
-  return (
-    <div className="z-10">
-      {!user ? (
-        <Button>Sign In</Button>
-      ) : (
-        <div className="flex items-center gap-2">
-          <form>
-            <Button
-              className="flex items-center "
-              variant={"outline"}
-              formAction={signOut}
-            >
-              <p className="text-red-500">Sign Out</p>
-            </Button>
-          </form>
-
-          <div className="flex items-center space-x-2">
-            <Button size={"icon"} variant={"outline"}>
-              <Link href={`/profile/${userExists.username}`}>
-                {userExists?.image_url && (
-                  <Image
-                    className="rounded-full"
-                    src={userExists?.image_url}
-                    alt="User image"
-                    width={30}
-                    height={30}
-                  />
-                )}
-              </Link>
-            </Button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+  return <UserDropdown author={userExists} />;
 }

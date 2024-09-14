@@ -139,22 +139,8 @@ export default async function ProfilePage({
   ];
 
   return (
-    <div className="w-full min-h-screen mt-6  max-w-3xl mx-auto">
-      <div className="flex items-center px-4 justify-between">
-        <div></div>
-        {user?.id === author.id && (
-          <Button className="hover:bg-background" asChild variant={"ghost"}>
-            <Link
-              className="text-gray-600 underline flex items-center gap-1"
-              href="/account"
-            >
-              Account
-              <ChevronRight size={20} />
-            </Link>
-          </Button>
-        )}
-      </div>
-      <div className="flex items-center gap-6 p-4 ">
+    <div className="w-full min-h-screen mt-4 max-w-3xl mx-auto">
+      <div className="flex items-center gap-6 px-4 ">
         {author.image_url && (
           <Avatar className="w-20 h-20">
             <AvatarImage src={author.image_url} alt="@shadcn" />
@@ -185,17 +171,28 @@ export default async function ProfilePage({
           <div></div>
         </div>{" "}
       </div>{" "}
-      <p className="text-muted-foreground p-4">{author.bio}</p>
+      <p className="text-muted-foreground py-2 px-4 text-sm">{author.bio}</p>
       <div className="flex items-center gap-4 p-4 text-muted-foreground">
-        <Link href="#" className="hover:underline" prefetch={false}>
-          <TwitterIcon className="w-5 h-5" />
-        </Link>
-        <Link href="#" className="hover:underline" prefetch={false}>
-          <LinkedinIcon className="w-5 h-5" />
-        </Link>
-        <Link href="#" className="hover:underline" prefetch={false}>
-          <GithubIcon className="w-5 h-5" />
-        </Link>
+        {author.github && (
+          <a href={author.github} target="_blank">
+            <GithubIcon size={20} />
+          </a>
+        )}
+        {author.twitter && (
+          <a href={author.twitter} target="_blank">
+            <TwitterIcon size={20} />
+          </a>
+        )}
+        {author.linkedin && (
+          <a href={author.linkedin} target="_blank">
+            <LinkedinIcon size={20} />
+          </a>
+        )}
+        {author.discord && (
+          <a href={author.discord} target="_blank">
+            <Link2 size={20} />
+          </a>
+        )}
       </div>{" "}
       <div className="p-4 w-full">
         {user?.id !== author?.id ? (
@@ -229,7 +226,7 @@ export default async function ProfilePage({
         )}
       </div>
       <Tabs.Root defaultValue="posts" className="">
-        <Tabs.List className="flex overflow-x-auto whitespace-nowrap scrollbar-hide w-full">
+        <Tabs.List className="flex no-scrollbar overflow-x-auto whitespace-nowrap  w-full">
           {tabData.map((tab, index) => (
             <Tabs.Trigger
               key={index}

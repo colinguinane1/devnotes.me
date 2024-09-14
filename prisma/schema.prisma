@@ -18,10 +18,10 @@ model Author {
   pref_displayFullName Boolean?  @default(true)
   pref_displayEmail    Boolean?  @default(false)
   pref_displayBio      Boolean?  @default(true)
-  pref_twitterLink     String?
-  pref_githubLink      String?
-  pref_linkedinLink    String?
-  pref_discordLink     String?
+  twitter              String?
+  github               String?
+  linkedin             String?
+  discord              String?
   image_url            String?
   last_sign_in_at      DateTime?
   created_at           DateTime  @default(now())
