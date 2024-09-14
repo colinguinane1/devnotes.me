@@ -139,21 +139,7 @@ export default async function ProfilePage({
   ];
 
   return (
-    <div className="w-full min-h-screen max-w-3xl mx-auto">
-      <div className="flex items-center px-4 justify-between">
-        <div></div>
-        {user?.id === author.id && (
-          <Button className="hover:bg-background" asChild variant={"ghost"}>
-            <Link
-              className="text-gray-600 underline flex items-center gap-1"
-              href="/account"
-            >
-              Account Settings
-              <ChevronRight size={20} />
-            </Link>
-          </Button>
-        )}
-      </div>
+    <div className="w-full min-h-screen mt-4 max-w-3xl mx-auto">
       <div className="flex items-center gap-6 px-4 ">
         {author.image_url && (
           <Avatar className="w-20 h-20">
