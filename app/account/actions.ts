@@ -192,7 +192,7 @@ export async function deletePost(slug: string){
     }
 }
 
-export async function ChangeGitHubLink(github_link: string | null) {
+export async function ChangeSocial(socialLink: string | null, social: string) {
     const supabase = createClient();
 
     const { data: { user } } = await supabase.auth.getUser();
@@ -202,16 +202,15 @@ export async function ChangeGitHubLink(github_link: string | null) {
         throw new Error("User not authenticated");
     }
 
+    const lowerSocial = social.toLowerCase();
 
-    if (!github_link) {
-        console.log('GitHub link is missing');
-        throw new Error("GitHub link is required");
-    }
+
+  
 
     await prisma.author.update({
         where: { id: user.id },
         data: {
-         pref_githubLink: github_link,
+            [lowerSocial]: socialLink,
         },
     });
 

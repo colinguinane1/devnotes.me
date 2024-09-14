@@ -1,3 +1,4 @@
+import CreatePost from "@/components/buttons/CreatePost";
 import HeroLanding from "@/components/home/HeroLanding";
 import MostLikedBlogs from "@/components/home/MostLikedBlogs";
 import MostRecentBlogs from "@/components/home/MostRecentBlogs";
@@ -9,6 +10,7 @@ const Home = () => {
     <>
       <HeroLanding />
       <TopBlogCarousel />
+      <CreatePost />
     </>
   );
 };

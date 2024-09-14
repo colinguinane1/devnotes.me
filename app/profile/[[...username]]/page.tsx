@@ -173,15 +173,26 @@ export default async function ProfilePage({
       </div>{" "}
       <p className="text-muted-foreground py-2 px-4 text-sm">{author.bio}</p>
       <div className="flex items-center gap-4 p-4 text-muted-foreground">
-        <Link href="#" className="hover:underline" prefetch={false}>
-          <TwitterIcon className="w-5 h-5" />
-        </Link>
-        <Link href="#" className="hover:underline" prefetch={false}>
-          <LinkedinIcon className="w-5 h-5" />
-        </Link>
-        <Link href="#" className="hover:underline" prefetch={false}>
-          <GithubIcon className="w-5 h-5" />
-        </Link>
+        {author.github && (
+          <a href={author.github} target="_blank">
+            <GithubIcon size={20} />
+          </a>
+        )}
+        {author.twitter && (
+          <a href={author.twitter} target="_blank">
+            <TwitterIcon size={20} />
+          </a>
+        )}
+        {author.linkedin && (
+          <a href={author.linkedin} target="_blank">
+            <LinkedinIcon size={20} />
+          </a>
+        )}
+        {author.discord && (
+          <a href={author.discord} target="_blank">
+            <Link2 size={20} />
+          </a>
+        )}
       </div>{" "}
       <div className="p-4 w-full">
         {user?.id !== author?.id ? (

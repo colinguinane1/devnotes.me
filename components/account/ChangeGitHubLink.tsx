@@ -23,17 +23,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CheckCircle, Pencil } from "lucide-react";
-import { ChangeGitHubLink } from "@/app/account/actions"; // Change this to your actual function
+import { ChangeSocial } from "@/app/account/actions"; // Change this to your actual function
 import Loading from "../ui/loader-spinner";
 
-export default function ChangeGitHubLinkDialog() {
+interface SocialProps {
+  social: string;
+}
+
+export default function ChangeSocialDialog({ social }: SocialProps) {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const data = [
     {
-      title: "Set GitHub Profile",
-      description: "Set or update your GitHub link.",
+      title: "Change " + social + " Link",
+      description: "Set or update your" + social + " link.",
     },
   ];
 
@@ -49,12 +53,11 @@ export default function ChangeGitHubLinkDialog() {
           <DialogHeader>
             <DialogTitle>{data[0].title}</DialogTitle>
           </DialogHeader>
-          <GitHubForm />
+          <SocialChangeForm social={social} />
         </DialogContent>
       </Dialog>
     );
   }
-
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
@@ -66,7 +69,7 @@ export default function ChangeGitHubLinkDialog() {
         <DrawerHeader className="text-left">
           <DrawerTitle>{data[0].title}</DrawerTitle>
         </DrawerHeader>
-        <GitHubForm className="px-4" />
+        <SocialChangeForm social={social} className="px-4" />
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>
@@ -76,8 +79,13 @@ export default function ChangeGitHubLinkDialog() {
     </Drawer>
   );
 }
-
-function GitHubForm({ className }: React.ComponentProps<"form">) {
+function SocialChangeForm({
+  className,
+  social,
+}: {
+  className?: string;
+  social: string;
+}) {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [success, setSuccess] = React.useState(false);
@@ -88,12 +96,11 @@ function GitHubForm({ className }: React.ComponentProps<"form">) {
     setError(null);
     setSuccess(false);
 
-    const formData = new FormData(event.currentTarget); // This is creating FormData correctly
-    const githubLink = formData.get("github") as string | null;
+    const formData = new FormData(event.currentTarget);
+    const socialLink = formData.get(social) as string | null;
 
     try {
-      // Pass the githubLink as a JSON payload to your server action
-      await ChangeGitHubLink(githubLink); // Change this to pass data as JSON
+      await ChangeSocial(socialLink, social);
       setSuccess(true);
     } catch (err: any) {
       setError(err.message || "An error occurred");
@@ -108,17 +115,22 @@ function GitHubForm({ className }: React.ComponentProps<"form">) {
       onSubmit={handleSubmit}
     >
       <div className="grid gap-2">
-        <Label htmlFor="github">GitHub URL</Label>
-        <Input id="github" name="github" placeholder="Enter your GitHub URL" />
+        <Label htmlFor={social}>{social} URL</Label>
+        <Input
+          type="url"
+          id={social}
+          name={social}
+          placeholder={`Enter your ${social}  URL`}
+        />
       </div>
       <Button type="submit" disabled={loading}>
-        {loading ? <Loading /> : "Update GitHub"}
+        {loading ? <Loading /> : "Update  " + social + " URL"}
       </Button>
       {error && <p className="text-red-500">{error}</p>}
       {success && (
         <div className="bg-green-500/50 flex items-center gap-2 max-w-fit px-2 rounded-md">
           <CheckCircle size={15} color="rgb(134 239 172)" />
-          <p className="text-green-300">GitHub URL updated successfully!</p>
+          <p className="text-green-300">URL updated successfully!</p>
         </div>
       )}
     </form>

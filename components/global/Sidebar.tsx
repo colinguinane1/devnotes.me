@@ -69,7 +69,7 @@ export default function Sidebar() {
             ))}
           </div>
           <SheetFooter>
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center w-full justify-between gap-2">
               <ModeToggle />
               <UserIcon />
             </div>

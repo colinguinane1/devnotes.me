@@ -31,6 +31,7 @@ export default function App() {
     const formData = new FormData(event.currentTarget);
     formData.append("content", value);
     formData.append("tags", JSON.stringify(tags)); // Add tags as JSON string
+    // Set published to false
 
     try {
       setLoading("true");
