@@ -119,6 +119,7 @@ export default async function ProfilePage({
       comment: {
         include: {
           post: true, // Include the post related to the comment
+          author: true,
         },
       },
     },
@@ -371,6 +372,7 @@ export default async function ProfilePage({
                   key={reply.id}
                 >
                   <div className="flex items-center gap-2">
+                    {" "}
                     {author.image_url && (
                       <Avatar className="w-10 h-10">
                         <AvatarImage src={author.image_url} alt="@shadcn" />
@@ -378,6 +380,16 @@ export default async function ProfilePage({
                       </Avatar>
                     )}
                     <div className="flex flex-col">
+                      {" "}
+                      <p className="text-gray-500">
+                        Replying to{" "}
+                        <Link
+                          className="font-bold"
+                          href={`/profile/${reply.comment.author.username}`}
+                        >
+                          @{reply.comment.author.username}
+                        </Link>
+                      </p>
                       <p>
                         {formatCommentDate(reply.createdAt)}
                         <span className="text-gray-500">
