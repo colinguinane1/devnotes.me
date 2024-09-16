@@ -100,10 +100,11 @@ export async function signup(formData: FormData) {
 
     if (error) {
         return redirect('/login?m=Error%20signing%20up&type=error&form=signup');
-    }
+    }revalidatePath('/', 'layout');
+    return redirect('/login?m=Check%20your%20email&type=success&form=signup');
 
-    revalidatePath('/', 'layout');
-    return redirect('/');
+    
+   
 }
 
 export async function checkAuthorExists(user: any) {
