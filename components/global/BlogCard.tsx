@@ -41,7 +41,7 @@ export default async function BlogCard({
   } = await supabase.auth.getUser();
   return (
     <Card
-      className={`w-full max-w-sm rounded-md overflow-hidden shadow-lg transition-all hover:shadow-xl  ${
+      className={`w-full max-w-sm  rounded-md overflow-hidden shadow-lg transition-all hover:shadow-xl  ${
         horizontal ? "flex" : ""
       }`}
       key={post.id}
@@ -59,9 +59,9 @@ export default async function BlogCard({
           className="w-full h-52 object-cover transition-all group-hover:scale-105"
           style={{ aspectRatio: "800/450", objectFit: "cover" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background  to-transparent" />
       </Link>
-      <CardContent className="p-6 space-y-4">
+      <CardContent className="p-6 space-y-4 ">
         <div className="space-y-2">
           <Link href={`/posts/${post.slug}`} className="block" prefetch={false}>
             <h3 className="text-xl font-semibold transition-colors group-hover:text-primary">
