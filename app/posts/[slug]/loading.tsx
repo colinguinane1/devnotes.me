@@ -2,10 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
   return (
-    <div className="bg-background animate-pulse">
-      {/* ProgressBar Skeleton */}
-      <Skeleton className="h-1 w-full" />
-
+    <div className="bg-background -mt-1 animate-pulse">
       {/* Blog cover image skeleton */}
       <div className="relative h-[400px] w-full overflow-hidden">
         <Skeleton className="h-full w-full" />
