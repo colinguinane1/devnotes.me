@@ -264,7 +264,12 @@ export default async function ProfilePage({
             <h1 className="pb-4 text-2xl">Posts ({posts.length})</h1>
             <div className="grid gap-6 ">
               {posts.map((post) => (
-                <BlogCard key={post.id} post={post} author={author} />
+                <BlogCard
+                  horizontal={true}
+                  key={post.id}
+                  post={post}
+                  author={author}
+                />
               ))}
             </div>
           </Tabs.Content>
@@ -272,7 +277,12 @@ export default async function ProfilePage({
             <h1 className="pb-4 text-2xl">Liked Posts ({likedPosts.length})</h1>
             <div className="grid gap-6 ">
               {likedPosts.map((post) => (
-                <BlogCard key={post.id} post={post} author={post.author} />
+                <BlogCard
+                  horizontal={true}
+                  key={post.id}
+                  post={post}
+                  author={post.author}
+                />
               ))}
             </div>
           </Tabs.Content>
