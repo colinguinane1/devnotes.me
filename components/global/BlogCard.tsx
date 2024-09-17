@@ -65,7 +65,7 @@ export default async function BlogCard({
         <div className="absolute inset-0 bg-gradient-to-t from-background  to-transparent" />
       </Link>
       <CardContent className="p-4 space-y-4 ">
-        <div className="flex items-center justify-center">
+        <div className={`${horizontal ? "flex items-center justify-center" : ""}`}>
           <div className="space-y-2">
             <Link
               href={`/posts/${post.slug}`}
