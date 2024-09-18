@@ -19,7 +19,7 @@ export const PostLikedManager = ({ postId }: { postId: string }) => {
   };
 
   return (
-    <Button variant={"ghost"} size={"icon"} onClick={like}>
+    <Button variant={"ghost"} size={"icon"} onClick={like} disabled={isPending}>
       {isPending ? (
         <Heart className="w-4 h-4" />
       ) : (
@@ -39,7 +39,7 @@ export const RemovePostLikeManager = ({ postId }: { postId: string }) => {
   };
 
   return (
-    <Button variant={"ghost"} size={"icon"} onClick={like}>
+    <Button variant={"ghost"} size={"icon"} onClick={like} disabled={isPending}>
       {isPending ? (
         <Heart className="w-4 h-4" fill="red" color="red" />
       ) : (

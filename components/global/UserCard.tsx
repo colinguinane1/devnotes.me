@@ -8,6 +8,7 @@ import { Author } from "@prisma/client";
 import { Heart } from "lucide-react";
 import BlogDropdown from "../buttons/BlogDropdown";
 import VerifiedUser from "../ui/verified";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 interface UserCardProps {
   author: Author;
@@ -20,13 +21,12 @@ export default function UserCard({ author }: UserCardProps) {
         className="flex  mt-4 justify-center gap-2 items-center"
         href={`/profile/${author.username}`}
       >
-        <Image
-          className="rounded-full"
-          src={author.image_url || ""}
-          alt="pfp"
-          width={50}
-          height={50}
-        ></Image>
+       {author.image_url && (
+          <Avatar className="w-10 h-10">
+            <AvatarImage src={author.image_url} alt="@shadcn" />
+            <AvatarFallback>JD</AvatarFallback>
+          </Avatar>
+        )}
         {author.full_name ? (
           <div>
             <h2 className="font-bold flex items-center gap-1">

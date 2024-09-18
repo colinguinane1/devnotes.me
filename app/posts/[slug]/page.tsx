@@ -131,8 +131,8 @@ export default async function blog({ params }: { params: { slug: string } }) {
     <div className="bg-background">
       <ProgressBar />
       <div className="relative h-[400px] -mt-[4px] md:-mt-0  w-full overflow-hidden">
-        <img
-          src="/gradient.jpg"
+        <Image
+           src={blog.cover_url ? blog.cover_url : ("/gradient.jpg")}
           alt="Blog cover image"
           width={1920}
           height={1080}

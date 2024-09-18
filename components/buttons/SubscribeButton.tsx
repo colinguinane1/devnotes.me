@@ -30,7 +30,7 @@ export function SubscribeButton({
   };
 
   return (
-    <Button className="w-full" onClick={handleSubscribe}>
+    <Button className="w-full" onClick={handleSubscribe} disabled={isPending}>
       {isPending ? (
         <div className="flex items-center gap-2">
           <p className="flex items-center gap-2">
@@ -64,7 +64,7 @@ export function UnsubscribeButton({
   };
 
   return (
-    <Button className="w-full" onClick={handleUnsubscribe}>
+    <Button className="w-full" onClick={handleUnsubscribe} disabled={isPending}>
       {isPending ? (
         <p className="flex items-center gap-2">
           Follow <PlusIcon size={10} />

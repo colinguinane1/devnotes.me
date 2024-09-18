@@ -53,7 +53,7 @@ export default async function BlogCard({
       >
         {!horizontal && (
           <Image
-            src="/gradient.jpg"
+            src={post.cover_url ? post.cover_url : ("/gradient.jpg")}
             width={800}
             height={450}
             alt="Blog Post Image"
@@ -62,11 +62,11 @@ export default async function BlogCard({
           />
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-background  to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background  to-transparent " />
       </Link>
-      <CardContent className="p-4 space-y-4 ">
+      <CardContent className="p-4 space-y-4 w-full ">
         <div className={`${horizontal ? "flex items-center justify-center" : ""}`}>
-          <div className="space-y-2">
+          <div className={`space-y-2  ${horizontal ? "max-w-[15rem] md:max-w-[20rem] px-2" : ""}`}>
             <Link
               href={`/posts/${post.slug}`}
               className="block"
@@ -144,13 +144,13 @@ export default async function BlogCard({
             </div>
           </div>{" "}
           {horizontal && (
-            <div>
+            <div className="w-full h-full">
               <Image
-                src="/gradient.jpg"
+                src={post.cover_url ? post.cover_url : ("/gradient.jpg")}
                 alt="blog image"
                 width={200}
                 height={200}
-                className=" rounded-md"
+                className=" rounded-md w-full h-full"
               ></Image>
             </div>
           )}
