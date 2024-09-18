@@ -4,6 +4,8 @@ import { createClient } from "@/app/utils/supabase/server";
 import { generateSlug, generateDescription } from "@/data/SiteData";
 import { redirect } from "next/dist/server/api-utils";
 
+const supabaseURL = "https://gktuazxnjcwahdrwuchb.supabase.co/storage/v1/object/public/blog-images/"
+
 
 
 export async function checkSlug(slug: string) {
@@ -20,7 +22,7 @@ export async function checkSlug(slug: string) {
     return false;
 }
 
-export async function createPost(formData: FormData, markdown: boolean) {
+export async function createPost(formData: FormData, markdown: boolean, imageUrl: string) {
   const supabase = createClient();
 
   // Get the logged-in user
@@ -53,8 +55,11 @@ export async function createPost(formData: FormData, markdown: boolean) {
       throw new Error("Slug already exists");
     }
 
+    const cover_url = supabaseURL + imageUrl
+
     console.log({
   title,
+  
   description,
   tags,
   markdown,
@@ -70,6 +75,7 @@ export async function createPost(formData: FormData, markdown: boolean) {
     await prisma.post.create({
       data: {
         title,
+        cover_url,
         description,
         tags, // Ensure tags are passed correctly
         markdown,
