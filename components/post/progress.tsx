@@ -1,3 +1,4 @@
+
 "use client";
 import { useEffect, useState } from "react";
 
@@ -8,8 +9,13 @@ const ProgressBar = () => {
     const scrollY = window.scrollY;
     const documentHeight =
       document.documentElement.scrollHeight - window.innerHeight;
-    const scrolled = (scrollY / documentHeight) * 100;
-    setScrollPercentage(scrolled);
+
+    if (scrollY > 400) {
+      const scrolled = ((scrollY - 400) / (documentHeight - 400)) * 100;
+      setScrollPercentage(scrolled);
+    } else {
+      setScrollPercentage(0); // Reset the progress before 400px
+    }
   };
 
   useEffect(() => {
@@ -20,7 +26,7 @@ const ProgressBar = () => {
   return (
     <div
       style={{ width: `${scrollPercentage}%` }}
-      className={`fixed shadow-2xl left-0  h-[2px]  z-50 bg-primary`}
+      className={`fixed shadow-2xl left-0 h-[2px] z-50 bg-primary`}
     />
   );
 };
