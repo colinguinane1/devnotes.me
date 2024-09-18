@@ -111,6 +111,20 @@ export default async function ProfilePage({
     },
   });
 
+  const authorReplies = await prisma.reply.findMany({
+    where: {
+      authorId: author.id, // Assuming `author.id` is available in this context
+    },
+    include: {
+      comment: {
+        include: {
+          post: true, // Include the post related to the comment
+          author: true,
+        },
+      },
+    },
+  });
+
   const authorDrafts = await prisma.post.findMany({
     where: {
       user_id: author.id,
@@ -250,7 +264,12 @@ export default async function ProfilePage({
             <h1 className="pb-4 text-2xl">Posts ({posts.length})</h1>
             <div className="grid gap-6 ">
               {posts.map((post) => (
-                <BlogCard key={post.id} post={post} author={author} />
+                <BlogCard
+                  horizontal={true}
+                  key={post.id}
+                  post={post}
+                  author={author}
+                />
               ))}
             </div>
           </Tabs.Content>
@@ -258,7 +277,12 @@ export default async function ProfilePage({
             <h1 className="pb-4 text-2xl">Liked Posts ({likedPosts.length})</h1>
             <div className="grid gap-6 ">
               {likedPosts.map((post) => (
-                <BlogCard key={post.id} post={post} author={post.author} />
+                <BlogCard
+                  horizontal={true}
+                  key={post.id}
+                  post={post}
+                  author={post.author}
+                />
               ))}
             </div>
           </Tabs.Content>
@@ -342,6 +366,55 @@ export default async function ProfilePage({
                   </div>
                   <div>
                     <Link href={`/posts/${comment.post.slug}`}>
+                      <Button variant={"ghost"}>
+                        View <ChevronRight size={15} />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+              <h1 className="pb-4 text-2xl">
+                Replies ({authorReplies.length})
+              </h1>
+              {authorReplies.map((reply) => (
+                <div
+                  className="flex items-center justify-between"
+                  key={reply.id}
+                >
+                  <div className="flex items-center gap-2">
+                    {" "}
+                    {author.image_url && (
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage src={author.image_url} alt="@shadcn" />
+                        <AvatarFallback>JD</AvatarFallback>
+                      </Avatar>
+                    )}
+                    <div className="flex flex-col">
+                      {" "}
+                      <p className="text-gray-500">
+                        Replying to{" "}
+                        <Link
+                          className="font-bold"
+                          href={`/profile/${reply.comment.author.username}`}
+                        >
+                          @{reply.comment.author.username}
+                        </Link>
+                      </p>
+                      <p>
+                        {formatCommentDate(reply.createdAt)}
+                        <span className="text-gray-500">
+                          {" "}
+                          in{" "}
+                          <Link href={`/posts/${reply.comment.post.slug}`}>
+                            {reply.comment.post.title}
+                          </Link>
+                        </span>
+                      </p>
+                      <p>{reply.content}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <Link href={`/posts/${reply.comment.post.slug}`}>
                       <Button variant={"ghost"}>
                         View <ChevronRight size={15} />
                       </Button>

@@ -36,12 +36,7 @@ import { useTheme } from "next-themes";
 
 import VerifiedUser from "@/components/ui/verified";
 
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
+import * as Accordion from "@radix-ui/react-accordion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import rehypeDocument from "rehype-document";
@@ -60,6 +55,7 @@ import rehypeToc from "rehype-toc";
 import AddCommentForm from "@/components/buttons/AddComment";
 import { Badge } from "@/components/ui/badge";
 import ProgressBar from "@/components/post/progress";
+import ReplyButton from "@/components/buttons/ReplyButton";
 
 const mwfont = Merriweather({ subsets: ["latin"], weight: ["400"] });
 
@@ -80,7 +76,12 @@ export default async function blog({ params }: { params: { slug: string } }) {
       postId: blog.id,
     },
     include: {
-      author: true,
+      author: true, // Include the author of the comment
+      Reply: {
+        include: {
+          author: true, // Include the author of each reply
+        },
+      },
     },
   });
 
@@ -190,7 +191,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
           <p className="prose">{blog.description}</p>
           {blog.markdown ? (
             <p
-              className={`prose prose-a:font-bold prose-invert  dark:prose-invert`}
+              className={`prose prose-a:font-bold prose-invert prose-a:no-underline   dark:prose-invert`}
               dangerouslySetInnerHTML={{ __html: markdownContent }}
             ></p>
           ) : (
@@ -199,70 +200,145 @@ export default async function blog({ params }: { params: { slug: string } }) {
               dangerouslySetInnerHTML={{ __html: blog.content }}
             ></p>
           )}
-          <Accordion id="comments" type="single" collapsible>
-            <AccordionItem value="comments">
-              <AccordionTrigger className="flex items-center justify-between">
+          <Accordion.Root id="comments" type="single" collapsible>
+            <Accordion.Item value="comments">
+              <Accordion.Trigger className="flex items-center justify-between">
                 <div>
                   <h3 className="text-2xl  font-bold ">
                     Comments ({comments.length})
                   </h3>
                 </div>
-              </AccordionTrigger>
-              <AccordionContent>
+              </Accordion.Trigger>
+              <Accordion.Content>
                 <div className="space-y-6">
                   <div>
-                    <Accordion
+                    <Accordion.Root
                       type="single"
                       collapsible
                       className="mt-4 space-y-4"
                     >
                       {comments.map((comment) => (
-                        <AccordionItem
-                          className="py-4"
+                        <Accordion.Item
+                          className="py-2"
                           key={comment.id}
-                          value="comment"
+                          value={`comment-${comment.id}`}
                         >
-                          <div className="flex items-start gap-4">
-                            <div className="flex-1</div>">
-                              <div className="flex items-center gap-2">
-                                {" "}
-                                {comment.author.image_url &&
-                                comment.author.username ? (
-                                  <Avatar className="flex-shrink-0">
-                                    <AvatarImage
-                                      className="-mt-[1px]"
-                                      src={comment.author.image_url}
-                                      alt={comment.author.username}
-                                    />
-                                  </Avatar>
-                                ) : (
-                                  <Avatar className="flex-shrink-0">
-                                    <AvatarFallback>
-                                      {comment.author.username
-                                        ? comment.author.username[0]
-                                        : "U"}
-                                    </AvatarFallback>
-                                  </Avatar>
-                                )}
-                                <p className="font-medium text-gray-900 dark:text-white">
-                                  {comment.author.username}
-                                </p>
+                          <div className="flex items-start w-full gap-4">
+                            <div className="flex-1</div> w-full">
+                              <div className="flex items-center w-full gap-2">
+                                <Link
+                                  className="flex items-center gap-2 no-underline"
+                                  href={`/profile/${comment.author.username}`}
+                                >
+                                  {comment.author.image_url &&
+                                  comment.author.username ? (
+                                    <Avatar className="flex-shrink-0">
+                                      <AvatarImage
+                                        className="-mt-[1px]"
+                                        src={comment.author.image_url}
+                                        alt={comment.author.username}
+                                      />
+                                    </Avatar>
+                                  ) : (
+                                    <Avatar className="flex-shrink-0">
+                                      <AvatarFallback>
+                                        {comment.author.username
+                                          ? comment.author.username[0]
+                                          : "U"}
+                                      </AvatarFallback>
+                                    </Avatar>
+                                  )}
+                                  <p className="font-medium text-gray-900 dark:text-white">
+                                    {comment.author.username}
+                                  </p>
+                                </Link>
                                 <span className="text-xs text-gray-500 dark:text-gray-400">
                                   {formatCommentDate(comment.createdAt)}
                                 </span>
                               </div>
-                              <p className="mt-1 text-gray-700 dark:text-gray-300">
-                                {comment.content}
-                              </p>
+                              <div className="flex justify-between w-full items-center">
+                                <p className="mt-1 text-gray-700 dark:text-gray-300">
+                                  {comment.content}
+                                </p>
+                                <ReplyButton
+                                  comment={comment}
+                                  author={comment.author}
+                                />
+                              </div>
                             </div>
                           </div>{" "}
                           <div className="flex justify-between mx-4 items-center">
-                            <div></div>
-                            <Button variant={"ghost"}>Reply</Button>
+                            <Accordion.Root
+                              className="w-full"
+                              type="single"
+                              id={comment.id}
+                            >
+                              {comment.Reply.length > 0 && (
+                                <Accordion.Trigger
+                                  className="-ml-4"
+                                  id={comment.id}
+                                >
+                                  <div className="flex font-bold  items-center min-w-fit w-full">
+                                    {comment.Reply.length} replies{" "}
+                                    <ChevronDownIcon />
+                                  </div>
+                                </Accordion.Trigger>
+                              )}
+                              <Accordion.Content className="w-full -ml-4 border-none">
+                                {comment.Reply.map((reply) => (
+                                  <Accordion.Item
+                                    className="w-full p-2"
+                                    key={reply.id}
+                                    value={`reply-${reply.id}`}
+                                  >
+                                    <div className="flex items-start gap-4">
+                                      <div className="flex-1</div>">
+                                        <div className="flex items-center gap-2">
+                                          {" "}
+                                          <Link
+                                            className="flex items-center gap-2 no-underline"
+                                            href={`/profile/${reply.author.username}`}
+                                          >
+                                            {reply.author.image_url &&
+                                            reply.author.username ? (
+                                              <Avatar className="flex-shrink-0">
+                                                <AvatarImage
+                                                  className="-mt-[1px]"
+                                                  src={reply.author.image_url}
+                                                  alt={reply.author.username}
+                                                />
+                                              </Avatar>
+                                            ) : (
+                                              <Avatar className="flex-shrink-0">
+                                                <AvatarFallback>
+                                                  {reply.author.username
+                                                    ? reply.author.username[0]
+                                                    : "U"}
+                                                </AvatarFallback>
+                                              </Avatar>
+                                            )}
+
+                                            <p className="font-medium text-gray-900 dark:text-white">
+                                              {reply.author.username}
+                                            </p>
+                                          </Link>
+                                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                                            {formatCommentDate(reply.createdAt)}
+                                          </span>
+                                        </div>
+                                        <p className="mt-1 text-gray-700 dark:text-gray-300">
+                                          {reply.content}
+                                        </p>
+                                      </div>
+                                    </div>{" "}
+                                  </Accordion.Item>
+                                ))}
+                              </Accordion.Content>
+                            </Accordion.Root>
                           </div>
-                        </AccordionItem>
+                        </Accordion.Item>
                       ))}
-                    </Accordion>
+                    </Accordion.Root>
                   </div>
                   {user ? (
                     <AddCommentForm postId={blog.id} />
@@ -272,9 +348,9 @@ export default async function blog({ params }: { params: { slug: string } }) {
                     </Button>
                   )}
                 </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>{" "}
+              </Accordion.Content>
+            </Accordion.Item>
+          </Accordion.Root>{" "}
         </article>{" "}
       </div>
       <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16 flex justify-center">

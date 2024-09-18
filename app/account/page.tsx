@@ -155,7 +155,7 @@ export default async function AccountPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-medium mb-4">Social Links</h3>
-                  <div className="grid gap-4">
+                  <div className="grid gap-4 ">
                     <div className="space-y-2">
                       <Label
                         htmlFor="github"
@@ -165,7 +165,9 @@ export default async function AccountPage() {
                         <span>GitHub</span>
                       </Label>
                       <div className="flex items-center justify-between w-full">
-                        <p>{author.github ? author.github : "N/A"}</p>{" "}
+                        <p className="">
+                          {author.github ? author.github : "N/A"}
+                        </p>{" "}
                         <ChangeSocialDialog social={"GitHub"} />
                       </div>
                     </div>
@@ -190,8 +192,10 @@ export default async function AccountPage() {
                         <Linkedin className="w-4 h-4" />
                         <span>LinkedIn</span>
                       </Label>
-                      <div className="flex items-center justify-between w-full">
-                        <p>{author.linkedin ? author.linkedin : "N/A"}</p>{" "}
+                      <div className="flex items-center justify-between ">
+                        <p className="max-w-10">
+                          {author.linkedin ? author.linkedin : "N/A"}
+                        </p>{" "}
                         <ChangeSocialDialog social={"LinkedIn"} />
                       </div>
                     </div>

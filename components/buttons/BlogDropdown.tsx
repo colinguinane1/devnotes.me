@@ -139,7 +139,7 @@ export default function BlogDropdown({
             <BsThreeDots />
           </Button>
         </DrawerTrigger>
-        <DrawerContent className="bg-card p-4 flex flex-col gap-6 pb-20">
+        <DrawerContent className=" p-4 flex bg-card/25 flex-col gap-6 pb-20">
           <DrawerClose>
             <button onClick={copyToClipboard} className="cursor-pointer flex">
               <div className="flex items-center gap-2">

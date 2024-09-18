@@ -20,7 +20,7 @@ const ProgressBar = () => {
   return (
     <div
       style={{ width: `${scrollPercentage}%` }}
-      className={`fixed shadow-2xl top-0 left-0  h-1  z-50 bg-primary`}
+      className={`fixed shadow-2xl left-0  h-[2px]  z-50 bg-primary`}
     />
   );
 };
