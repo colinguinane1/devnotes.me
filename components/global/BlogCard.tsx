@@ -53,7 +53,7 @@ export default async function BlogCard({
       >
         {!horizontal && (
           <Image
-            src={post.cover_url ? post.cover_url : ("/gradient.jpg")}
+            src={post.cover_url ? post.cover_url : "/gradient.jpg"}
             width={800}
             height={450}
             alt="Blog Post Image"
@@ -65,8 +65,16 @@ export default async function BlogCard({
         <div className="absolute inset-0 bg-gradient-to-t from-background  to-transparent " />
       </Link>
       <CardContent className="p-4 space-y-4 w-full ">
-        <div className={`${horizontal ? "flex items-center justify-center" : ""}`}>
-          <div className={`space-y-2  ${horizontal ? "max-w-[15rem] md:max-w-[20rem] px-2" : ""}`}>
+        <div
+          className={`${horizontal ? "flex items-center justify-center" : ""}`}
+        >
+          <div
+            className={`space-y-2  ${
+              horizontal
+                ? "max-w-[15rem] md:min-w-[20rem] min-w-[15rem] md:max-w-[20rem] px-2"
+                : ""
+            }`}
+          >
             <Link
               href={`/posts/${post.slug}`}
               className="block"
@@ -146,12 +154,13 @@ export default async function BlogCard({
           {horizontal && (
             <div className="w-full h-full">
               <Image
-                src={post.cover_url ? post.cover_url : ("/gradient.jpg")}
-                alt="blog image"
-                width={200}
-                height={200}
-                className=" rounded-md w-full h-full"
-              ></Image>
+                src={post.cover_url ? post.cover_url : "/gradient.jpg"}
+                width={800}
+                height={450}
+                alt="Blog Post Image"
+                className="w-full h-full object-cover transition-all rounded-lg group-hover:scale-105"
+                style={{ aspectRatio: "800/450", objectFit: "cover" }}
+              />
             </div>
           )}
         </div>

@@ -233,7 +233,7 @@ export default async function ProfilePage({
           </div>
         ) : (
           <div className="">
-            <Button className="w-full" disabled variant={"outline"}>
+            <Button className="w-full shadow-2xl" disabled variant={"outline"}>
               Subscribe
             </Button>
           </div>
