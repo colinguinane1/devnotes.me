@@ -21,6 +21,7 @@ interface BlogCardProps {
   author: Author;
   horizontal?: boolean;
   dropdownType?: string;
+  borderType?: string;
 }
 
 export default async function BlogCard({
@@ -28,6 +29,7 @@ export default async function BlogCard({
   author,
   horizontal = false,
   dropdownType = "user",
+  borderType = "full",
 }: BlogCardProps) {
   const supabase = createClient();
 
@@ -43,7 +45,10 @@ export default async function BlogCard({
     <Card
       className={`w-full  rounded-md overflow-hidden shadow-lg transition-all hover:shadow-xl  ${
         horizontal ? "flex w-full" : "max-w-sm"
-      }`}
+      }
+      ${borderType === "full" && "border"}
+      ${borderType === "none" && "border-none"}
+      ${borderType === "top" && "border-t border-b"}`}
       key={post.id}
     >
       <Link
@@ -64,7 +69,9 @@ export default async function BlogCard({
 
         <div className="absolute inset-0 bg-gradient-to-t from-background  to-transparent " />
       </Link>
-      <CardContent className="p-4 space-y-4 w-full ">
+      <CardContent
+        className={`space-y-4 w-full ${borderType === "none" ? "p-0" : "p-4"} `}
+      >
         <div
           className={`${horizontal ? "flex items-center justify-center" : ""}`}
         >
