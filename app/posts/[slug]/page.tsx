@@ -56,6 +56,7 @@ import AddCommentForm from "@/components/buttons/AddComment";
 import { Badge } from "@/components/ui/badge";
 import ProgressBar from "@/components/post/progress";
 import ReplyButton from "@/components/buttons/ReplyButton";
+import UserCard from "@/components/global/UserCard";
 
 const mwfont = Merriweather({ subsets: ["latin"], weight: ["400"] });
 
@@ -132,7 +133,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
       <ProgressBar />
       <div className="relative h-[400px] -mt-[4px] md:-mt-0  w-full overflow-hidden">
         <Image
-           src={blog.cover_url ? blog.cover_url : ("/gradient.jpg")}
+          src={blog.cover_url ? blog.cover_url : "/gradient.jpg"}
           alt="Blog cover image"
           width={1920}
           height={1080}
@@ -173,10 +174,13 @@ export default async function blog({ params }: { params: { slug: string } }) {
         </div>
       </div>
       <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16">
+        <div className="">
+          <UserCard author={blog.author} />
+        </div>
+        <h1 className="text-4xl font-extrabold pb-6 tracking-tight lg:text-5xl">
+          {blog.title}
+        </h1>{" "}
         <article className="prose-emerald prose  mx-auto dark:prose-invert ">
-          <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
-            {blog.title}
-          </h1>
           <div>
             {blog.tags && (
               <div className="flex items-center wrap gap-2">
@@ -200,16 +204,21 @@ export default async function blog({ params }: { params: { slug: string } }) {
               dangerouslySetInnerHTML={{ __html: blog.content }}
             ></p>
           )}
-          <Accordion.Root id="comments" type="single" collapsible>
+          <Accordion.Root
+            className="transition-all"
+            id="comments"
+            type="single"
+            collapsible
+          >
             <Accordion.Item value="comments">
               <Accordion.Trigger className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-2xl  font-bold ">
-                    Comments ({comments.length})
+                  <h3 className="text-2xl flex items-center gap-2  font-bold ">
+                    Comments ({comments.length}) <ChevronDownIcon />
                   </h3>
                 </div>
               </Accordion.Trigger>
-              <Accordion.Content>
+              <Accordion.Content className="data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
                 <div className="space-y-6">
                   <div>
                     <Accordion.Root
@@ -284,7 +293,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
                                   </div>
                                 </Accordion.Trigger>
                               )}
-                              <Accordion.Content className="w-full -ml-4 border-none">
+                              <Accordion.Content className="w-full -ml-4 border-none data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
                                 {comment.Reply.map((reply) => (
                                   <Accordion.Item
                                     className="w-full p-2"
@@ -353,36 +362,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
           </Accordion.Root>{" "}
         </article>{" "}
       </div>
-      <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16 flex justify-center">
-        <div className="w-full max-w-md bg-card p-4 rounded-lg hover:shadow-2xl shadow shrink-0">
-          <div className="flex bg items-center justify-between">
-            <div className="flex items-center gap-2">
-              {blog.author.image_url && (
-                <Avatar className="w-10 h-10">
-                  <AvatarImage src={blog.author.image_url} alt="@shadcn" />
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
-              )}
-              <div>
-                <div className="text-sm font-medium flex items-center gap-1">
-                  {blog.author.username}{" "}
-                  {blog.author.verified && <VerifiedUser />}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  Published on {formatDate(blog.createdAt)}
-                </div>
-              </div>
-            </div>
-            <Link
-              href={`/profile/${blog.author.username}`}
-              className="text-sm font-medium text-primary hover:underline"
-              prefetch={false}
-            >
-              Read more
-            </Link>
-          </div>
-        </div>
-      </div>
+      <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16 flex justify-center"></div>
     </div>
   );
 }

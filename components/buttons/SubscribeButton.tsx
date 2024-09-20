@@ -71,7 +71,7 @@ export function UnsubscribeButton({
         </p>
       ) : (
         <p className="flex items-center gap-2">
-          Following <BsCheckCircleFill />
+          Following <BsCheckCircleFill fill="rgb(34 197 104)" />
         </p>
       )}
     </Button>
