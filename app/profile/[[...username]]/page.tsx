@@ -298,14 +298,6 @@ export default async function ProfilePage({
                   key={subscriber.id}
                 >
                   <UserCard author={subscriber.subscriber} />
-                  <Link
-                    className="flex items-center"
-                    href={`/profile/${subscriber.subscriber.username}`}
-                  >
-                    <Button variant={"ghost"}>
-                      Profile <ChevronRightIcon size={15} />
-                    </Button>
-                  </Link>
                 </div>
               ))}
             </div>
@@ -321,14 +313,6 @@ export default async function ProfilePage({
                   key={subscriber.id}
                 >
                   <UserCard author={subscriber.subscribedTo} />
-                  <Link
-                    className="flex items-center"
-                    href={`/profile/${subscriber.subscribedTo.username}`}
-                  >
-                    <Button className="mt-4" variant={"ghost"}>
-                      Profile <ChevronRightIcon size={15} />
-                    </Button>
-                  </Link>
                 </div>
               ))}
             </div>

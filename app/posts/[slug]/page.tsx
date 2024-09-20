@@ -174,9 +174,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
         </div>
       </div>
       <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16">
-        <div className="">
-          <UserCard author={blog.author} />
-        </div>
+        <UserCard author={blog.author} />
         <h1 className="text-4xl font-extrabold pb-6 tracking-tight lg:text-5xl">
           {blog.title}
         </h1>{" "}
