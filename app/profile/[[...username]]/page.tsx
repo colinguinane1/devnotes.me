@@ -152,6 +152,13 @@ export default async function ProfilePage({
     { value: "comments" },
   ];
 
+  const authorSocials = [
+    author.github,
+    author.twitter,
+    author.linkedin,
+    author.discord,
+  ];
+
   return (
     <div className="w-full min-h-screen mt-4 max-w-3xl mx-auto">
       <div className="flex items-center gap-6 px-4 ">
@@ -185,60 +192,56 @@ export default async function ProfilePage({
           <div></div>
         </div>{" "}
       </div>{" "}
-      <p className="text-muted-foreground py-2 px-4 text-sm">{author.bio}</p>
-      <div className="flex items-center gap-4 p-4 text-muted-foreground">
-        {author.github && (
-          <a href={author.github} target="_blank">
-            <GithubIcon size={20} />
-          </a>
-        )}
-        {author.twitter && (
-          <a href={author.twitter} target="_blank">
-            <TwitterIcon size={20} />
-          </a>
-        )}
-        {author.linkedin && (
-          <a href={author.linkedin} target="_blank">
-            <LinkedinIcon size={20} />
-          </a>
-        )}
-        {author.discord && (
-          <a href={author.discord} target="_blank">
-            <Link2 size={20} />
-          </a>
-        )}
-      </div>{" "}
-      <div className="p-4 w-full">
-        {user?.id !== author?.id ? (
-          <div className="">
-            {user ? (
-              <div>
-                {!isSubscribed ? (
-                  <SubscribeButton
-                    subscriberId={user.id}
-                    subscribeToId={author.id}
-                  />
-                ) : (
-                  <UnsubscribeButton
-                    subscriberId={user.id}
-                    subscribeToId={author.id}
-                  />
-                )}
-              </div>
-            ) : (
-              <Button className="w-full">
-                <Link href="/login">Follow</Link>
-              </Button>
-            )}
-          </div>
-        ) : (
-          <div className="">
-            <Button className="w-full shadow-2xl" disabled variant={"outline"}>
-              Subscribe
+      {author.bio && (
+        <p className="text-muted-foreground py-2 px-4 text-sm">{author.bio}</p>
+      )}
+      {authorSocials.some((social) => social) && (
+        <div className="flex items-center gap-4 p-4 text-muted-foreground">
+          {author.github && (
+            <a href={author.github} target="_blank">
+              <GithubIcon size={20} />
+            </a>
+          )}
+          {author.twitter && (
+            <a href={author.twitter} target="_blank">
+              <TwitterIcon size={20} />
+            </a>
+          )}
+          {author.linkedin && (
+            <a href={author.linkedin} target="_blank">
+              <LinkedinIcon size={20} />
+            </a>
+          )}
+          {author.discord && (
+            <a href={author.discord} target="_blank">
+              <Link2 size={20} />
+            </a>
+          )}
+        </div>
+      )}
+      {user?.id !== author?.id && (
+        <div className="p-4 w-full">
+          {user ? (
+            <div>
+              {!isSubscribed ? (
+                <SubscribeButton
+                  subscriberId={user.id}
+                  subscribeToId={author.id}
+                />
+              ) : (
+                <UnsubscribeButton
+                  subscriberId={user.id}
+                  subscribeToId={author.id}
+                />
+              )}
+            </div>
+          ) : (
+            <Button className="w-full">
+              <Link href="/login">Follow</Link>
             </Button>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
       <Tabs.Root defaultValue="posts" className="">
         <Tabs.List className="flex no-scrollbar overflow-x-auto whitespace-nowrap  w-full">
           {tabData.map((tab, index) => (
@@ -291,13 +294,16 @@ export default async function ProfilePage({
             <h1 className="pb-4 text-2xl">
               Followers ({authorFollowers.length})
             </h1>
-            <div className="grid gap-4">
+            <div className="grid">
               {authorFollowers.map((subscriber) => (
                 <div
                   className="flex items-center justify-between"
                   key={subscriber.id}
                 >
-                  <UserCard author={subscriber.subscriber} />
+                  <UserCard
+                    followButton={false}
+                    author={subscriber.subscriber}
+                  />
                 </div>
               ))}
             </div>
@@ -306,13 +312,16 @@ export default async function ProfilePage({
             <h1 className="pb-4 text-2xl">
               Following ({authorFollowing.length})
             </h1>
-            <div className="grid gap-4">
+            <div className="grid">
               {authorFollowing.map((subscriber) => (
                 <div
                   className="flex items-center justify-between"
                   key={subscriber.id}
                 >
-                  <UserCard author={subscriber.subscribedTo} />
+                  <UserCard
+                    followButton={false}
+                    author={subscriber.subscribedTo}
+                  />
                 </div>
               ))}
             </div>

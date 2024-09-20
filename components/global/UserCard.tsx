@@ -16,9 +16,13 @@ import prisma from "@/prisma/db";
 
 interface UserCardProps {
   author: Author;
+  followButton?: boolean;
 }
 
-export default async function UserCard({ author }: UserCardProps) {
+export default async function UserCard({
+  author,
+  followButton = true,
+}: UserCardProps) {
   const supabase = createClient();
 
   // Get the logged-in user
@@ -64,41 +68,43 @@ export default async function UserCard({ author }: UserCardProps) {
             </h2>
           )}
         </Link>{" "}
-        <div className="w-fit">
-          {user?.id !== author?.id ? (
-            <div className="">
-              {user ? (
-                <div>
-                  {!isSubscribed ? (
-                    <SubscribeButton
-                      subscriberId={user.id}
-                      subscribeToId={author.id}
-                    />
-                  ) : (
-                    <UnsubscribeButton
-                      subscriberId={user.id}
-                      subscribeToId={author.id}
-                    />
-                  )}
-                </div>
-              ) : (
-                <Button className="w-full">
-                  <Link href="/login">Follow</Link>
+        {followButton && (
+          <div className="w-fit">
+            {user?.id !== author?.id ? (
+              <div className="">
+                {user ? (
+                  <div>
+                    {!isSubscribed ? (
+                      <SubscribeButton
+                        subscriberId={user.id}
+                        subscribeToId={author.id}
+                      />
+                    ) : (
+                      <UnsubscribeButton
+                        subscriberId={user.id}
+                        subscribeToId={author.id}
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <Button className="w-full">
+                    <Link href="/login">Follow</Link>
+                  </Button>
+                )}
+              </div>
+            ) : (
+              <div className="">
+                <Button
+                  className="w-full shadow-2xl"
+                  disabled
+                  variant={"outline"}
+                >
+                  Subscribe
                 </Button>
-              )}
-            </div>
-          ) : (
-            <div className="">
-              <Button
-                className="w-full shadow-2xl"
-                disabled
-                variant={"outline"}
-              >
-                Subscribe
-              </Button>
-            </div>
-          )}
-        </div>
+              </div>
+            )}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
