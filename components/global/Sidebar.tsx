@@ -51,7 +51,7 @@ export default function Sidebar() {
               </SheetTitle>
             </SheetHeader>
             {NavigationData.map((nav) => (
-              <SheetClose asChild>
+              <SheetClose key={nav.name} asChild>
                 <Link
                   className="font-bold hover:bg-slate-700/50 transition rounded-md p-2 text-3xl text-left w-full"
                   href={nav.href}
