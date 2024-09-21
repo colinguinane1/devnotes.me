@@ -33,7 +33,7 @@ export default function Sidebar() {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="flex text-left flex-col justify-between h-full w-fit rounded-tr-lg rounded-br-lg backdrop-blur-md bg-card/90"
+          className="flex text-left flex-col justify-between h-full w-fit  bg-card"
         >
           <div className="flex flex-col gap-6">
             <SheetHeader>
@@ -46,26 +46,19 @@ export default function Sidebar() {
                   alt={"logo"}
                 ></Image>
                 <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-blue-600">
-                  devnotes.me
+                  devnotes
                 </span>
               </SheetTitle>
             </SheetHeader>
             {NavigationData.map((nav) => (
-              <Button
-                variant={"ghost"}
-                className="hover:bg-transparent hover:text-black dark:hover:text-white"
-                type="submit"
-                key={nav.href}
-              >
-                <SheetClose asChild>
-                  <Link
-                    className="font-bold text-3xl text-left w-full"
-                    href={nav.href}
-                  >
-                    {nav.name}
-                  </Link>
-                </SheetClose>
-              </Button>
+              <SheetClose asChild>
+                <Link
+                  className="font-bold hover:bg-slate-700/50 transition rounded-md p-2 text-3xl text-left w-full"
+                  href={nav.href}
+                >
+                  {nav.name}
+                </Link>
+              </SheetClose>
             ))}
           </div>
           <SheetFooter>
