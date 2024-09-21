@@ -16,7 +16,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const { setTheme, theme, resolvedTheme } = useTheme();
   const { toast } = useToast();
-
+  
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
@@ -24,7 +24,7 @@ export default function App() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imageUrl, setImageUrl] = useState("")
+  const [imageUrl, setImageUrl] = useState("");
   const markdown = true;
   const [value, setValue] = useState("**Hello world!!!**");
 
@@ -40,8 +40,8 @@ export default function App() {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       setSelectedFile(file);
-      setSelectedImage(URL.createObjectURL(file)); // Preview the image
-      await handleImageUpload(file); // Upload the image immediately
+      setSelectedImage(URL.createObjectURL(file));
+      await handleImageUpload(file);
     }
   };
 
@@ -53,14 +53,12 @@ export default function App() {
 
       if (!session) {
         setUploadError("You must be logged in to upload a file.");
-        setImageLoading(false);
         return;
       }
 
       const userId = session?.session?.user.id;
       const fileData = await file.arrayBuffer();
-      const timestamp = new Date().getTime();
-      const fileName = `${userId}/image_${timestamp}`; // Appending timestamp
+      const fileName = `${userId}/image_${Date.now()}`;
       const mimeType = file.type || "application/octet-stream";
 
       const { data, error } = await supabase.storage
@@ -74,10 +72,7 @@ export default function App() {
       if (error) {
         setUploadError("Error uploading file: " + error.message);
       } else {
-        console.log("File uploaded successfully:", data);
-        setImageUrl(fileName)
-        console.log(imageUrl)
-        // Here you can save the image URL to your post or database if needed
+        setImageUrl(fileName);
       }
     } catch (err) {
       console.error("An unexpected error occurred:", err);
@@ -93,11 +88,9 @@ export default function App() {
     formData.append("content", value);
     formData.append("tags", JSON.stringify(tags));
 
-
     try {
       setLoading(true);
       await createPost(formData, markdown, imageUrl);
-      console.log("Post created successfully");
       successToast();
     } catch (error) {
       console.error("Error creating post:", error);
@@ -109,20 +102,21 @@ export default function App() {
   const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && tagInput.trim()) {
       e.preventDefault();
-      if (!tags.includes(tagInput.trim())) {
-        setTags([...tags, tagInput.trim()]);
+      const trimmedTag = tagInput.trim();
+      if (!tags.includes(trimmedTag) && tags.length < 5) {
+        setTags((prev) => [...prev, trimmedTag]);
         setTagInput("");
       }
     }
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove));
+    setTags((prev) => prev.filter((tag) => tag !== tagToRemove));
   };
 
   return (
     <div className="p-4 min-h-screen my-auto" data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}>
-      <div className="flex flex-col w-full items-center gap=4">
+      <div className="flex flex-col w-full items-center gap-4">
         <form onSubmit={handleSubmit} className="w-full">
           <div className="flex-col flex mb-4 gap-2">
             <div className="max-w-xl mx-auto mt-8 p-6 bg-card rounded-lg shadow-md">
@@ -137,9 +131,7 @@ export default function App() {
                   ref={fileInputRef}
                   aria-label="Choose an image to upload"
                 />
-                <Label htmlFor="image-upload" className="sr-only">
-                  Choose an image to upload
-                </Label>
+                <Label htmlFor="image-upload" className="sr-only">Choose an image to upload</Label>
                 <div
                   onClick={() => fileInputRef.current?.click()}
                   className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors"
@@ -161,8 +153,9 @@ export default function App() {
               ) : (
                 <p className="text-center text-gray-500 mt-2">No image selected</p>
               )}
-              {uploadError && <p>{uploadError}</p>}
+              {uploadError && <p className="text-red-500">{uploadError}</p>}
             </div>
+
             <label>Title:</label>
             <input
               name="title"
@@ -171,6 +164,7 @@ export default function App() {
               placeholder="Blog Title"
             />
           </div>
+
           <div className="pb-4">
             <label>Description:</label>
             <input
@@ -182,6 +176,7 @@ export default function App() {
               placeholder="Enter your description"
             />
           </div>
+
           <div className="pb-4">
             <label>Tags:</label>
             <div className="flex items-center flex-wrap gap-2 mb-2">
@@ -206,6 +201,7 @@ export default function App() {
               className="border rounded-md p-1 w-full"
               placeholder="Type a tag and press Enter"
             />
+            {tags.length >= 5 && <p className="text-red-500">Maximum of 5 tags allowed.</p>}
           </div>
 
           <label>Content:</label>
@@ -223,7 +219,7 @@ export default function App() {
             source={value}
             style={{ whiteSpace: "pre-wrap" }}
           />
-          <Button className="w-full mt-4" type="submit">
+          <Button className="w-full mt-4" type="submit" disabled={loading}>
             {loading ? "Publishing..." : "Publish Blog"}
           </Button>
         </form>
