@@ -196,9 +196,10 @@ export default async function blog({ params }: { params: { slug: string } }) {
           {blog.tags && (
               <div className="flex items-center wrap gap-2">
                 {blog.tags.map((tag, index) => (
+                  <Link  key={index} href={`/tag/${tag.name}`}>
                   <Badge variant={"outline"} key={index}>
                     #{tag.name}
-                  </Badge>
+                  </Badge></Link>
                 ))}
               </div>
             )}
