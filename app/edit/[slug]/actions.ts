@@ -1,6 +1,7 @@
 'use server'
 import prisma from "@/prisma/db";
 import { createClient } from "@/app/utils/supabase/server";
+import { Tag } from "@prisma/client";
 
 export async function getBlogBySlug(slug: string) {
       const supabase = createClient();
@@ -17,7 +18,8 @@ export async function getBlogBySlug(slug: string) {
       slug
     },
     include: {
-      author: true
+      author: true,
+      tags: true
     }
   });
  if(user?.id !== blog?.author.id ){
@@ -30,7 +32,7 @@ export async function getBlogBySlug(slug: string) {
 
   return blog;
 }
-export async function updatePost(slug: string, title: string, content: string, description: string, tags: string[]) {
+export async function updatePost(slug: string, title: string, content: string, description: string, tags: Tag[]) {
   try {
     const updatedPost = await prisma.post.update({
       where: {
@@ -38,7 +40,9 @@ export async function updatePost(slug: string, title: string, content: string, d
       },
       data: {
         title,
-        tags,
+        tags: {
+          connect: tags.map(tag => ({ id: tag.id })),
+        },
         content,
         description,
       },
