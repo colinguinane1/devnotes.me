@@ -65,8 +65,10 @@ export default async function blog({ params }: { params: { slug: string } }) {
     where: {
       slug: params.slug,
     },
-
-    include: { author: true },
+    include: {
+      tags: true,
+      author: true
+    },
   });
   if (!blog) {
     return <BlogNotFound />;
@@ -94,6 +96,17 @@ export default async function blog({ params }: { params: { slug: string } }) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const tagsWithPosts = await prisma.tag.findMany({
+    where: {
+        posts: {
+            some: {} // This checks for any associated posts
+        }
+    },
+    include: {
+        posts: true // This includes the posts associated with each tag
+    }
+});
 
   const metadata: Metadata = {
     title: blog.title,
@@ -180,11 +193,11 @@ export default async function blog({ params }: { params: { slug: string } }) {
         </h1>{" "}
         <article className="prose-emerald prose  mx-auto dark:prose-invert ">
           <div>
-            {blog.tags && (
+          {blog.tags && (
               <div className="flex items-center wrap gap-2">
                 {blog.tags.map((tag, index) => (
                   <Badge variant={"outline"} key={index}>
-                    #{tag}
+                    #{tag.name}
                   </Badge>
                 ))}
               </div>

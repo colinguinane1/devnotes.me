@@ -3,7 +3,7 @@ import Link from "next/link";
 import { formatDate, getTagColor } from "@/data/SiteData";
 import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
-import { Post } from "@prisma/client";
+import { Post, Tag } from "@prisma/client";
 import { Author } from "@prisma/client";
 import { Heart, MessageCircleIcon } from "lucide-react";
 import BlogDropdown from "../buttons/BlogDropdown";
@@ -19,6 +19,7 @@ import { BiComment } from "react-icons/bi";
 interface BlogCardProps {
   post: Post;
   author: Author;
+  tags: Tag[]
   horizontal?: boolean;
   dropdownType?: string;
   borderType?: string;
@@ -27,6 +28,7 @@ interface BlogCardProps {
 export default async function BlogCard({
   post,
   author,
+  tags,
   horizontal = false,
   dropdownType = "user",
   borderType = "full",
@@ -119,18 +121,18 @@ export default async function BlogCard({
                 </span>
               </div>
             </Link>
-            {post.tags && (
+            {tags && (
               <div
                 className={`flex flex-wrap gap-2 ${
                   horizontal ? "hidden" : ""
                 } `}
               >
-                {post.tags.map((tag) => {
-                  const tagColor = getTagColor(tag);
+                {tags.map((tag) => {
                   return (
-                    <Badge key={tag} variant="outline">
-                      #{tag}
-                    </Badge>
+                    <Link key={tag.name} href={`/tag/${tag.name}`}>
+                    <Badge key={tag.name} variant="outline">
+                      #{tag.name}
+                    </Badge></Link>
                   );
                 })}
               </div>
