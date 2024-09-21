@@ -40,7 +40,7 @@ export default async function UserCard({
     : null;
   return (
     <Card
-      className="w-full flex items-center mb-6 h-20 rounded-md overflow-hidden shadow-lg transition-all hover:shadow-xl"
+      className="w-full flex items-center mb-6 h-20 rounded-md overflow-hidden transition-all hover:shadow-xl"
       key={author.id}
     >
       <CardContent className="flex justify-between items-center w-full mt-[22px]">
