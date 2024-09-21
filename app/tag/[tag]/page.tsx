@@ -35,7 +35,12 @@ export default async function tagPage({ params }: { params: { tag: string } }) {
         </div>
         <div className="grid gap-4 py-4">
           {tagPosts.map((post) => (
-            <BlogCard horizontal={true} post={post} author={post.author} />
+            <BlogCard
+              key={post.id}
+              horizontal={true}
+              post={post}
+              author={post.author}
+            />
           ))}
         </div>
       </div>
