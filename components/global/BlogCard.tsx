@@ -19,7 +19,7 @@ import { BiComment } from "react-icons/bi";
 interface BlogCardProps {
   post: Post;
   author: Author;
-  tags: Tag[]
+  tags?: Tag[]
   horizontal?: boolean;
   dropdownType?: string;
   borderType?: string;

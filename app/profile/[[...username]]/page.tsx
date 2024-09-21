@@ -68,6 +68,7 @@ export default async function ProfilePage({
     },
     include: {
       author: true,
+      tags: true
     },
   });
 
@@ -81,6 +82,7 @@ export default async function ProfilePage({
     },
     include: {
       author: true,
+      tags: true
     },
   });
 
@@ -268,6 +270,7 @@ export default async function ProfilePage({
             <div className="grid gap-4 ">
               {posts.map((post) => (
                 <BlogCard
+                tags={post.tags}
                   borderType="top"
                   horizontal={true}
                   key={post.id}
@@ -282,10 +285,11 @@ export default async function ProfilePage({
             <div className="grid gap-4 ">
               {likedPosts.map((post) => (
                 <BlogCard
+                tags={post.tags}
                   horizontal={true}
                   key={post.id}
                   post={post}
-                  author={post.author}
+              author={author}
                 />
               ))}
             </div>
