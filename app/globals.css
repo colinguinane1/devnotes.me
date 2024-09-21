@@ -6,6 +6,23 @@
   @apply bg-gradient-to-r from-blue-500 to-cyan-500 inline-block text-transparent bg-clip-text;
 }
 
+@font-face {
+  font-family: 'SF Pro';
+  src: url('/fonts/sf-pro/SF-Pro-Display-Regular.otf') format('opentype'),
+    url('/fonts/sf-pro/SF-Pro-Text-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro';
+  src: url('/fonts/sf-pro/SF-Pro-Display-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer utilities {
 
   /* Hide scrollbar for Chrome, Safari and Opera */

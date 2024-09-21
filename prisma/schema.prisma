@@ -49,18 +49,14 @@ model Subscription {
 
   @@unique([subscriberId, subscribedToId]) // Ensure unique subscription pairs
   @@schema("public")
-
-
 }
 
 model Tag {
-
-  id    String   @id @default(cuid())
+  id    String @id @default(cuid())
   name  String @unique
   posts Post[] @relation("PostTags")
 
   @@schema("public")
-
 }
 
 model Post {
@@ -69,8 +65,8 @@ model Post {
   description String?
   slug        String    @unique
   title       String
-  cover_url String?
-   tags  Tag[] @relation("PostTags")
+  cover_url   String?
+  tags        Tag[]     @relation("PostTags")
   content     String
   views       Int       @default(0)
   likes       Int       @default(0)
