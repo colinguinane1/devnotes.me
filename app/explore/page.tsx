@@ -69,7 +69,7 @@ export default async function ExplorePage() {
         <div className="flex items-center justify-between w-full">
           <div>
 {author && 
-            <h1 className="text-4xl font-extrabold">
+            <h1 className="md:text-4xl text-2xl font-extrabold">
               {greet} {author?.full_name}
             </h1>}
           </div>
