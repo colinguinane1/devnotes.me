@@ -19,7 +19,7 @@ import { BiComment } from "react-icons/bi";
 interface BlogCardProps {
   post: Post;
   author: Author;
-  tags?: Tag[]
+  tags?: Tag[];
   horizontal?: boolean;
   dropdownType?: string;
   borderType?: string;
@@ -46,7 +46,7 @@ export default async function BlogCard({
   return (
     <Card
       className={`w-full  rounded-md overflow-hidden shadow-lg transition-all hover:shadow-xl  ${
-        horizontal ? "flex w-full" : "max-w-sm"
+        horizontal ? "flex w-full" : "max-w-lg"
       }
       ${borderType === "full" && "border"}
       ${borderType === "none" && "border-none"}
@@ -130,9 +130,10 @@ export default async function BlogCard({
                 {tags.map((tag) => {
                   return (
                     <Link key={tag.name} href={`/tag/${tag.name}`}>
-                    <Badge key={tag.name} variant="outline">
-                      #{tag.name}
-                    </Badge></Link>
+                      <Badge key={tag.name} variant="outline">
+                        #{tag.name}
+                      </Badge>
+                    </Link>
                   );
                 })}
               </div>

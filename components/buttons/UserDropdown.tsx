@@ -65,7 +65,7 @@ export default function UserDropdown({
         <DropdownMenuTrigger>
           <Button size={"icon"} variant={"outline"}>
             {author.image_url && (
-              <Avatar className="w-8 h-8">
+              <Avatar className="w-full h-full">
                 <AvatarImage src={author.image_url} alt="@shadcn" />
                 <AvatarFallback>JD</AvatarFallback>
               </Avatar>
@@ -113,7 +113,7 @@ export default function UserDropdown({
         <DrawerTrigger asChild>
           <Button size={"icon"} variant={"outline"}>
             {author.image_url && (
-              <Avatar className="w-6 h-6">
+              <Avatar className="w-full h-full">
                 <AvatarImage src={author.image_url} alt="@shadcn" />
                 <AvatarFallback>JD</AvatarFallback>
               </Avatar>
