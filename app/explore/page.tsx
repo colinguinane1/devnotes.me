@@ -60,6 +60,8 @@ export default async function ExplorePage() {
   else if (hour >= 18 && hour < 23) greet = "Good evening,";
   else if (hour === 23 || hour < 5) greet = "Good morning, ";
 
+  const author_first_name = author?.full_name?.split(" ")[0] || "";
+
   const searchPlaceholder =
     <RxMagnifyingGlass /> + "Search for posts, authors, and more";
 
@@ -68,10 +70,9 @@ export default async function ExplorePage() {
       <section className="w-full max-w-2xl flex flex-col items-center gap-4">
         <div className="flex items-center justify-between w-full">
           <div>
-{author && 
             <h1 className="md:text-4xl text-2xl font-extrabold">
-              {greet} {author?.full_name}
-            </h1>}
+              {greet} {author && author_first_name}
+            </h1>
           </div>
 
           <UserIcon />
@@ -91,7 +92,7 @@ export default async function ExplorePage() {
               className="flex items-center bg-card p-2 rounded-full px-5 gap-4"
               key={tag.id}
             >
-              {tag.name}
+              #{tag.name.toLowerCase()}
             </Link>
           ))}
         </div>
