@@ -54,37 +54,67 @@ export default async function ProfilePage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Fetch user data from Prisma
   const author = await prisma.author.findUnique({
     where: { username },
   });
+
   if (!author) {
     return notFound();
   }
 
-  const posts = await prisma.post.findMany({
-    where: {
-      user_id: author.id,
-    },
-    include: {
-      author: true,
-      tags: true
-    },
-  });
-
-  const likedPosts = await prisma.post.findMany({
-    where: {
-      likedBy: {
-        some: {
-          id: author.id,
+  // Fetch all related data in parallel
+  const [
+    posts,
+    likedPosts,
+    authorFollowing,
+    authorFollowers,
+    authorComments,
+    authorReplies,
+    authorDrafts,
+  ] = await Promise.all([
+    prisma.post.findMany({
+      where: { user_id: author.id },
+      include: { author: true, tags: true },
+    }),
+    prisma.post.findMany({
+      where: { likedBy: { some: { id: author.id } } },
+      include: { author: true, tags: true },
+    }),
+    prisma.subscription.findMany({
+      where: { subscriberId: author.id },
+      include: { subscribedTo: true },
+    }),
+    prisma.subscription.findMany({
+      where: { subscribedToId: author.id },
+      include: { subscriber: true },
+    }),
+    prisma.comment.findMany({
+      where: { authorId: author.id },
+      include: { post: true },
+    }),
+    prisma.reply.findMany({
+      where: {
+        authorId: author.id, // Assuming `author.id` is available in this context
+      },
+      include: {
+        comment: {
+          include: {
+            post: true, // Include the post related to the comment
+            author: true,
+          },
         },
       },
-    },
-    include: {
-      author: true,
-      tags: true
-    },
-  });
+    }),
+    prisma.post.findMany({
+      where: {
+        user_id: author.id,
+        published: false,
+      },
+      include: {
+        author: true,
+      },
+    }),
+  ]);
 
   const isSubscribed = user
     ? await prisma.subscription.findFirst({
@@ -94,57 +124,6 @@ export default async function ProfilePage({
         },
       })
     : null;
-
-  const authorFollowing = await prisma.subscription.findMany({
-    where: {
-      subscriberId: author.id,
-    },
-    include: {
-      subscribedTo: true, // Include the full Author object
-    },
-  });
-
-  const authorComments = await prisma.comment.findMany({
-    where: {
-      authorId: author.id,
-    },
-    include: {
-      post: true,
-    },
-  });
-
-  const authorReplies = await prisma.reply.findMany({
-    where: {
-      authorId: author.id, // Assuming `author.id` is available in this context
-    },
-    include: {
-      comment: {
-        include: {
-          post: true, // Include the post related to the comment
-          author: true,
-        },
-      },
-    },
-  });
-
-  const authorDrafts = await prisma.post.findMany({
-    where: {
-      user_id: author.id,
-      published: false,
-    },
-    include: {
-      author: true,
-    },
-  });
-
-  const authorFollowers = await prisma.subscription.findMany({
-    where: {
-      subscribedToId: author.id,
-    },
-    include: {
-      subscriber: true, // Include the full Author object
-    },
-  });
 
   const tabData = [
     { value: "posts" },
@@ -270,7 +249,7 @@ export default async function ProfilePage({
             <div className="grid gap-4 ">
               {posts.map((post) => (
                 <BlogCard
-                tags={post.tags}
+                  tags={post.tags}
                   borderType="top"
                   horizontal={true}
                   key={post.id}
@@ -285,11 +264,11 @@ export default async function ProfilePage({
             <div className="grid gap-4 ">
               {likedPosts.map((post) => (
                 <BlogCard
-                tags={post.tags}
+                  tags={post.tags}
                   horizontal={true}
                   key={post.id}
                   post={post}
-              author={author}
+                  author={author}
                 />
               ))}
             </div>
