@@ -31,33 +31,23 @@ export default async function ExplorePage() {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US");
   }
-  const posts = await prisma.post.findMany({
-    include: {
-      author: true,
-    },
-  });
   const supabase = createClient();
-
-  // Get the logged-in user
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const [
+    {
+      data: { user },
+    },
+    posts,
+    tags,
+  ] = await Promise.all([
+    supabase.auth.getUser(),
+    prisma.post.findMany({ include: { author: true }, take: 10 }),
+    prisma.tag.findMany({ include: { posts: true } }),
+  ]);
 
   let author = null;
-
   if (user?.id) {
-    author = await prisma.author.findUnique({
-      where: {
-        id: user.id,
-      },
-    });
+    author = await prisma.author.findUnique({ where: { id: user.id } });
   }
-
-  const tags = await prisma.tag.findMany({
-    include: {
-      posts: true,
-    },
-  });
 
   var hour = new Date().getHours();
   var greet;

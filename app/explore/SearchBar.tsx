@@ -12,8 +12,8 @@ export default function ClientSearchBar() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: any) => {
-    setLoading(true);
     e.preventDefault();
+    setLoading(true);
     if (searchTerm) {
       router.push(`/explore/query=${searchTerm}`);
     }
@@ -23,9 +23,7 @@ export default function ClientSearchBar() {
   return (
     <div className="relative w-full">
       {loading ? (
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-          <Loading />
-        </div>
+        <Loading />
       ) : (
         <RxMagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
       )}

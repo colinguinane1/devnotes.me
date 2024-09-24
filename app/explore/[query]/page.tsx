@@ -49,45 +49,27 @@ export default async function QueryPage({
 
   const author_first_name = author?.full_name?.split(" ")[0] || "";
 
-  const PostSearchResults = await prisma.post.findMany({
-    where: {
-      OR: [
-        {
-          title: {
-            contains: query,
-            mode: "insensitive",
-          },
-        },
-        {
-          content: {
-            contains: query,
-            mode: "insensitive",
-          },
-        },
-      ],
-    },
-    include: {
-      author: true,
-    },
-  });
-  const AuthorSearchResults = await prisma.author.findMany({
-    where: {
-      OR: [
-        {
-          username: {
-            contains: query,
-            mode: "insensitive",
-          },
-        },
-        {
-          full_name: {
-            contains: query,
-            mode: "insensitive",
-          },
-        },
-      ],
-    },
-  });
+  const [PostSearchResults, AuthorSearchResults] = await Promise.all([
+    prisma.post.findMany({
+      where: {
+        OR: [
+          { title: { contains: query, mode: "insensitive" } },
+          { content: { contains: query, mode: "insensitive" } },
+        ],
+      },
+      include: { author: true },
+      take: 10,
+    }),
+    prisma.author.findMany({
+      where: {
+        OR: [
+          { username: { contains: query, mode: "insensitive" } },
+          { full_name: { contains: query, mode: "insensitive" } },
+        ],
+      },
+      take: 10,
+    }),
+  ]);
 
   console.log("Params:", queryString);
 
