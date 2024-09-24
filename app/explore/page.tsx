@@ -24,6 +24,7 @@ import UserIcon from "@/components/buttons/UserIcon";
 import { Badge } from "@/components/ui/badge";
 import BlogCard from "@/components/global/BlogCard";
 import { search } from "./actions";
+import ClientSearchBar from "./SearchBar";
 
 export default async function ExplorePage() {
   function formatDate(dateString: Date) {
@@ -90,15 +91,7 @@ export default async function ExplorePage() {
           <UserIcon />
         </div>
         <div className="relative w-full">
-          <RxMagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <form onSubmit={handleSubmit}>
-            <Input
-              className="pl-10 rounded-full w-full"
-              type="text"
-              name="search"
-              placeholder="Search for posts, authors, and more"
-            />
-          </form>
+        <ClientSearchBar/>
         </div>
         <div className="border-b overflow-x-auto flex items-center gap-4 pb-4 no-scrollbar w-full">
           {tags.map((tag) => (
