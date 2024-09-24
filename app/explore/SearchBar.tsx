@@ -12,7 +12,7 @@ export default function ClientSearchBar() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (searchTerm) {
-        router.push(`/explore/?q=${searchTerm}`);
+      router.push(`/explore/query=${searchTerm}`);
     }
   };
 
