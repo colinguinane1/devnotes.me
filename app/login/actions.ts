@@ -28,7 +28,7 @@ export async function emailLogin(formData: FormData) {
     const { data: { user } } = await supabase.auth.getUser();
     await checkAuthorExists(user);
     revalidatePath('/', 'layout');
-    redirect('/');
+    redirect('/explore');
  
 
      
