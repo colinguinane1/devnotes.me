@@ -43,11 +43,15 @@ export default async function ExplorePage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const author = await prisma.author.findUnique({
-    where: {
-      id: user?.id,
-    },
-  });
+  let author = null;
+
+  if (user?.id) {
+    author = await prisma.author.findUnique({
+      where: {
+        id: user.id,
+      },
+    });
+  }
 
   const tags = await prisma.tag.findMany({
     include: {
@@ -65,19 +69,6 @@ export default async function ExplorePage() {
 
   const author_first_name = author?.full_name?.split(" ")[0] || "";
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // prevent default form submission
-    const formData = new FormData(e.currentTarget);
-    const query = formData.get("search") as string;
-
-    if (query) {
-      return redirect(`/search/${query}`);
-    }
-  };
-
-  const searchPlaceholder =
-    <RxMagnifyingGlass /> + "Search for posts, authors, and more";
-
   return (
     <main className="p-4 flex flex-col justify-center items-center gap-4 min-h-screen w-full">
       <section className="w-full max-w-2xl flex flex-col items-center gap-4">
@@ -91,7 +82,7 @@ export default async function ExplorePage() {
           <UserIcon />
         </div>
         <div className="relative w-full">
-        <ClientSearchBar/>
+          <ClientSearchBar />
         </div>
         <div className="border-b overflow-x-auto flex items-center gap-4 pb-4 no-scrollbar w-full">
           {tags.map((tag) => (

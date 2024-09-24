@@ -31,11 +31,15 @@ export default async function QueryPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const author = await prisma.author.findUnique({
-    where: {
-      id: user?.id,
-    },
-  });
+  let author = null;
+
+  if (user?.id) {
+    author = await prisma.author.findUnique({
+      where: {
+        id: user.id,
+      },
+    });
+  }
 
   const tags = await prisma.tag.findMany({
     include: {
