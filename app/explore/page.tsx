@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Calendar, Pencil } from "lucide-react";
+import { redirect } from "next/navigation";
 
 import Image from "next/image";
 import SamplePrismaUser from "@/data/SamplePrismaUser";
@@ -22,6 +23,7 @@ import { RxMagnifyingGlass } from "react-icons/rx";
 import UserIcon from "@/components/buttons/UserIcon";
 import { Badge } from "@/components/ui/badge";
 import BlogCard from "@/components/global/BlogCard";
+import { search } from "./actions";
 
 export default async function ExplorePage() {
   function formatDate(dateString: Date) {
@@ -62,6 +64,16 @@ export default async function ExplorePage() {
 
   const author_first_name = author?.full_name?.split(" ")[0] || "";
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // prevent default form submission
+    const formData = new FormData(e.currentTarget);
+    const query = formData.get("search") as string;
+
+    if (query) {
+      return redirect(`/search/${query}`);
+    }
+  };
+
   const searchPlaceholder =
     <RxMagnifyingGlass /> + "Search for posts, authors, and more";
 
@@ -79,11 +91,14 @@ export default async function ExplorePage() {
         </div>
         <div className="relative w-full">
           <RxMagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <Input
-            className="pl-10 rounded-full w-full"
-            type="text"
-            placeholder="Search for posts, authors, and more"
-          />
+          <form onSubmit={handleSubmit}>
+            <Input
+              className="pl-10 rounded-full w-full"
+              type="text"
+              name="search"
+              placeholder="Search for posts, authors, and more"
+            />
+          </form>
         </div>
         <div className="border-b overflow-x-auto flex items-center gap-4 pb-4 no-scrollbar w-full">
           {tags.map((tag) => (
@@ -96,7 +111,7 @@ export default async function ExplorePage() {
             </Link>
           ))}
         </div>
-        <div className="grid gap-4 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           {posts.map((post) => (
             <BlogCard key={post.id} post={post} author={post.author} />
           ))}
