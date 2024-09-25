@@ -79,7 +79,7 @@ export default async function QueryPage({
     console.log(query);
   }
   return (
-    <main className="p-4 flex flex-col justify-center items-center gap-4 min-h-screen w-full">
+    <main className="p-4 flex flex-col items-center   gap-4 min-h-screen w-screen">
       <section className="w-full max-w-2xl flex flex-col h-full items-center gap-4">
         <div className="flex items-center justify-between w-full">
           <div>

@@ -36,7 +36,7 @@ export default function Loading() {
         {/* BlogCard skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="p-4 bg-white shadow-md rounded-lg">
+            <div key={index} className="p-4 bg-card shadow-md rounded-lg">
               <Skeleton className="h-48 w-full mb-4 rounded-lg" />
               <Skeleton className="h-6 w-3/4 mb-2" />
               <Skeleton className="h-6 w-1/2" />
@@ -47,7 +47,7 @@ export default function Loading() {
         {/* UserCard skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           {Array.from({ length: 4 }).map((_, index) => (
-            <div key={index} className="p-4 bg-white shadow-md rounded-lg">
+            <div key={index} className="p-4 bg-card shadow-md rounded-lg">
               <Skeleton className="h-10 w-10 rounded-full mb-4" />
               <Skeleton className="h-6 w-3/4 mb-2" />
               <Skeleton className="h-6 w-1/2" />

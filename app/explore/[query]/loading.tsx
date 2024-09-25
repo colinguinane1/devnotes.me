@@ -1,21 +1,27 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import ClientSearchBar from "../SearchBar";
 
 export default function Loading() {
+  var hour = new Date().getHours();
+  var greet;
+
+  if (hour >= 5 && hour < 11) greet = "Good morning,";
+  else if (hour >= 11 && hour < 18) greet = "Good afternoon,";
+  else if (hour >= 18 && hour < 23) greet = "Good evening,";
+  else if (hour === 23 || hour < 5) greet = "Good morning, ";
   return (
     <main className="p-4 flex flex-col justify-center items-center gap-4 min-h-screen w-full">
       <section className="w-full max-w-2xl flex flex-col h-full items-center gap-4">
         {/* Header skeleton */}
         <div className="flex items-center justify-between w-full">
           <div>
-            <Skeleton className="md:h-10 h-8 md:w-48 w-36" />
+            <h1 className="md:text-4xl text-2xl font-extrabold">{greet}</h1>
           </div>
           <Skeleton className="h-10 w-10 rounded-full" />
         </div>
 
         {/* Search bar skeleton */}
-        <div className="relative w-full">
-          <Skeleton className="h-12 w-full" />
-        </div>
+        <ClientSearchBar />
 
         {/* Tags section skeleton */}
         <div className="border-b overflow-x-auto flex items-center gap-4 pb-4 no-scrollbar w-full">

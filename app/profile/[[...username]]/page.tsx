@@ -71,6 +71,7 @@ export default async function ProfilePage({
     authorComments,
     authorReplies,
     authorDrafts,
+    isSubscribed,
   ] = await Promise.all([
     prisma.post.findMany({
       where: { user_id: author.id },
@@ -114,16 +115,13 @@ export default async function ProfilePage({
         author: true,
       },
     }),
+    prisma.subscription.findFirst({
+      where: {
+        subscribedToId: author.id,
+        subscriberId: user?.id,
+      },
+    }),
   ]);
-
-  const isSubscribed = user
-    ? await prisma.subscription.findFirst({
-        where: {
-          subscribedToId: author.id,
-          subscriberId: user?.id,
-        },
-      })
-    : null;
 
   const tabData = [
     { value: "posts" },
