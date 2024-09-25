@@ -6,6 +6,9 @@ import { createClient } from "@/app/utils/supabase/server";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import UserCard from "@/components/global/UserCard";
+import * as Tabs from "@radix-ui/react-tabs";
+import { Tag, User } from "lucide-react";
+import { IoIosPaper } from "react-icons/io";
 
 export default async function QueryPage({
   params,
@@ -104,23 +107,42 @@ export default async function QueryPage({
             </Link>
           ))}
         </div>{" "}
-        <p>
-          {PostSearchResults.length} results for &quot;{query}&quot; in posts
-        </p>
-        <p>
-          {AuthorSearchResults.length} results for &quot;{query}&quot; in
-          authors
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          {PostSearchResults.map((post) => (
-            <BlogCard key={post.id} post={post} author={post.author} />
-          ))}
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-          {AuthorSearchResults.map((author) => (
-            <UserCard author={author} key={author.id} />
-          ))}
-        </div>
+        <Tabs.Root className="w-full">
+          <Tabs.List className="flex no-scrollbar overflow-x-auto whitespace-nowrap  w-full ">
+            <Tabs.Trigger
+              className="px-5 h-[45px] w-full dark:data-[state=active]:text-white  border-b flex items-center justify-center text-[15px] leading-none text-gray-700 dark:text-gray-500 dark:data-[state=active]:border-white outline-none cursor-pointer transition-colors duration-200 data-[state=active]:text-black data-[state=active]:border-black"
+              value="posts"
+            >
+              <IoIosPaper />
+            </Tabs.Trigger>
+            <Tabs.Trigger
+              className="px-5 h-[45px] w-full dark:data-[state=active]:text-white  border-b flex items-center justify-center text-[15px] leading-none text-gray-700 dark:text-gray-500 dark:data-[state=active]:border-white outline-none cursor-pointer transition-colors duration-200 data-[state=active]:text-black data-[state=active]:border-black"
+              value="authors"
+            >
+              <User />
+            </Tabs.Trigger>
+            <Tabs.Trigger
+              className="px-5 h-[45px] w-full dark:data-[state=active]:text-white  border-b flex items-center justify-center text-[15px] leading-none text-gray-700 dark:text-gray-500 dark:data-[state=active]:border-white outline-none cursor-pointer transition-colors duration-200 data-[state=active]:text-black data-[state=active]:border-black"
+              value="authors"
+            >
+              <Tag />
+            </Tabs.Trigger>
+          </Tabs.List>
+          <Tabs.Content value="posts">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+              {PostSearchResults.map((post) => (
+                <BlogCard key={post.id} post={post} author={post.author} />
+              ))}
+            </div>
+          </Tabs.Content>
+          <Tabs.Content value="authors">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+              {AuthorSearchResults.map((author) => (
+                <UserCard author={author} key={author.id} />
+              ))}
+            </div>
+          </Tabs.Content>
+        </Tabs.Root>
       </section>
     </main>
   );
