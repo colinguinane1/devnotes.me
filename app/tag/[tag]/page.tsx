@@ -26,7 +26,7 @@ export default async function tagPage({ params }: { params: { tag: string } }) {
   return (
     <div className="min-h-screen min-w-screen">
       <div className="p-4">
-        <div className="flex items-center border-b py-4 justify-center">
+        <div className="flex items-center border-b py-4">
           <div>
             <h1 className="font-extrabold text-4xl">#{tagPage?.name}</h1>
             <p>{tagPosts.length} posts</p>
