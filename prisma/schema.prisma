@@ -37,6 +37,8 @@ model Author {
   Comment       Comment[]
   Reply         Reply[]
 
+  @@index([email]) // Index for faster email lookups
+  @@index([username]) // Index for faster username lookups
   @@schema("public")
 }
 
@@ -48,6 +50,17 @@ model Subscription {
   subscribedTo   Author @relation("Subscriptions", fields: [subscribedToId], references: [id])
 
   @@unique([subscriberId, subscribedToId]) // Ensure unique subscription pairs
+  @@index([subscriberId]) // Index for faster subscriber lookups
+  @@index([subscribedToId]) // Index for faster subscribedTo lookups
+  @@schema("public")
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique
+  posts Post[] @relation("PostTags")
+
+  @@index([name]) // Index for faster tag lookups
   @@schema("public")
 }
 
@@ -57,8 +70,8 @@ model Post {
   description String?
   slug        String    @unique
   title       String
-  cover_url String?
-  tags        String[]
+  cover_url   String?
+  tags        Tag[]     @relation("PostTags")
   content     String
   views       Int       @default(0)
   likes       Int       @default(0)
@@ -70,6 +83,8 @@ model Post {
   likedBy     Author[]  @relation("likedBy")
   Comments    Comment[]
 
+  @@index([user_id]) // Index for faster author lookups
+  @@index([slug]) // Index for faster slug lookups
   @@schema("public")
 }
 
@@ -83,6 +98,8 @@ model Comment {
   createdAt DateTime @default(now())
   Reply     Reply[]
 
+  @@index([authorId]) // Index for faster author lookups
+  @@index([postId]) // Index for faster post lookups
   @@schema("public")
 }
 
@@ -95,5 +112,7 @@ model Reply {
   comment   Comment  @relation(fields: [commentId], references: [id])
   createdAt DateTime @default(now())
 
+  @@index([authorId]) // Index for faster author lookups
+  @@index([commentId]) // Index for faster comment lookups
   @@schema("public")
 }

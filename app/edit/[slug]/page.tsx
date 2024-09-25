@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
 import BlogNotFound from "@/components/global/BlogNotFound";
+import { Tag } from "@prisma/client";
 
 export default function EditBlog({ params }: { params: { slug: string } }) {
   const [title, setTitle] = useState<string>("");
@@ -15,7 +16,7 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [markdown, setMarkdown] = useState<boolean | null>(false);
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [tagInput, setTagInput] = useState("");
   const router = useRouter();
 
@@ -42,16 +43,17 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
 
   const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && tagInput.trim()) {
-      e.preventDefault(); // Prevent form submission on Enter key
-      if (!tags.includes(tagInput.trim())) {
-        setTags([...tags, tagInput.trim()]); // Add the new tag if it's not already in the list
-        setTagInput(""); // Clear the input field
+      e.preventDefault();
+      const newTag = { id: Date.now().toString(), name: tagInput.trim() }; // Create a new tag object
+      if (!tags.some((tag) => tag.name === newTag.name)) {
+        setTags([...tags, newTag]); // Add the new tag if it's not already in the list
+        setTagInput("");
       }
     }
   };
 
-  const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove)); // Remove the tag
+  const removeTag = (tagToRemove: Tag) => {
+    setTags(tags.filter((tag) => tag.id !== tagToRemove.id)); // Remove the tag by its ID
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -102,10 +104,10 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
           <div className="flex items-center flex-wrap gap-2 mb-2">
             {tags.map((tag) => (
               <span
-                key={tag}
+                key={tag.name}
                 className="bg-gray-200 text-black px-2 py-1 rounded-full text-sm flex items-center gap-1"
               >
-                {tag}
+                {tag.name}
                 <button
                   type="button"
                   onClick={() => removeTag(tag)}

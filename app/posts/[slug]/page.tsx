@@ -65,8 +65,10 @@ export default async function blog({ params }: { params: { slug: string } }) {
     where: {
       slug: params.slug,
     },
-
-    include: { author: true },
+    include: {
+      tags: true,
+      author: true
+    },
   });
   if (!blog) {
     return <BlogNotFound />;
@@ -94,6 +96,17 @@ export default async function blog({ params }: { params: { slug: string } }) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const tagsWithPosts = await prisma.tag.findMany({
+    where: {
+        posts: {
+            some: {} // This checks for any associated posts
+        }
+    },
+    include: {
+        posts: true // This includes the posts associated with each tag
+    }
+});
 
   const metadata: Metadata = {
     title: blog.title,
@@ -173,19 +186,20 @@ export default async function blog({ params }: { params: { slug: string } }) {
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16">
+      <div className="container mx-auto max-w-3xl px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16">
         <UserCard author={blog.author} />
         <h1 className="text-4xl font-extrabold pb-6 tracking-tight lg:text-5xl">
           {blog.title}
         </h1>{" "}
         <article className="prose-emerald prose  mx-auto dark:prose-invert ">
           <div>
-            {blog.tags && (
+          {blog.tags && (
               <div className="flex items-center wrap gap-2">
                 {blog.tags.map((tag, index) => (
+                  <Link  key={index} href={`/tag/${tag.name}`}>
                   <Badge variant={"outline"} key={index}>
-                    #{tag}
-                  </Badge>
+                    #{tag.name}
+                  </Badge></Link>
                 ))}
               </div>
             )}

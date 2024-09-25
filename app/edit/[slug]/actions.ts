@@ -1,6 +1,7 @@
 'use server'
 import prisma from "@/prisma/db";
 import { createClient } from "@/app/utils/supabase/server";
+import { Tag } from "@prisma/client";
 
 export async function getBlogBySlug(slug: string) {
       const supabase = createClient();
@@ -17,7 +18,8 @@ export async function getBlogBySlug(slug: string) {
       slug
     },
     include: {
-      author: true
+      author: true,
+      tags: true
     }
   });
  if(user?.id !== blog?.author.id ){
@@ -30,17 +32,45 @@ export async function getBlogBySlug(slug: string) {
 
   return blog;
 }
-export async function updatePost(slug: string, title: string, content: string, description: string, tags: string[]) {
+export async function updatePost(
+  slug: string,
+  title: string,
+  content: string,
+  description: string,
+  tags: Tag[]
+) {
   try {
+    // Iterate over the tags and either find them or create them
+    const tagPromises = tags.map(async (tag) => {
+      let existingTag = await prisma.tag.findUnique({
+        where: { name: tag.name }, // Assuming `name` is unique in your Tag model
+      });
+
+      if (!existingTag) {
+        // Create the tag if it doesn't exist
+        existingTag = await prisma.tag.create({
+          data: { name: tag.name },
+        });
+      }
+
+      return existingTag; // Return the existing or newly created tag
+    });
+
+    // Wait for all the tags to be resolved
+    const resolvedTags = await Promise.all(tagPromises);
+
+    // Update the post with the resolved tags
     const updatedPost = await prisma.post.update({
       where: {
         slug,
       },
       data: {
         title,
-        tags,
         content,
         description,
+        tags: {
+          connect: resolvedTags.map((tag) => ({ id: tag.id })), // Connect the tags by ID
+        },
       },
     });
 

@@ -14,6 +14,7 @@ import Footer from "@/components/global/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
 import NextTopLoader from "nextjs-toploader";
+import "@/app/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 const dm_sans = DM_Sans({ subsets: ["latin"] });
@@ -30,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning className={dm_sans.className} lang="en">
+    <html suppressHydrationWarning className="font-sans" lang="en">
       <body className="antialiased  bg-primary-light dark:bg-primary-dark transition-colors">
         {" "}
         <NextTopLoader />

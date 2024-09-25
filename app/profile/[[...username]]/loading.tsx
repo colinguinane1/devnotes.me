@@ -23,7 +23,7 @@ export default function ProfilePageLoading() {
         <Skeleton className="w-8 h-8 rounded-full" />
       </div>
 
-      <Skeleton className="p-4 m-4 scale-75 py-4 h-12 rounded-full" />
+      <Skeleton className="p-4 m-4  py-4 h-12 rounded-full" />
 
       <div className="flex no-scrollbar overflow-x-auto items-center justify-center gap-4 whitespace-nowrap w-full py-4">
         <Skeleton className="h-10 w-24 rounded" />

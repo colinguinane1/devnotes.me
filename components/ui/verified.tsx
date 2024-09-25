@@ -1,14 +1,10 @@
 import { AiTwotoneCheckCircle } from "react-icons/ai";
+import { BsPatchCheck } from "react-icons/bs";
 
 export default function VerifiedUser() {
   return (
     <div className="flex flex-col items-center group justify-center">
-      <AiTwotoneCheckCircle
-        className="group"
-        color="blue"
-        fill="blue"
-        stroke="blue"
-      />
+      <BsPatchCheck size={12} color="rgb(96 165 250)" />
     </div>
   );
 }

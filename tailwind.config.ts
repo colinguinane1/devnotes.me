@@ -18,7 +18,9 @@ const config = {
       },
     },
     extend: {
-      
+       fontFamily: {
+        sans: ['SF Pro', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
