@@ -10,6 +10,7 @@ import {
   EyeIcon,
   Heart,
   HeartIcon,
+  TagIcon,
 } from "lucide-react";
 import { Metadata } from "next";
 import { Merriweather } from "next/font/google";
@@ -67,7 +68,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
     },
     include: {
       tags: true,
-      author: true
+      author: true,
     },
   });
   if (!blog) {
@@ -99,14 +100,14 @@ export default async function blog({ params }: { params: { slug: string } }) {
 
   const tagsWithPosts = await prisma.tag.findMany({
     where: {
-        posts: {
-            some: {} // This checks for any associated posts
-        }
+      posts: {
+        some: {}, // This checks for any associated posts
+      },
     },
     include: {
-        posts: true // This includes the posts associated with each tag
-    }
-});
+      posts: true, // This includes the posts associated with each tag
+    },
+  });
 
   const metadata: Metadata = {
     title: blog.title,
@@ -193,13 +194,15 @@ export default async function blog({ params }: { params: { slug: string } }) {
         </h1>{" "}
         <article className="prose-emerald prose  mx-auto dark:prose-invert ">
           <div>
-          {blog.tags && (
+            {blog.tags && (
               <div className="flex items-center wrap gap-2">
                 {blog.tags.map((tag, index) => (
-                  <Link  key={index} href={`/tag/${tag.name}`}>
-                  <Badge variant={"outline"} key={index}>
-                    #{tag.name}
-                  </Badge></Link>
+                  <Link key={index} href={`/tag/${tag.name}`}>
+                    <Badge variant={"outline"} key={index}>
+                      <TagIcon size={10} className="mr-1" />
+                      {tag.name}
+                    </Badge>
+                  </Link>
                 ))}
               </div>
             )}

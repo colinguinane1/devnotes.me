@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post, Tag } from "@prisma/client";
 import { Author } from "@prisma/client";
-import { Heart, MessageCircleIcon } from "lucide-react";
+import { Heart, MessageCircleIcon, TagIcon } from "lucide-react";
 import BlogDropdown from "../buttons/BlogDropdown";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { defaultAvatar } from "@/data/SiteData";
@@ -129,9 +129,10 @@ export default async function BlogCard({
               >
                 {tags.map((tag) => {
                   return (
-                    <Link key={tag.name} href={`/tag/${tag.name}`}>
-                      <Badge key={tag.name} variant="outline">
-                        #{tag.name}
+                    <Link key={tag.id} href={`/tag/${tag.name}`}>
+                      <Badge variant={"outline"}>
+                        <TagIcon size={10} className="mr-1" />
+                        {tag.name}
                       </Badge>
                     </Link>
                   );
