@@ -104,7 +104,7 @@ export default async function QueryPage({
             </h1>
           </div>
 
-          <UserIcon />
+          {user && <UserIcon />}
         </div>
         <div className="relative w-full">
           <ClientSearchBar />
@@ -116,7 +116,8 @@ export default async function QueryPage({
               className="flex items-center bg-card p-2 rounded-full px-5 gap-4"
               key={tag.id}
             >
-              #{tag.name.toLowerCase()}
+              <TagIcon size={10} className="" />
+              {tag.name.toLowerCase()}
             </Link>
           ))}
         </div>{" "}

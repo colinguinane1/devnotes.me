@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardTitle,
 } from "@/components/ui/card";
-import { Calendar, Pencil } from "lucide-react";
+import { Calendar, Pencil, TagIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import Image from "next/image";
@@ -65,11 +65,10 @@ export default async function ExplorePage() {
         <div className="flex items-center justify-between w-full">
           <div>
             <h1 className="md:text-4xl text-2xl font-extrabold">
-              {greet} {author && author_first_name}
+              {author ? greet + author_first_name : "Explore"}
             </h1>
           </div>
-
-          <UserIcon />
+          {user && <UserIcon />}
         </div>
         <div className="relative w-full">
           <ClientSearchBar />
@@ -81,7 +80,8 @@ export default async function ExplorePage() {
               className="flex items-center bg-card p-2 rounded-full px-5 gap-4"
               key={tag.id}
             >
-              #{tag.name.toLowerCase()}
+              <TagIcon size={10} className="" />
+              {tag.name.toLowerCase()}
             </Link>
           ))}
         </div>
