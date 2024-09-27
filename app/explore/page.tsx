@@ -85,9 +85,14 @@ export default async function ExplorePage() {
             </Link>
           ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+        <div className="grid grid-cols-1 place-content-center  md:grid-cols-2 gap-4">
           {posts.map((post) => (
-            <BlogCard key={post.id} post={post} author={post.author} />
+            <BlogCard
+              horizontal={true}
+              key={post.id}
+              post={post}
+              author={post.author}
+            />
           ))}
         </div>
       </section>

@@ -219,6 +219,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
               dangerouslySetInnerHTML={{ __html: blog.content }}
             ></p>
           )}
+          <p>Published on {formatDate(blog.createdAt)}</p>
           <Accordion.Root
             className="transition-all"
             id="comments"
@@ -229,7 +230,8 @@ export default async function blog({ params }: { params: { slug: string } }) {
               <Accordion.Trigger className="flex items-center justify-between">
                 <div>
                   <h3 className="text-2xl flex items-center gap-2  font-bold ">
-                    Comments ({comments.length}) <ChevronDownIcon />
+                    Comments ({comments.length}){" "}
+                    <ChevronDownIcon className="data-[state=open]:rotate-180" />
                   </h3>
                 </div>
               </Accordion.Trigger>
