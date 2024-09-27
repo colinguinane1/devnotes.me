@@ -104,7 +104,7 @@ export default async function QueryPage({
             </h1>
           </div>
 
-          <UserIcon />
+          {user && <UserIcon />}
         </div>
         <div className="relative w-full">
           <ClientSearchBar />
@@ -116,11 +116,12 @@ export default async function QueryPage({
               className="flex items-center bg-card p-2 rounded-full px-5 gap-4"
               key={tag.id}
             >
-              #{tag.name.toLowerCase()}
+              <TagIcon size={10} className="" />
+              {tag.name.toLowerCase()}
             </Link>
           ))}
         </div>{" "}
-        <Tabs.Root className="w-full">
+        <Tabs.Root defaultValue="posts" className="w-full">
           <Tabs.List
             defaultValue="posts"
             className="flex no-scrollbar pb-4 overflow-x-auto whitespace-nowrap  w-full "
@@ -129,21 +130,21 @@ export default async function QueryPage({
               className="px-5 h-[45px] w-full dark:data-[state=active]:text-white  border-b flex items-center justify-center text-[15px] leading-none text-gray-700 dark:text-gray-500 dark:data-[state=active]:border-white outline-none cursor-pointer transition-colors duration-200 data-[state=active]:text-black data-[state=active]:border-black"
               value="posts"
             >
-              <IoIosPaper />
+              <IoIosPaper className="mr-1" /> ({PostSearchResults.length})
             </Tabs.Trigger>
 
             <Tabs.Trigger
               className="px-5 h-[45px] w-full dark:data-[state=active]:text-white  border-b flex items-center justify-center text-[15px] leading-none text-gray-700 dark:text-gray-500 dark:data-[state=active]:border-white outline-none cursor-pointer transition-colors duration-200 data-[state=active]:text-black data-[state=active]:border-black"
               value="authors"
             >
-              <User />
+              <User className="mr-1" /> ({AuthorSearchResults.length})
             </Tabs.Trigger>
 
             <Tabs.Trigger
               className="px-5 h-[45px] w-full dark:data-[state=active]:text-white  border-b flex items-center justify-center text-[15px] leading-none text-gray-700 dark:text-gray-500 dark:data-[state=active]:border-white outline-none cursor-pointer transition-colors duration-200 data-[state=active]:text-black data-[state=active]:border-black"
               value="tabs"
             >
-              <Tag />
+              <Tag className="mr-1" /> ({TagSearchResults.length})
             </Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content value="posts">

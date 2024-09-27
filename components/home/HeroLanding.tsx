@@ -50,19 +50,22 @@ export default function HeroLanding() {
                 text="Let's get started on your next blog."
               />
             </p>
-            <div className="flex justify-between gap-4 p-4 ">
-              <Button
+            <div className="flex justify-between gap-4 mt-6 w-full">
+              <Link
+                href="/explore"
                 className="flex items-center group z-[100] w-full gap-1"
-                variant={"default"}
               >
-                <Link href="/explore" className="flex items-center gap-1">
+                <Button
+                  className="flex items-center gap-1 w-full"
+                  variant={"default"}
+                >
                   <RxMagnifyingGlass
                     className="group-hover:mr-1 transition-all group-hover:scale-125"
                     size={12}
                   />
                   Explore
-                </Link>
-              </Button>
+                </Button>{" "}
+              </Link>
             </div>
           </div>{" "}
           <AnimatedGridPattern
