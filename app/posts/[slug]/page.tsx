@@ -207,7 +207,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
               </div>
             )}
           </div>
-          <p className="prose">{blog.description}</p>
+          <p className="prose border-b text-lg">{blog.description}</p>
           {blog.markdown ? (
             <p
               className={`prose prose-a:font-bold prose-invert prose-a:no-underline   dark:prose-invert`}
