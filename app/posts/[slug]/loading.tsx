@@ -7,7 +7,21 @@ export default function Loading() {
       <div className="relative h-[400px] w-full overflow-hidden">
         <Skeleton className="h-full w-full" />
       </div>
-
+      {/* Author card skeleton */}
+      <div className=" mx-auto px-4 w-full py-8 md:px-6 md:py-12 lg:px-8 lg:py-16 flex justify-center">
+        <div className="w-full max-w-md bg-card/50 p-4 rounded-lg hover:shadow-2xl shadow shrink-0">
+          <div className="flex bg items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-10 w-10 rounded-full" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24 rounded" />
+                <Skeleton className="h-3 w-16 rounded" />
+              </div>
+            </div>
+            <Skeleton className="h-4 w-16 rounded" />
+          </div>
+        </div>
+      </div>
       <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16">
         {/* Title Skeleton */}
         <Skeleton className="h-10 w-3/4 mb-4" />
@@ -39,22 +53,6 @@ export default function Loading() {
               </div>
             </div>
             <Skeleton className="h-4 w-full rounded" />
-          </div>
-        </div>
-      </div>
-
-      {/* Author card skeleton */}
-      <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16 flex justify-center">
-        <div className="w-full max-w-md bg-card p-4 rounded-lg hover:shadow-2xl shadow shrink-0">
-          <div className="flex bg items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-10 w-10 rounded-full" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-24 rounded" />
-                <Skeleton className="h-3 w-16 rounded" />
-              </div>
-            </div>
-            <Skeleton className="h-4 w-16 rounded" />
           </div>
         </div>
       </div>

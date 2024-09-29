@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .gradient {
-  @apply bg-gradient-to-r from-blue-500 to-cyan-500 inline-block text-transparent bg-clip-text;
+  @apply bg-gradient-to-r from-blue-400 to-cyan-400 inline-block text-transparent bg-clip-text;
 }
 
 @font-face {
@@ -33,15 +33,14 @@
   /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
     -ms-overflow-style: none;
-    /* IE and Edge */
     scrollbar-width: none;
-    /* Firefox */
   }
 }
 
-.tabs{
-  @apply px-5 h-[45px] w-[10rem] dark:data-[state=active]:text-white  border-b flex items-center justify-center text-[15px] leading-none text-gray-700 dark:text-gray-500 dark:data-[state=active]:border-white outline-none cursor-pointer transition-colors duration-200 data-[state=active]:text-black data-[state=active]:border-black
+.tabs {
+  @apply px-5 h-[45px] w-[10rem] dark:data-[state=active]:text-white border-b flex items-center justify-center text-[15px] leading-none text-gray-700 dark:text-gray-500 dark:data-[state=active]:border-white outline-none cursor-pointer transition-colors duration-200 data-[state=active]:text-black data-[state=active]:border-black
 }
+
 body .w-md-editor-text-pre>code,
 body .w-md-editor-text-input {
   font-size: 18px !important;
@@ -52,70 +51,67 @@ body .w-md-editor-text-input {
   display: flex;
   overflow-x: auto;
   scrollbar-width: none;
-  /* For Firefox */
   -ms-overflow-style: none;
-  /* For Internet Explorer and Edge */
 }
 
 .tabs-scrollable::-webkit-scrollbar {
   display: none;
-  /* For Chrome, Safari, and Opera */
 }
 
 @layer base {
   :root {
-    --background: 210 50% 95%;
-    --foreground: 215 85% 20%;
-    --card: 210 60% 98%;
-    --card-foreground: 215 85% 15%;
-    --popover: 210 60% 98%;
-    --popover-foreground: 215 85% 15%;
-    --primary: 200 90% 42%;
-    --primary-foreground: 210 100% 98%;
-    --secondary: 190 70% 60%;
-    --secondary-foreground: 210 100% 98%;
-    --muted: 210 30% 92%;
-    --muted-foreground: 215 20% 40%;
-    --accent: 210 80% 20%;
-    --accent-foreground: 210 100% 98%;
+    --background: 215 60% 95%;
+    --foreground: 220 85% 20%;
+    --card: 215 65% 98%;
+    --card-foreground: 220 85% 15%;
+    --popover: 215 65% 98%;
+    --popover-foreground: 220 85% 15%;
+    --primary: 210 85% 50%;
+    --primary-foreground: 215 100% 98%;
+    --secondary: 200 70% 60%;
+    --secondary-foreground: 215 100% 98%;
+    --muted: 215 30% 92%;
+    --muted-foreground: 220 20% 40%;
+    --accent: 220 80% 40%;
+    --accent-foreground: 215 100% 98%;
     --destructive: 0 70% 55%;
-    --destructive-foreground: 210 100% 98%;
-    --border: 210 15% 85%;
-    --input: 210 15% 85%;
-    --ring: 215 85% 20%;
+    --destructive-foreground: 215 100% 98%;
+    --border: 215 15% 85%;
+    --input: 215 15% 85%;
+    --ring: 220 85% 25%;
     --radius: 0.5rem;
-    --chart-1: 200 100% 40%;
-    --chart-2: 185 80% 50%;
-    --chart-3: 210 100% 30%;
-    --chart-4: 195 70% 60%;
-    --chart-5: 205 80% 50%;
+    --chart-1: 210 100% 50%;
+    --chart-2: 195 80% 55%;
+    --chart-3: 220 100% 45%;
+    --chart-4: 200 75% 60%;
+    --chart-5: 215 80% 50%;
   }
 
   .dark {
-    --background: 210 0% 0%;
-    --foreground: 210 85% 95%;
-    --card: 210 15% 15%;
-    --card-foreground: 210 85% 95%;
-    --popover: 210 15% 15%;
-    --popover-foreground: 210 85% 95%;
-    --primary: 200 90% 45%;
-    --primary-foreground: 210 85% 95%;
-    --secondary: 185 70% 50%;
-    --secondary-foreground: 210 85% 95%;
-    --muted: 210 20% 30%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 210 80% 50%;
-    --accent-foreground: 210 85% 95%;
-    --destructive: 0 70% 40%;
-    --destructive-foreground: 210 85% 95%;
-    --border: 210 10% 30%;
-    --input: 210 10% 30%;
-    --ring: 210 85% 50%;
-    --chart-1: 200 100% 45%;
-    --chart-2: 185 80% 35%;
-    --chart-3: 210 100% 40%;
-    --chart-4: 195 70% 55%;
-    --chart-5: 205 80% 45%;
+    --background: 220 10% 10%;
+    --foreground: 215 85% 95%;
+    --card: 215 15% 20%;
+    --card-foreground: 220 85% 95%;
+    --popover: 215 15% 20%;
+    --popover-foreground: 220 85% 95%;
+    --primary: 210 85% 55%;
+    --primary-foreground: 215 85% 95%;
+    --secondary: 200 70% 50%;
+    --secondary-foreground: 215 85% 95%;
+    --muted: 215 20% 30%;
+    --muted-foreground: 220 20% 65%;
+    --accent: 220 80% 55%;
+    --accent-foreground: 215 85% 95%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 215 85% 95%;
+    --border: 215 10% 35%;
+    --input: 215 10% 35%;
+    --ring: 220 85% 55%;
+    --chart-1: 210 100% 55%;
+    --chart-2: 195 80% 40%;
+    --chart-3: 220 100% 50%;
+    --chart-4: 200 75% 55%;
+    --chart-5: 215 80% 45%;
   }
 }
 
