@@ -130,9 +130,7 @@ export default async function BlogCard({
               </Link>
               {tags && (
                 <div
-                  className={`flex flex-wrap  gap-2 ${
-                    horizontal ? "hidden" : "mt-1"
-                  } `}
+                  className={`flex flex-wrap  gap-2 `}
                 >
                   {showTags &&
                     tags.map((tag) => {
