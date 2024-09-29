@@ -192,7 +192,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
         <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
           {blog.title}
         </h1>{" "}
-        <article className="prose dark:prose-invert prose-a:text-black mx-auto prose-a:font-bold  prose-a:no-underline ">
+        <article className="prose dark:prose-invert mx-auto prose-a:font-bold  prose-a:no-underline ">
           <div>
             {blog.tags && (
               <div className="flex items-center wrap pt-6 gap-2">
