@@ -19,6 +19,7 @@ import { BiComment } from "react-icons/bi";
 interface BlogCardProps {
   post: Post;
   author: Author;
+  showTags?: boolean;
   tags?: Tag[];
   horizontal?: boolean;
   dropdownType?: string;
@@ -29,6 +30,7 @@ export default async function BlogCard({
   post,
   author,
   tags,
+  showTags = true,
   horizontal = false,
   dropdownType = "user",
   borderType = "full",
@@ -44,138 +46,149 @@ export default async function BlogCard({
     data: { user },
   } = await supabase.auth.getUser();
   return (
-    <Card
-      className={`w-full  rounded-md overflow-hidden shadow-lg transition-all hover:shadow-xl  ${
-        horizontal ? "flex w-full" : "max-w-lg"
-      }
+    <Link href={`/posts/${post.slug}`}>
+      <Card
+        className={`w-full  rounded-md group overflow-hidden active:scale-[0.99] shadow-lg transition-all hover:shadow-xl  ${
+          horizontal ? "flex w-full hover:bg-card/80" : "max-w-lg"
+        }
       ${borderType === "full" && "border"}
       ${borderType === "none" && "border-none"}
       ${borderType === "top" && "border-t border-b"}`}
-      key={post.id}
-    >
-      <Link
-        href={`/posts/${post.slug}`}
-        className="group block relative overflow-hidden"
-        prefetch={false}
+        key={post.id}
       >
-        {!horizontal && (
-          <Image
-            src={post.cover_url ? post.cover_url : "/gradient.jpg"}
-            width={800}
-            height={450}
-            alt="Blog Post Image"
-            className="w-full h-52 object-cover transition-all group-hover:scale-105"
-            style={{ aspectRatio: "800/450", objectFit: "cover" }}
-          />
-        )}
+        <Link
+          href={`/posts/${post.slug}`}
+          className="group block relative overflow-hidden"
+          prefetch={false}
+        >
+          {!horizontal && (
+            <Image
+              src={post.cover_url ? post.cover_url : "/gradient.jpg"}
+              width={800}
+              height={450}
+              alt="Blog Post Image"
+              className="w-full h-52 object-cover transition-all group-hover:scale-[1.01]"
+              style={{ aspectRatio: "800/450", objectFit: "cover" }}
+            />
+          )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-background  to-transparent " />
-      </Link>
-      <CardContent
-        className={`space-y-4 w-full ${borderType === "none" ? "p-0" : "p-4"} `}
-      >
-        <div
-          className={`${horizontal ? "flex items-center justify-center" : ""}`}
+          <div className="absolute inset-0 bg-gradient-to-t from-background  to-transparent " />
+        </Link>
+        <CardContent
+          className={`space-y-4 w-full ${
+            borderType === "none" ? "p-0" : "p-4"
+          } `}
         >
           <div
-            className={`space-y-2  ${
-              horizontal
-                ? "max-w-[15rem] md:min-w-[20rem] min-w-[15rem] md:max-w-[20rem] px-2"
-                : ""
+            className={`${
+              horizontal ? "flex items-center justify-center" : ""
             }`}
           >
-            <Link
-              href={`/posts/${post.slug}`}
-              className="block"
-              prefetch={false}
+            <div
+              className={`space-y-2  ${
+                horizontal
+                  ? "max-w-[15rem] md:min-w-[20rem] min-w-[15rem] md:max-w-[20rem] px-2"
+                  : ""
+              }`}
             >
-              <h3
-                className={` ${
-                  horizontal ? "text-base" : "text-xl"
-                } font-semibold transition-colors group-hover:text-primary`}
+              <Link
+                href={`/posts/${post.slug}`}
+                className="block"
+                prefetch={false}
               >
-                {post.title}
-              </h3>
-            </Link>
-            <Link
-              href={`/profile/${author.username}`}
-              className="flex items-center gap-4"
-            >
-              {author.image_url && (
-                <Avatar className="border">
-                  <AvatarImage src={author.image_url} alt="Author Avatar" />
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
-              )}
-              <div className="flex flex-col">
-                <span
-                  className={`font-medium ${
-                    horizontal ? "text-sm" : "text-base"
-                  } flex gap-1 items-center`}
+                <h3
+                  className={` ${
+                    horizontal ? "text-base" : "text-xl"
+                  } font-semibold transition-colors group-hover:text-primary`}
                 >
-                  {author.username}
-                  {author.verified && <VerifiedUser />}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  {formatDate(post.createdAt)}
-                </span>
-              </div>
-            </Link>
-            {tags && (
-              <div
-                className={`flex flex-wrap gap-2 ${
-                  horizontal ? "hidden" : ""
-                } `}
+                  {post.title}
+                </h3>
+              </Link>
+              <Link
+                href={`/profile/${author.username}`}
+                className="flex items-center gap-4"
               >
-                {tags.map((tag) => {
-                  return (
-                    <Link key={tag.id} href={`/tag/${tag.name}`}>
-                      <Badge variant={"outline"}>
-                        <TagIcon size={10} className="mr-1" />
-                        {tag.name}
-                      </Badge>
-                    </Link>
-                  );
-                })}
+                {author.image_url && (
+                  <Avatar className="border">
+                    <AvatarImage src={author.image_url} alt="Author Avatar" />
+                    <AvatarFallback>JD</AvatarFallback>
+                  </Avatar>
+                )}
+                <div className="flex flex-col">
+                  <span
+                    className={`font-medium ${
+                      horizontal ? "text-sm" : "text-base"
+                    } flex gap-1 items-center`}
+                  >
+                    {author.username}
+                    {author.verified && <VerifiedUser />}
+                  </span>
+                  <span className="text-sm text-muted-foreground">
+                    {formatDate(post.createdAt)}
+                  </span>
+                </div>
+              </Link>
+              {tags && (
+                <div
+                  className={`flex flex-wrap  gap-2 ${
+                    horizontal ? "hidden" : "mt-1"
+                  } `}
+                >
+                  {showTags &&
+                    tags.map((tag) => {
+                      return (
+                        <Link key={tag.id} href={`/tag/${tag.name}`}>
+                          <Badge variant={"outline"} key={tag.id}>
+                            <TagIcon size={10} className="mr-1" />
+                            {tag.name}
+                          </Badge>
+                        </Link>
+                      );
+                    })}
+                </div>
+              )}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                    <EyeIcon className="w-4 h-4" />
+                    <span>{post.views}</span>{" "}
+                  </div>
+                  <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                    <HeartIcon className="w-4 h-4" />
+                    <span>{post.likes}</span>
+                  </div>
+                  <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                    <MessageCircleIcon className="w-4 h-4" />
+                    <span>{comments}</span>
+                  </div>
+                </div>
+
+                {dropdownType === "author" || user?.id === post.user_id ? (
+                  <BlogDropdown
+                    author={author}
+                    slug={post.slug}
+                    type="author"
+                  />
+                ) : (
+                  <BlogDropdown author={author} slug={post.slug} type="user" />
+                )}
+              </div>
+            </div>{" "}
+            {horizontal && (
+              <div className="w-full h-full">
+                <Image
+                  src={post.cover_url ? post.cover_url : "/gradient.jpg"}
+                  width={800}
+                  height={450}
+                  alt="Blog Post Image"
+                  className="w-full h-full object-cover transition-all rounded-lg group-hover:scale-[1.01]"
+                  style={{ aspectRatio: "800/450", objectFit: "cover" }}
+                />
               </div>
             )}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 pr-2 text-muted-foreground">
-                  <EyeIcon className="w-4 h-4" />
-                  <span>{post.views}</span>{" "}
-                </div>
-                <div className="flex items-center gap-2 pr-2 text-muted-foreground">
-                  <HeartIcon className="w-4 h-4" />
-                  <span>{post.likes}</span>
-                </div>
-                <div className="flex items-center gap-2 pr-2 text-muted-foreground">
-                  <MessageCircleIcon className="w-4 h-4" />
-                  <span>{comments}</span>
-                </div>
-              </div>
-
-              {dropdownType === "author" || user?.id === post.user_id ? (
-                <BlogDropdown author={author} slug={post.slug} type="author" />
-              ) : (
-                <BlogDropdown author={author} slug={post.slug} type="user" />
-              )}
-            </div>
-          </div>{" "}
-          {horizontal && (
-            <div className="w-full h-full">
-              <Image
-                src={post.cover_url ? post.cover_url : "/gradient.jpg"}
-                width={800}
-                height={450}
-                alt="Blog Post Image"
-                className="w-full h-full object-cover transition-all rounded-lg group-hover:scale-105"
-                style={{ aspectRatio: "800/450", objectFit: "cover" }}
-              />
-            </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }

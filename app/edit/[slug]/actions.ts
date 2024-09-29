@@ -40,10 +40,25 @@ export async function updatePost(
   tags: Tag[]
 ) {
   try {
-    // Iterate over the tags and either find them or create them
+    // Get the current post's tags from the database
+    const existingPost = await prisma.post.findUnique({
+      where: { slug },
+      include: { tags: true },
+    });
+
+    if (!existingPost) {
+      throw new Error(`Post with slug ${slug} not found`);
+    }
+
+    // Find tags to disconnect (those in the database but not in the updated list)
+    const tagsToDisconnect = existingPost.tags.filter(
+      (existingTag) => !tags.some((tag) => tag.id === existingTag.id)
+    );
+
+    // Find tags to connect (newly added tags)
     const tagPromises = tags.map(async (tag) => {
       let existingTag = await prisma.tag.findUnique({
-        where: { name: tag.name }, // Assuming `name` is unique in your Tag model
+        where: { name: tag.name },
       });
 
       if (!existingTag) {
@@ -53,23 +68,21 @@ export async function updatePost(
         });
       }
 
-      return existingTag; // Return the existing or newly created tag
+      return existingTag;
     });
 
-    // Wait for all the tags to be resolved
     const resolvedTags = await Promise.all(tagPromises);
 
-    // Update the post with the resolved tags
+    // Update the post with both connect and disconnect operations
     const updatedPost = await prisma.post.update({
-      where: {
-        slug,
-      },
+      where: { slug },
       data: {
         title,
         content,
         description,
         tags: {
-          connect: resolvedTags.map((tag) => ({ id: tag.id })), // Connect the tags by ID
+          connect: resolvedTags.map((tag) => ({ id: tag.id })), // Connect new tags
+          disconnect: tagsToDisconnect.map((tag) => ({ id: tag.id })), // Disconnect removed tags
         },
       },
     });
@@ -79,3 +92,4 @@ export async function updatePost(
     throw new Error("Failed to update post: " + error.message);
   }
 }
+

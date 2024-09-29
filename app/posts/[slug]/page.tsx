@@ -189,13 +189,13 @@ export default async function blog({ params }: { params: { slug: string } }) {
       </div>
       <div className="container mx-auto max-w-3xl px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16">
         <UserCard author={blog.author} />
-        <h1 className="text-4xl font-extrabold pb-6 tracking-tight lg:text-5xl">
+        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
           {blog.title}
         </h1>{" "}
-        <article className="prose-emerald prose  mx-auto dark:prose-invert ">
+        <article className="prose dark:prose-invert prose-a:text-black mx-auto prose-a:font-bold  prose-a:no-underline ">
           <div>
             {blog.tags && (
-              <div className="flex items-center wrap gap-2">
+              <div className="flex items-center wrap pt-6 gap-2">
                 {blog.tags.map((tag, index) => (
                   <Link key={index} href={`/tag/${tag.name}`}>
                     <Badge variant={"outline"} key={index}>
@@ -207,17 +207,11 @@ export default async function blog({ params }: { params: { slug: string } }) {
               </div>
             )}
           </div>
-          <p className="prose">{blog.description}</p>
+          <p className="border-b pb-4 text-lg">{blog.description}</p>
           {blog.markdown ? (
-            <p
-              className={`prose prose-a:font-bold prose-invert prose-a:no-underline   dark:prose-invert`}
-              dangerouslySetInnerHTML={{ __html: markdownContent }}
-            ></p>
+            <p dangerouslySetInnerHTML={{ __html: markdownContent }}></p>
           ) : (
-            <p
-              className={`prose dark:prose-invert`}
-              dangerouslySetInnerHTML={{ __html: blog.content }}
-            ></p>
+            <p dangerouslySetInnerHTML={{ __html: blog.content }}></p>
           )}
           <p>Published on {formatDate(blog.createdAt)}</p>
           <Accordion.Root

@@ -63,7 +63,7 @@ export default function Login({
           value={formType}
           onValueChange={tabChangeHandler}
         >
-          <TabsList className="w-full bg-card">
+          <TabsList className="w-full bg-card border">
             <TabsTrigger className="w-full" value="login">
               Log In
             </TabsTrigger>
@@ -72,7 +72,7 @@ export default function Login({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="login">
-            <Card className="mx-auto w-fit">
+            <Card className="mx-auto bg-card w-fit">
               <CardHeader>
                 <CardTitle className="text-2xl">Login</CardTitle>
                 <CardDescription>
@@ -161,7 +161,7 @@ export default function Login({
             </Card>
           </TabsContent>
           <TabsContent value="signup">
-            <Card className="">
+            <Card className="bg-card">
               <CardHeader>
                 <CardTitle className="text-2xl">Sign Up</CardTitle>
                 <CardDescription>Create a devnotes account.</CardDescription>

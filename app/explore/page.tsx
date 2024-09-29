@@ -95,6 +95,12 @@ export default async function ExplorePage() {
             />
           ))}
         </div>
+        <h1 className="text-3xl font-extrabold">Looking for more?</h1>
+        <Link href="/explore/all">
+          <Button variant={"outline"} className="w-full">
+            Search <RxMagnifyingGlass className="ml-1" />
+          </Button>
+        </Link>
       </section>
     </main>
   );

@@ -53,7 +53,11 @@ export async function createPost(formData: FormData, markdown: boolean, imageUrl
 
         const baseSlug = generateSlug(title);
         const slug = await ensureUniqueSlug(baseSlug);
-        const cover_url = supabaseURL + imageUrl;
+        let cover_url;
+        if(imageUrl === null) {
+             cover_url = null;
+        }else{ cover_url = supabaseURL + imageUrl;}
+        
 
         const tagIds = await handleTags(tags);
 
