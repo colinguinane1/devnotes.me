@@ -99,7 +99,7 @@ export default function BlogDropdown({
     return (
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Button size={"icon"} variant={"ghost"}>
+          <Button size={"icon"} className="z-10" variant={"ghost"}>
             <BsThreeDots />
           </Button>
         </DropdownMenuTrigger>
@@ -135,7 +135,7 @@ export default function BlogDropdown({
     return (
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>
-          <Button size={"icon"} variant={"ghost"}>
+          <Button size={"icon"}  className="z-10" variant={"ghost"}>
             <BsThreeDots />
           </Button>
         </DrawerTrigger>
