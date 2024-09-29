@@ -19,6 +19,7 @@ import { BiComment } from "react-icons/bi";
 interface BlogCardProps {
   post: Post;
   author: Author;
+  showTags?: boolean;
   tags?: Tag[];
   horizontal?: boolean;
   dropdownType?: string;
@@ -29,6 +30,7 @@ export default async function BlogCard({
   post,
   author,
   tags,
+  showTags = true,
   horizontal = false,
   dropdownType = "user",
   borderType = "full",
@@ -132,16 +134,17 @@ export default async function BlogCard({
                     horizontal ? "hidden" : "mt-1"
                   } `}
                 >
-                  {tags.map((tag) => {
-                    return (
-                      <Link key={tag.id} href={`/tag/${tag.name}`}>
-                        <Badge variant={"outline"} key={tag.id}>
-                          <TagIcon size={10} className="mr-1" />
-                          {tag.name}
-                        </Badge>
-                      </Link>
-                    );
-                  })}
+                  {showTags &&
+                    tags.map((tag) => {
+                      return (
+                        <Link key={tag.id} href={`/tag/${tag.name}`}>
+                          <Badge variant={"outline"} key={tag.id}>
+                            <TagIcon size={10} className="mr-1" />
+                            {tag.name}
+                          </Badge>
+                        </Link>
+                      );
+                    })}
                 </div>
               )}
               <div className="flex items-center justify-between">
