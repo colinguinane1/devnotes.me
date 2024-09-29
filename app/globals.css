@@ -88,9 +88,9 @@ body .w-md-editor-text-input {
   }
 
   .dark {
-    --background: 220 10% 10%;
+    --background: 220 10% 6%;
     --foreground: 215 85% 95%;
-    --card: 215 15% 20%;
+    --card: 215 15% 10%;
     --card-foreground: 220 85% 95%;
     --popover: 215 15% 20%;
     --popover-foreground: 220 85% 95%;
