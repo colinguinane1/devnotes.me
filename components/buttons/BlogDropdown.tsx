@@ -103,10 +103,7 @@ export default function BlogDropdown({
             <BsThreeDots />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent
-          className=""
-          align="start"
-        >
+        <DropdownMenuContent className="" align="start">
           <DropdownMenuItem
             onClick={copyToClipboard}
             className="cursor-pointer flex"
@@ -128,6 +125,48 @@ export default function BlogDropdown({
               <Plus size={15} /> Add to Read Later
             </div>
           </DropdownMenuItem>
+          {type === "author" && (
+            <DropdownMenuItem>
+              <Link className="cursor-pointer flex" href={`/edit/${slug}`}>
+                <div className="flex items-center gap-2">
+                  <Edit size={15} /> Edit Post
+                </div>
+              </Link>
+            </DropdownMenuItem>
+          )}
+          {type === "author" && (
+            <>
+              {deleteState ? (
+                <form onSubmit={handleSubmit}>
+                  <button
+                    type="submit"
+                    className="flex items-center justify-start"
+                  >
+                    <div className="flex items-center px-2 py-1 gap-2 justify-start">
+                      <Delete size={15} color="red" />
+                      {loading ? (
+                        <Loading />
+                      ) : (
+                        <p className="text-destructive font-extrabold">
+                          Are you sure? {error && <p>{error}</p>}
+                        </p>
+                      )}
+                    </div>
+                  </button>
+                </form>
+              ) : (
+                <button
+                  className="px-2 py-1"
+                  onClick={() => setDeleteState(true)}
+                >
+                  <div className="flex items-center gap-2">
+                    <Delete size={15} color="red" />
+                    <p className="text-destructive">Delete Post</p>
+                  </div>
+                </button>
+              )}
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
     );
@@ -135,7 +174,7 @@ export default function BlogDropdown({
     return (
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger asChild>
-          <Button size={"icon"}  className="z-10" variant={"ghost"}>
+          <Button size={"icon"} className="z-10" variant={"ghost"}>
             <BsThreeDots />
           </Button>
         </DrawerTrigger>

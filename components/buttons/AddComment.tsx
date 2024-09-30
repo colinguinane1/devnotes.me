@@ -56,7 +56,6 @@ export default function AddCommentForm({ postId }: { postId: string }) {
       </form>
 
       {error && <p className="text-red-500">{error}</p>}
-      {success && <p className="text-green-500">Comment added successfully!</p>}
     </div>
   );
 }
