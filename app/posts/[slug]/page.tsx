@@ -58,6 +58,7 @@ import { Badge } from "@/components/ui/badge";
 import ProgressBar from "@/components/post/progress";
 import ReplyButton from "@/components/buttons/ReplyButton";
 import UserCard from "@/components/global/UserCard";
+import CommentCard from "@/components/post/comment-card";
 
 const mwfont = Merriweather({ subsets: ["latin"], weight: ["400"] });
 
@@ -243,119 +244,10 @@ export default async function blog({ params }: { params: { slug: string } }) {
                           key={comment.id}
                           value={`comment-${comment.id}`}
                         >
-                          <div className="flex items-start w-full gap-4">
-                            <div className="flex-1</div> w-full">
-                              <div className="flex items-center w-full gap-2">
-                                <Link
-                                  className="flex items-center gap-2 no-underline"
-                                  href={`/profile/${comment.author.username}`}
-                                >
-                                  {comment.author.image_url &&
-                                  comment.author.username ? (
-                                    <Avatar className="flex-shrink-0">
-                                      <AvatarImage
-                                        className="-mt-[1px]"
-                                        src={comment.author.image_url}
-                                        alt={comment.author.username}
-                                      />
-                                    </Avatar>
-                                  ) : (
-                                    <Avatar className="flex-shrink-0">
-                                      <AvatarFallback>
-                                        {comment.author.username
-                                          ? comment.author.username[0]
-                                          : "U"}
-                                      </AvatarFallback>
-                                    </Avatar>
-                                  )}
-                                  <p className="font-medium text-gray-900 dark:text-white">
-                                    {comment.author.username}
-                                  </p>
-                                </Link>
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
-                                  {formatCommentDate(comment.createdAt)}
-                                </span>
-                              </div>
-                              <div className="flex justify-between w-full items-center">
-                                <p className="mt-1 text-gray-700 dark:text-gray-300">
-                                  {comment.content}
-                                </p>
-                                <ReplyButton
-                                  comment={comment}
-                                  author={comment.author}
-                                />
-                              </div>
-                            </div>
-                          </div>{" "}
-                          <div className="flex justify-between mx-4 items-center">
-                            <Accordion.Root
-                              className="w-full"
-                              type="single"
-                              id={comment.id}
-                            >
-                              {comment.Reply.length > 0 && (
-                                <Accordion.Trigger
-                                  className="-ml-4"
-                                  id={comment.id}
-                                >
-                                  <div className="flex font-bold  items-center min-w-fit w-full">
-                                    {comment.Reply.length} replies{" "}
-                                    <ChevronDownIcon />
-                                  </div>
-                                </Accordion.Trigger>
-                              )}
-                              <Accordion.Content className="w-full -ml-4 border-none data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp">
-                                {comment.Reply.map((reply) => (
-                                  <Accordion.Item
-                                    className="w-full p-2"
-                                    key={reply.id}
-                                    value={`reply-${reply.id}`}
-                                  >
-                                    <div className="flex items-start gap-4">
-                                      <div className="flex-1</div>">
-                                        <div className="flex items-center gap-2">
-                                          {" "}
-                                          <Link
-                                            className="flex items-center gap-2 no-underline"
-                                            href={`/profile/${reply.author.username}`}
-                                          >
-                                            {reply.author.image_url &&
-                                            reply.author.username ? (
-                                              <Avatar className="flex-shrink-0">
-                                                <AvatarImage
-                                                  className="-mt-[1px]"
-                                                  src={reply.author.image_url}
-                                                  alt={reply.author.username}
-                                                />
-                                              </Avatar>
-                                            ) : (
-                                              <Avatar className="flex-shrink-0">
-                                                <AvatarFallback>
-                                                  {reply.author.username
-                                                    ? reply.author.username[0]
-                                                    : "U"}
-                                                </AvatarFallback>
-                                              </Avatar>
-                                            )}
-
-                                            <p className="font-medium text-gray-900 dark:text-white">
-                                              {reply.author.username}
-                                            </p>
-                                          </Link>
-                                          <span className="text-xs text-gray-500 dark:text-gray-400">
-                                            {formatCommentDate(reply.createdAt)}
-                                          </span>
-                                        </div>
-                                        <p className="mt-1 text-gray-700 dark:text-gray-300">
-                                          {reply.content}
-                                        </p>
-                                      </div>
-                                    </div>{" "}
-                                  </Accordion.Item>
-                                ))}
-                              </Accordion.Content>
-                            </Accordion.Root>
-                          </div>
+                          <CommentCard
+                            comment={comment}
+                            Reply={comment.Reply}
+                          />
                         </Accordion.Item>
                       ))}
                     </Accordion.Root>
@@ -373,7 +265,6 @@ export default async function blog({ params }: { params: { slug: string } }) {
           </Accordion.Root>{" "}
         </article>{" "}
       </div>
-      <div className="container mx-auto px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16 flex justify-center"></div>
     </div>
   );
 }

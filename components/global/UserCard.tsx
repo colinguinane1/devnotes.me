@@ -39,75 +39,73 @@ export default async function UserCard({
       })
     : null;
   return (
-    <Link href={`/profile/${author.username}`}>
-      <Card
-        className="w-full flex items-center active:scale-[0.99] mb-6 h-20 rounded-md overflow-hidden transition-all"
-        key={author.id}
-      >
-        <CardContent className="flex justify-between items-center w-full mt-[22px]">
-          <Link
-            className="flex gap-2 items-center"
-            href={`/profile/${author.username}`}
-          >
-            {author.image_url && (
-              <Avatar className="w-10 h-10">
-                <AvatarImage src={author.image_url} alt="@shadcn" />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-            )}
-            {author.full_name ? (
-              <div>
-                <h2 className="font-bold flex items-center gap-1">
-                  {author.full_name} {author.verified && <VerifiedUser />}
-                </h2>
-                <h2 className="">@{author.username?.toLowerCase()}</h2>
+    <Card
+      className="w-full flex items-center active:scale-[0.99] mb-6 h-20 rounded-md overflow-hidden transition-all"
+      key={author.id}
+    >
+      <CardContent className="flex justify-between items-center w-full mt-[22px]">
+        <Link
+          className="flex gap-2 w-full items-center"
+          href={`/profile/${author.username}`}
+        >
+          {author.image_url && (
+            <Avatar className="w-10 h-10">
+              <AvatarImage src={author.image_url} alt="@shadcn" />
+              <AvatarFallback>JD</AvatarFallback>
+            </Avatar>
+          )}
+          {author.full_name ? (
+            <div>
+              <h2 className="font-bold flex items-center gap-1">
+                {author.full_name} {author.verified && <VerifiedUser />}
+              </h2>
+              <h2 className="">@{author.username?.toLowerCase()}</h2>
+            </div>
+          ) : (
+            <h2 className="flex items-center gap-1">
+              @{author.username}
+              {author.verified && <VerifiedUser />}
+            </h2>
+          )}
+        </Link>{" "}
+        {followButton && (
+          <div className="w-fit">
+            {user?.id !== author?.id ? (
+              <div className="">
+                {user ? (
+                  <div>
+                    {!isSubscribed ? (
+                      <SubscribeButton
+                        subscriberId={user.id}
+                        subscribeToId={author.id}
+                      />
+                    ) : (
+                      <UnsubscribeButton
+                        subscriberId={user.id}
+                        subscribeToId={author.id}
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <Button className="w-full">
+                    <Link href="/login">Follow</Link>
+                  </Button>
+                )}
               </div>
             ) : (
-              <h2 className="flex items-center gap-1">
-                @{author.username}
-                {author.verified && <VerifiedUser />}
-              </h2>
+              <Link href={`/profile/${author.username}`}>
+                <Button
+                  className="w-full shadow-2xl"
+                  disabled
+                  variant={"outline"}
+                >
+                  Profile <ChevronRightIcon className="w-4 h-4 mr-1" />
+                </Button>
+              </Link>
             )}
-          </Link>{" "}
-          {followButton && (
-            <div className="w-fit">
-              {user?.id !== author?.id ? (
-                <div className="">
-                  {user ? (
-                    <div>
-                      {!isSubscribed ? (
-                        <SubscribeButton
-                          subscriberId={user.id}
-                          subscribeToId={author.id}
-                        />
-                      ) : (
-                        <UnsubscribeButton
-                          subscriberId={user.id}
-                          subscribeToId={author.id}
-                        />
-                      )}
-                    </div>
-                  ) : (
-                    <Button className="w-full">
-                      <Link href="/login">Follow</Link>
-                    </Button>
-                  )}
-                </div>
-              ) : (
-                <Link href={`/profile/${author.username}`}>
-                  <Button
-                    className="w-full shadow-2xl"
-                    disabled
-                    variant={"outline"}
-                  >
-                    Profile <ChevronRightIcon className="w-4 h-4 mr-1" />
-                  </Button>
-                </Link>
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
-    </Link>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
