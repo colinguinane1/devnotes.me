@@ -10,6 +10,7 @@ import {
   EyeIcon,
   Heart,
   HeartIcon,
+  PencilIcon,
   TagIcon,
 } from "lucide-react";
 import { Metadata } from "next";
@@ -156,6 +157,13 @@ export default async function blog({ params }: { params: { slug: string } }) {
           style={{ aspectRatio: "1920/1080", objectFit: "cover" }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+        {user?.id === blog.author.id && (
+          <Link href={`/edit/${blog.slug}`}>
+            <Button size={"icon"} className="absolute h-12 w-12 top-2 right-2">
+              <PencilIcon />
+            </Button>
+          </Link>
+        )}
         <div className="absolute bottom-0 left-0 right-0 px-4 pb-6 md:px-6 md:pb-8 lg:px-8 lg:pb-10">
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
@@ -217,6 +225,11 @@ export default async function blog({ params }: { params: { slug: string } }) {
           <p className="border-t pt-2">
             Published on {formatDate(blog.createdAt)}
           </p>
+          {blog.updatedAt && (
+            <p className="border-t pt-2">
+              Edited on {formatDate(blog.createdAt)}
+            </p>
+          )}
           <Accordion.Root
             className="transition-all"
             id="comments"
