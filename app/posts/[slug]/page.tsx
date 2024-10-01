@@ -10,6 +10,7 @@ import {
   EyeIcon,
   Heart,
   HeartIcon,
+  Pencil,
   PencilIcon,
   TagIcon,
 } from "lucide-react";
@@ -225,13 +226,16 @@ export default async function blog({ params }: { params: { slug: string } }) {
           ) : (
             <p dangerouslySetInnerHTML={{ __html: blog.content }}></p>
           )}
-          <p className="border-t pt-2">
-            Published on {formatDateTime(blog.createdAt)}
+          <p className="border-t pt-2 flex items-center gap-1">
+            <Calendar size={15} className="mr-1" />{" "}
+            {formatDateTime(blog.createdAt)}
           </p>
           {blog.updatedAt &&
             Math.floor(new Date(blog.updatedAt).getTime() / 1000) !==
               Math.floor(new Date(blog.createdAt).getTime() / 1000) && (
-              <p>Edited on {formatDateTime(blog.updatedAt)}</p>
+              <p className="flex items-center gap-1">
+                <Pencil size={15} /> {formatDateTime(blog.updatedAt)}
+              </p>
             )}
           <Accordion.Root
             className="transition-all"
