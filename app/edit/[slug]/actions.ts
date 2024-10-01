@@ -80,6 +80,7 @@ export async function updatePost(
         title,
         content,
         description,
+        updatedAt: new Date(),
         tags: {
           connect: resolvedTags.map((tag) => ({ id: tag.id })), // Connect new tags
           disconnect: tagsToDisconnect.map((tag) => ({ id: tag.id })), // Disconnect removed tags

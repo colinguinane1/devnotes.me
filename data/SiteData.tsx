@@ -20,6 +20,18 @@ export function formatDate(dateString: Date | string): string {
     day: "numeric",
   });
 }
+
+export function formatDateTime(dateString: Date | string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  });
+}
+
 const tagColors = [
   "red-500",
   "yellow-500",

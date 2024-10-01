@@ -266,7 +266,7 @@ export default async function ProfilePage({
                   horizontal={true}
                   key={post.id}
                   post={post}
-                  author={author}
+                  author={post.author}
                 />
               ))}
             </div>

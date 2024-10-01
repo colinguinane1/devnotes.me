@@ -158,7 +158,6 @@ export function ReplyForm({
       </form>
 
       {error && <p className="text-red-500">{error}</p>}
-      {success && <p className="text-green-500">Comment added successfully!</p>}
     </div>
   );
 }

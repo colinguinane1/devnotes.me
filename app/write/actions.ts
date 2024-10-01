@@ -71,6 +71,7 @@ export async function createPost(formData: FormData, markdown: boolean, imageUrl
                 slug,
                 content,
                 published: true,
+              
                 createdAt: new Date(),
                 author: {
                     connect: { id: user.id },
