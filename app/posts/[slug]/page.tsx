@@ -28,6 +28,7 @@ import {
   calculateReadingTime,
   formatCommentDate,
   formatDate,
+  formatDateTime,
 } from "@/data/SiteData";
 import BlogNotFound from "@/components/global/BlogNotFound";
 import { createClient } from "@/app/utils/supabase/server";
@@ -143,6 +144,8 @@ export default async function blog({ params }: { params: { slug: string } }) {
     markdownContent = String(processedContent);
   }
   incrementViews(blog.id);
+  console.log("Created At:", blog.createdAt);
+  console.log("Updated At:", blog.updatedAt);
 
   return (
     <div className="bg-background">
@@ -223,13 +226,13 @@ export default async function blog({ params }: { params: { slug: string } }) {
             <p dangerouslySetInnerHTML={{ __html: blog.content }}></p>
           )}
           <p className="border-t pt-2">
-            Published on {formatDate(blog.createdAt)}
+            Published on {formatDateTime(blog.createdAt)}
           </p>
-          {blog.updatedAt !== blog.createdAt && (
-            <p className="border-t pt-2">
-              Edited on {formatDate(blog.updatedAt)}
-            </p>
-          )}
+          {blog.updatedAt &&
+            Math.floor(new Date(blog.updatedAt).getTime() / 1000) !==
+              Math.floor(new Date(blog.createdAt).getTime() / 1000) && (
+              <p>Edited on {formatDateTime(blog.updatedAt)}</p>
+            )}
           <Accordion.Root
             className="transition-all"
             id="comments"

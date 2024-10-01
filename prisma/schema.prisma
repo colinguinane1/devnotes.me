@@ -77,7 +77,7 @@ model Post {
   likes       Int       @default(0)
   author      Author    @relation("author", fields: [user_id], references: [id])
   published   Boolean?  @default(false)
-  updatedAt   DateTime?
+  updatedAt   DateTime
   createdAt   DateTime  @default(now())
   user_id     String
   likedBy     Author[]  @relation("likedBy")
