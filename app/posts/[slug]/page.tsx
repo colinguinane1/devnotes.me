@@ -225,9 +225,9 @@ export default async function blog({ params }: { params: { slug: string } }) {
           <p className="border-t pt-2">
             Published on {formatDate(blog.createdAt)}
           </p>
-          {blog.updatedAt && (
+          {blog.updatedAt !== blog.createdAt && (
             <p className="border-t pt-2">
-              Edited on {formatDate(blog.createdAt)}
+              Edited on {formatDate(blog.updatedAt)}
             </p>
           )}
           <Accordion.Root
