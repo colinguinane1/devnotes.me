@@ -164,11 +164,11 @@ export default function App() {
             </div>
           </div>
           <div className="w-screen flex justify-center">
-            <div className="p-4 flex flex-col justify-center max-w-4xl  gap-2 mt-4">
+            <div className="p-4 flex flex-col justify-center max-w-5xl  gap-4 mt-4">
               <Input
                 name="title"
                 required
-                className="p-1 border-none font-extrabold text-4xl w-full placeholder:font-extrabold placeholder:text-4xl"
+                className="p-1 border-none font-extrabold text-4xl w-full placeholder:font-extrabold placeholder:text-4xl tracking-tight"
                 placeholder="Blog Title"
               />
 
@@ -177,7 +177,7 @@ export default function App() {
                 required
                 minLength={10}
                 name="description"
-                className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg"
+                className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg border-b text-lg"
                 placeholder="Blog description"
               />
 
