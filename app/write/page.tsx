@@ -163,77 +163,79 @@ export default function App() {
               {uploadError && <p className="text-red-500">{uploadError}</p>}
             </div>
           </div>
-          <div className="p-4 mt-4">
-            <Input
-              name="title"
-              required
-              className="p-1 border-none w-full placeholder:font-extrabold placeholder:text-4xl"
-              placeholder="Blog Title"
-            />
-            <div className="">
+          <div className="w-screen flex justify-center">
+            <div className="p-4 flex flex-col justify-center max-w-4xl  gap-2 mt-4">
+              <Input
+                name="title"
+                required
+                className="p-1 border-none font-extrabold text-4xl w-full placeholder:font-extrabold placeholder:text-4xl"
+                placeholder="Blog Title"
+              />
+
               <Input
                 maxLength={250}
                 required
                 minLength={10}
                 name="description"
                 className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg"
-                placeholder="Enter your description"
+                placeholder="Blog description"
               />
-            </div>
-            <div className="pb-4">
-              {tags.length > 0 && (
-                <div className="flex items-center flex-wrap gap-2">
-                  {tags.map((tag) => (
-                    <Badge variant={"outline"} key={tag}>
-                      <Tag size={10} className="mr-1" />
-                      {tag}
-                      <button
-                        type="button"
-                        onClick={() => removeTag(tag)}
-                        className="text-red-500 ml-1 hover:text-red-700"
-                      >
-                        ×
-                      </button>
-                    </Badge>
-                  ))}
-                </div>
-              )}
-              <Input
-                value={tagInput}
-                disabled={tags.length >= 5}
-                onChange={(e) => setTagInput(e.target.value)}
-                onKeyDown={handleTagInputKeyDown}
-                className=" border-none p-1 w-full"
-                placeholder="Type a tag and press Enter"
+
+              <div className="">
+                {tags.length > 0 && (
+                  <div className="flex items-center flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <Badge variant={"outline"} key={tag}>
+                        <Tag size={10} className="mr-1" />
+                        {tag}
+                        <button
+                          type="button"
+                          onClick={() => removeTag(tag)}
+                          className="text-red-500 ml-1 hover:text-red-700"
+                        >
+                          ×
+                        </button>
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                <Input
+                  value={tagInput}
+                  disabled={tags.length >= 5}
+                  onChange={(e) => setTagInput(e.target.value)}
+                  onKeyDown={handleTagInputKeyDown}
+                  className=" border-none p-1 w-full"
+                  placeholder="Type a tag and press Enter"
+                />
+                {tags.length >= 5 && (
+                  <p className="text-red-500">Maximum of 5 tags allowed.</p>
+                )}
+              </div>
+              <MDEditor
+                height="100%"
+                className="min-h-[500px]"
+                preview="edit"
+                value={value}
+                previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}
+                onChange={(newValue) => setValue(newValue || "")}
               />
-              {tags.length >= 5 && (
-                <p className="text-red-500">Maximum of 5 tags allowed.</p>
-              )}
+              <p>Preview:</p>
+              <MDEditor.Markdown
+                className="p-4 rounded-lg border border-gray-300"
+                source={value}
+                style={{ whiteSpace: "pre-wrap" }}
+              />
+              <Button className="w-full mt-4" type="submit" disabled={loading}>
+                {loading ? <Loading /> : "Publish"}
+              </Button>
+              <Button
+                className="w-full  mt-4"
+                variant={"outline"}
+                disabled={loading}
+              >
+                {loading ? <Loading /> : "Save as Draft"}
+              </Button>
             </div>
-            <MDEditor
-              height="100%"
-              className="min-h-[500px]"
-              preview="edit"
-              value={value}
-              previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}
-              onChange={(newValue) => setValue(newValue || "")}
-            />
-            <p>Preview:</p>
-            <MDEditor.Markdown
-              className="p-4 rounded-lg border border-gray-300"
-              source={value}
-              style={{ whiteSpace: "pre-wrap" }}
-            />
-            <Button className="w-full mt-4" type="submit" disabled={loading}>
-              {loading ? <Loading /> : "Publish"}
-            </Button>
-            <Button
-              className="w-full  mt-4"
-              variant={"outline"}
-              disabled={loading}
-            >
-              {loading ? <Loading /> : "Save as Draft"}
-            </Button>
           </div>
         </form>
       </div>
