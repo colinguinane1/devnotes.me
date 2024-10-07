@@ -8,15 +8,17 @@ import rehypeSanitize from "rehype-sanitize";
 import { useTheme } from "next-themes";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Tag } from "lucide-react";
 import Image from "next/image";
 import { createClient } from "../utils/supabase/client";
+import { Badge } from "@/components/ui/badge";
+import { AiOutlinePicture } from "react-icons/ai";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
   const { setTheme, theme, resolvedTheme } = useTheme();
   const { toast } = useToast();
-  
+
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
@@ -36,7 +38,9 @@ export default function App() {
     });
   };
 
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       setSelectedFile(file);
@@ -115,13 +119,15 @@ export default function App() {
   };
 
   return (
-    <div className="p-4 min-h-screen my-auto" data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}>
+    <div
+      className="min-h-screen my-auto"
+      data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}
+    >
       <div className="flex flex-col w-full items-center gap-4">
         <form onSubmit={handleSubmit} className="w-full">
-          <div className="flex-col flex mb-4 gap-2">
-            <div className="max-w-xl mx-auto mt-8 p-6 bg-card rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold mb-4">Image Upload</h2>
-              <div className="mb-4">
+          <div className="flex-col w-full flex  gap-2">
+            <div className="w-full mx-auto bg-card rounded-lg shadow-md">
+              <div className="">
                 <Input
                   type="file"
                   accept="image/*"
@@ -130,95 +136,97 @@ export default function App() {
                   id="image-upload"
                   ref={fileInputRef}
                   aria-label="Choose an image to upload"
-                />
-                <Label htmlFor="image-upload" className="sr-only">Choose an image to upload</Label>
+                />{" "}
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors"
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => e.key === "Enter" && fileInputRef.current?.click()}
-                  aria-label="Click or press enter to upload an image"
+                  className="relative h-[400px] md:-mt-0 mt-[-4px]  w-screen overflow-hidden"
                 >
-                  <PlusIcon className="w-12 h-12 text-gray-400" />
+                  <Image
+                    src={selectedImage ? selectedImage : "/gradient.jpg"}
+                    alt="Blog cover image"
+                    width={1920}
+                    height={1080}
+                    className="h-full w-full object-cover cursor-pointer"
+                    style={{ aspectRatio: "1920/1080", objectFit: "cover" }}
+                  />
+                  <p className="absolute bottom-4 right-4 flex items-center gap-2 text-gray-200">
+                    <AiOutlinePicture color="rgb(229 231 235)" /> Change Cover
+                    Image
+                  </p>{" "}
                 </div>
+                <Label htmlFor="image-upload" className="sr-only">
+                  Choose an image to upload
+                </Label>
               </div>
-              {selectedImage ? (
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2">Preview:</h3>
-                  <div className="relative w-full h-64">
-                    <Image src={selectedImage} alt="Preview of the selected image" layout="fill" objectFit="contain" />
-                  </div>
-                </div>
-              ) : (
-                <p className="text-center text-gray-500 mt-2">No image selected</p>
-              )}
+
               {uploadError && <p className="text-red-500">{uploadError}</p>}
             </div>
-
-            <label>Title:</label>
-            <input
+          </div>
+          <div className="p-4 mt-4">
+            <Input
               name="title"
               required
-              className="border rounded-md p-1 w-full"
+              className="p-1 border-none w-full placeholder:font-extrabold placeholder:text-4xl"
               placeholder="Blog Title"
             />
-          </div>
 
-          <div className="pb-4">
-            <label>Description:</label>
-            <input
-              maxLength={250}
-              required
-              minLength={10}
-              name="description"
-              className="border rounded-md p-1 w-full"
-              placeholder="Enter your description"
-            />
-          </div>
-
-          <div className="pb-4">
-            <label>Tags:</label>
-            <div className="flex items-center flex-wrap gap-2 mb-2">
-              {tags.map((tag) => (
-                <span key={tag} className="bg-gray-200 text-black px-2 py-1 rounded-full text-sm flex items-center gap-1">
-                  {tag}
-                  <button
-                    type="button"
-                    onClick={() => removeTag(tag)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
+            <div className="">
+              <Input
+                maxLength={250}
+                required
+                minLength={10}
+                name="description"
+                className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg"
+                placeholder="Enter your description"
+              />
             </div>
-            <input
-              value={tagInput}
-              disabled={tags.length >= 5}
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={handleTagInputKeyDown}
-              className="border rounded-md p-1 w-full"
-              placeholder="Type a tag and press Enter"
-            />
-            {tags.length >= 5 && <p className="text-red-500">Maximum of 5 tags allowed.</p>}
-          </div>
 
-          <label>Content:</label>
-          <MDEditor
-            height="100%"
-            className="min-h-[500px]"
-            preview="edit"
-            value={value}
-            previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}
-            onChange={(newValue) => setValue(newValue || "")}
-          />
-          <p>Preview:</p>
-          <MDEditor.Markdown
-            className="p-4 rounded-lg border border-gray-300"
-            source={value}
-            style={{ whiteSpace: "pre-wrap" }}
-          />
+            <div className="pb-4">
+              {tags.length > 0 && (
+                <div className="flex items-center flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <Badge variant={"outline"} key={tag}>
+                      <Tag size={10} className="mr-1" />
+                      {tag}
+                      <button
+                        type="button"
+                        onClick={() => removeTag(tag)}
+                        className="text-red-500 ml-1 hover:text-red-700"
+                      >
+                        ×
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              <Input
+                value={tagInput}
+                disabled={tags.length >= 5}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyDown={handleTagInputKeyDown}
+                className=" border-none p-1 w-full"
+                placeholder="Type a tag and press Enter"
+              />
+              {tags.length >= 5 && (
+                <p className="text-red-500">Maximum of 5 tags allowed.</p>
+              )}
+            </div>
+
+            <MDEditor
+              height="100%"
+              className="min-h-[500px]"
+              preview="edit"
+              value={value}
+              previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}
+              onChange={(newValue) => setValue(newValue || "")}
+            />
+            <p>Preview:</p>
+            <MDEditor.Markdown
+              className="p-4 rounded-lg border border-gray-300"
+              source={value}
+              style={{ whiteSpace: "pre-wrap" }}
+            />
+          </div>
           <Button className="w-full mt-4" type="submit" disabled={loading}>
             {loading ? "Publishing..." : "Publish Blog"}
           </Button>
