@@ -13,6 +13,7 @@ import Image from "next/image";
 import { createClient } from "../utils/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { AiOutlinePicture } from "react-icons/ai";
+import Loading from "@/components/ui/loader-spinner";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -169,7 +170,6 @@ export default function App() {
               className="p-1 border-none w-full placeholder:font-extrabold placeholder:text-4xl"
               placeholder="Blog Title"
             />
-
             <div className="">
               <Input
                 maxLength={250}
@@ -180,7 +180,6 @@ export default function App() {
                 placeholder="Enter your description"
               />
             </div>
-
             <div className="pb-4">
               {tags.length > 0 && (
                 <div className="flex items-center flex-wrap gap-2">
@@ -211,7 +210,6 @@ export default function App() {
                 <p className="text-red-500">Maximum of 5 tags allowed.</p>
               )}
             </div>
-
             <MDEditor
               height="100%"
               className="min-h-[500px]"
@@ -226,10 +224,17 @@ export default function App() {
               source={value}
               style={{ whiteSpace: "pre-wrap" }}
             />
+            <Button className="w-full mt-4" type="submit" disabled={loading}>
+              {loading ? <Loading /> : "Publish"}
+            </Button>
+            <Button
+              className="w-full  mt-4"
+              variant={"outline"}
+              disabled={loading}
+            >
+              {loading ? <Loading /> : "Save as Draft"}
+            </Button>
           </div>
-          <Button className="w-full mt-4" type="submit" disabled={loading}>
-            {loading ? "Publishing..." : "Publish Blog"}
-          </Button>
         </form>
       </div>
     </div>
