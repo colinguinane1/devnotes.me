@@ -46,11 +46,6 @@ export async function createPost(formData: FormData, markdown: boolean, imageUrl
         const content = formData.get('content') as string;
         const tagsString = formData.get('tags') as string;
         const tags = JSON.parse(tagsString) as string[];
-
-        if (!title || !description || !content) {
-            throw new Error("All fields are required");
-        }
-
         const baseSlug = generateSlug(title);
         const slug = await ensureUniqueSlug(baseSlug);
         let cover_url;
