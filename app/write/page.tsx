@@ -210,14 +210,13 @@ export default function App() {
               ) : null}
               <Input
                 name="title"
-                required
                 className="p-1 border-none font-extrabold text-4xl w-full placeholder:font-extrabold placeholder:text-4xl tracking-tight"
                 placeholder="Blog Title"
               />
 
               <Input
                 maxLength={250}
-                required
+              
                 minLength={10}
                 name="description"
                 className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg border-b text-lg font-semibol text-gray-300"
