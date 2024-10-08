@@ -28,8 +28,9 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [autoSave, setAutoSave] = useState(false);
   const markdown = true;
-  const [value, setValue] = useState("**Hello world!!!**");
+  const [value, setValue] = useState("Start writing your blog here...");
 
   const successToast = () => {
     toast({
@@ -92,15 +93,34 @@ export default function App() {
     const formData = new FormData(event.currentTarget);
     formData.append("content", value);
     formData.append("tags", JSON.stringify(tags));
+    const published = true;
 
     try {
       setLoading(true);
-      await createPost(formData, markdown, imageUrl);
+      await createPost(formData, markdown, imageUrl, published);
       successToast();
     } catch (error) {
       console.error("Error creating post:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const createDraft = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    formData.append("content", value);
+    formData.append("tags", JSON.stringify(tags));
+    const published = false;
+
+    try {
+      setAutoSave(true);
+      await createPost(formData, markdown, imageUrl, published);
+      successToast();
+    } catch (error) {
+      console.error("Error creating post:", error);
+    } finally {
+      setAutoSave(false);
     }
   };
 
@@ -125,7 +145,7 @@ export default function App() {
       data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}
     >
       <div className="flex flex-col w-full items-center gap-4">
-        <form onSubmit={handleSubmit} className="w-full">
+        <form onChange={createDraft} onSubmit={handleSubmit} className="w-full">
           <div className="flex-col w-full flex  gap-2">
             <div className="w-full mx-auto bg-card rounded-lg shadow-md">
               <div className="">
@@ -177,7 +197,7 @@ export default function App() {
                 required
                 minLength={10}
                 name="description"
-                className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg border-b text-lg"
+                className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg border-b text-lg font-semibol text-gray-300"
                 placeholder="Blog description"
               />
 
@@ -185,7 +205,7 @@ export default function App() {
                 {tags.length > 0 && (
                   <div className="flex items-center flex-wrap gap-2">
                     {tags.map((tag) => (
-                      <Badge variant={"outline"} key={tag}>
+                      <Badge variant={"outline"} className="mb-4" key={tag}>
                         <Tag size={10} className="mr-1" />
                         {tag}
                         <button
@@ -227,13 +247,6 @@ export default function App() {
               />
               <Button className="w-full mt-4" type="submit" disabled={loading}>
                 {loading ? <Loading /> : "Publish"}
-              </Button>
-              <Button
-                className="w-full  mt-4"
-                variant={"outline"}
-                disabled={loading}
-              >
-                {loading ? <Loading /> : "Save as Draft"}
               </Button>
             </div>
           </div>

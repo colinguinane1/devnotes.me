@@ -31,7 +31,7 @@ async function handleTags(tags: any) {
     return tagIds;
 }
 
-export async function createPost(formData: FormData, markdown: boolean, imageUrl: string) {
+export async function createPost(formData: FormData, markdown: boolean, imageUrl: string, published: boolean) {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
@@ -70,7 +70,7 @@ export async function createPost(formData: FormData, markdown: boolean, imageUrl
                 markdown,
                 slug,
                 content,
-                published: true,
+                published,
                 updatedAt: new Date(),
                 createdAt: new Date(),
                 author: {
