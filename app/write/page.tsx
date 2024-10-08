@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -31,6 +31,8 @@ export default function App() {
   const [autoSave, setAutoSave] = useState(false);
   const markdown = true;
   const [value, setValue] = useState("Start writing your blog here...");
+
+  const [draftTimeout, setDraftTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const successToast = () => {
     toast({
@@ -106,9 +108,8 @@ export default function App() {
     }
   };
 
-  const createDraft = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+  const createDraft = async () => {
+    const formData = new FormData();
     formData.append("content", value);
     formData.append("tags", JSON.stringify(tags));
     const published = false;
@@ -116,13 +117,30 @@ export default function App() {
     try {
       setAutoSave(true);
       await createPost(formData, markdown, imageUrl, published);
-      successToast();
     } catch (error) {
-      console.error("Error creating post:", error);
+      console.error("Error creating draft:", error);
     } finally {
       setAutoSave(false);
     }
   };
+
+  useEffect(() => {
+    if (draftTimeout) {
+      clearTimeout(draftTimeout); // Clear previous timeout if any
+    }
+
+    const timeout = setTimeout(() => {
+      createDraft(); // Save draft after delay
+    }, 2000); // 2 seconds delay before saving the draft
+
+    setDraftTimeout(timeout);
+
+    return () => {
+      if (draftTimeout) {
+        clearTimeout(draftTimeout); // Cleanup timeout on component unmount or change
+      }
+    };
+  }, [value, tags, imageUrl]); // Run effect when value, tags, or image changes
 
   const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && tagInput.trim()) {
@@ -145,8 +163,8 @@ export default function App() {
       data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}
     >
       <div className="flex flex-col w-full items-center gap-4">
-        <form onChange={createDraft} onSubmit={handleSubmit} className="w-full">
-          <div className="flex-col w-full flex  gap-2">
+        <form onSubmit={handleSubmit} className="w-full">
+          <div className="flex-col w-full flex gap-2">
             <div className="w-full mx-auto bg-card rounded-lg shadow-md">
               <div className="">
                 <Input
@@ -184,7 +202,12 @@ export default function App() {
             </div>
           </div>
           <div className="w-screen flex justify-center">
-            <div className="p-4 flex flex-col justify-center max-w-5xl  gap-4 mt-4">
+            <div className="p-4 flex flex-col justify-center max-w-5xl gap-4 mt-4">
+              {autoSave ? (
+                <p className="text-green-500">
+                  <Loading />
+                </p>
+              ) : null}
               <Input
                 name="title"
                 required
@@ -224,7 +247,7 @@ export default function App() {
                   disabled={tags.length >= 5}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyDown={handleTagInputKeyDown}
-                  className=" border-none p-1 w-full"
+                  className="border-none p-1 w-full"
                   placeholder="Type a tag and press Enter"
                 />
                 {tags.length >= 5 && (
