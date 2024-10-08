@@ -57,7 +57,7 @@ export async function createPost(formData: FormData, markdown: boolean, imageUrl
         const tagIds = await handleTags(tags);
 
         // Create the post only once, after handling all tags
-        const post = await prisma.post.create({
+        const post = await prisma.post.upsert({
             data: {
                 title,
                 cover_url,
