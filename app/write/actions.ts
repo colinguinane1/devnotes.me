@@ -173,6 +173,8 @@ export async function createDraft(
         title,
         description,
         content,
+        createdAt: new Date(),
+        updatedAt: new Date(),
         cover_url,
         slug, // Add the slug here
         markdown,
