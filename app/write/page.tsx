@@ -212,11 +212,11 @@ export default function App() {
           </div>
           <div className="w-screen flex justify-center">
             <div className="p-4 flex flex-col justify-center max-w-5xl gap-4 mt-4">
-              {autoSave && (
-                <p className="text-gray-500 animate-pulse flex items-center gap-2">
+              <div className="fixed w-screen z-50 bottom-0 bg-gradient-to-t from-card to-transparent h-10">
+                <p className="text-gray-200 flex w-screen items-center animate-pulse gap-2">
                   <Loading /> Saving Draft...
                 </p>
-              )}
+              </div>
 
               <Input
                 name="title"
@@ -229,6 +229,7 @@ export default function App() {
               <Input
                 maxLength={250}
                 required
+                onChange={(e) => setDescription(e.target.value)}
                 minLength={10}
                 name="description"
                 className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg border-b text-lg font-semibol text-gray-300"
@@ -260,7 +261,7 @@ export default function App() {
                     placeholder="Add tags"
                     className="placeholder:text-gray-500"
                   />
-                  <Button type="button" variant={"outline"} size="sm">
+                  <Button type="button" variant={"outline"}>
                     <PlusIcon className="mr-2 h-4 w-4" />
                     Add Tag
                   </Button>

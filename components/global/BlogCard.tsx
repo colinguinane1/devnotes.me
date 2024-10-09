@@ -47,12 +47,12 @@ export default async function BlogCard({
   } = await supabase.auth.getUser();
   return (
     <Card
-      className={`w-full  rounded-md group overflow-hidden active:scale-[0.99] shadow-lg transition-all hover:shadow-xl  ${
-        horizontal ? "flex w-full hover:bg-card/80" : "max-w-lg"
+      className={`w-full   group overflow-hidden active:scale-[0.99] shadow-lg transition-all hover:shadow-xl  ${
+        horizontal
+          ? "flex w-full hover:bg-card/80 "
+          : "max-w-lg border rounded-md"
       }
-      ${borderType === "full" && "border"}
-      ${borderType === "none" && "border-none"}
-      ${borderType === "top" && "border-t border-b"}`}
+    `}
       key={post.id}
     >
       <Link
