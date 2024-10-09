@@ -106,12 +106,13 @@ export async function createDraft(
   formData: FormData,
   markdown: boolean,
   imageUrl: string,
-  userId: string // Pass the userId as a parameter
 ) {
   try {
+    console.log(formData)
     // Safely retrieve and cast the title and content from the formData
-    const title = formData.get('title') as string | null;
-    const content = formData.get('content') as string | null;
+    const title = formData.get('title') as string;
+      const description = formData.get('description') as string;
+    const content = formData.get('content') as string;
     const tagsString = formData.get('tags') as string | null;
     let cover_url = imageUrl ? `${supabaseURL}${imageUrl}` : null;
       const supabase = createClient();

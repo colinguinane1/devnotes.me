@@ -33,6 +33,8 @@ export default function App() {
   const markdown = true;
   const [postId, setPostId] = useState<string | null>(null);
   const [value, setValue] = useState("Start writing your blog here...");
+  const [title, setTitle] = useState(""); // State for the title
+  const [description, setDescription] = useState(""); // State for the title
 
   const [draftTimeout, setDraftTimeout] = useState<NodeJS.Timeout | null>(null);
 
@@ -113,14 +115,16 @@ export default function App() {
   const createDraft = async () => {
     const formData = new FormData();
     formData.append("content", value);
-    formData.append("title", formData.get("title") as string); // Use form data for title
+    formData.append("title", title); // Use form data for title
+    formData.append("description", description); // Use form data for description
     formData.append("tags", JSON.stringify(tags));
 
     try {
       setAutoSave(true);
       // Call the server action to save draft
-      const userId = "yourUserId"; // Replace with the actual user ID or get it dynamically
-      await saveDraft(formData, true, imageUrl, userId); // Call the server action with userId
+      const post_id = await saveDraft(formData, true, imageUrl); // Call the server action with userId
+      setPostId(post_id);
+      console.log(postId);
     } catch (error) {
       console.error("Error creating draft:", error);
     } finally {
@@ -216,6 +220,7 @@ export default function App() {
               <Input
                 name="title"
                 required
+                onChange={(e) => setTitle(e.target.value)}
                 className="p-1 border-none font-extrabold text-4xl w-full placeholder:font-extrabold placeholder:text-4xl tracking-tight"
                 placeholder="Blog Title"
               />
