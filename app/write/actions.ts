@@ -31,70 +31,129 @@ async function handleTags(tags: any) {
     return tagIds;
 }
 
-export async function createPost(formData: FormData, markdown: boolean, imageUrl: string, published: boolean) {
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+export async function createPost(
+  formData: FormData, 
+  markdown: boolean, 
+  imageUrl: string, 
+  published: boolean
+) {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) {
-        console.log('User not found');
-        throw new Error("User not authenticated");
+  if (!user) {
+    console.log('User not found');
+    throw new Error("User not authenticated");
+  }
+
+  try {
+    const title = formData.get('title') as string;
+    const description = formData.get('description') as string;
+    const content = formData.get('content') as string;
+    const tagsString = formData.get('tags') as string;
+    const tags = JSON.parse(tagsString) as string[];
+
+ 
+
+
+
+if (!title) {
+  console.error("Form data received:", formData); // Add this to log form data
+  throw new Error("Title is missing from the form data");
+}
+    const baseSlug = generateSlug(title);
+    const slug = await ensureUniqueSlug(baseSlug);
+    let cover_url = imageUrl ? `${supabaseURL}${imageUrl}` : null;
+
+    const tagIds = await handleTags(tags);
+
+    // Create or update the post
+    const post = await prisma.post.upsert({
+      where: { slug: slug }, // Use unique slug or another unique identifier
+      create: {
+        title,
+        cover_url,
+        description,
+        markdown,
+        slug,
+        content,
+        published,
+        updatedAt: new Date(),
+        createdAt: new Date(),
+        author: { connect: { id: user.id } },
+        tags: { connect: tagIds.map(id => ({ id })) },
+      },
+      update: {
+        title,
+        cover_url,
+        description,
+        markdown,
+        content,
+        published,
+        updatedAt: new Date(),
+        tags: { set: tagIds.map(id => ({ id })) },
+      },
+    });
+
+    console.log("Post created or updated successfully", post);
+    return post.id; // Return the post ID after creation/upsert
+  } catch (error) {
+    console.error("Error creating post:", error);
+    throw error;
+  }
+}
+
+export async function createDraft(
+  formData: FormData,
+  markdown: boolean,
+  imageUrl: string,
+  userId: string // Pass the userId as a parameter
+) {
+  try {
+    // Safely retrieve and cast the title and content from the formData
+    const title = formData.get('title') as string | null;
+    const content = formData.get('content') as string | null;
+    const tagsString = formData.get('tags') as string | null;
+    let cover_url = imageUrl ? `${supabaseURL}${imageUrl}` : null;
+      const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+
+    // Ensure title and content are not null
+    if (!title || !content) {
+      throw new Error("Title or content is missing from the form data");
     }
 
-    try {
-        const title = formData.get('title') as string;
-        const description = formData.get('description') as string;
-        const content = formData.get('content') as string;
-        const tagsString = formData.get('tags') as string;
-        const tags = JSON.parse(tagsString) as string[];
-        const baseSlug = generateSlug(title);
-        const slug = await ensureUniqueSlug(baseSlug);
-        let cover_url;
-        if(imageUrl === null) {
-             cover_url = null;
-        }else{ cover_url = supabaseURL + imageUrl;}
-        
+    // Generate slug from the title
+    const slug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
 
-        const tagIds = await handleTags(tags);
+    // Parse tags string if it exists
+    const tags = tagsString ? JSON.parse(tagsString) as string[] : [];
 
-        // Create the post only once, after handling all tags
-        const post = await prisma.post.upsert({
-  where: {
-    slug: slug,  // Assuming slug is unique, or use another unique identifier like ID
-  },
-  create: {
-    title,
-    cover_url,
-    description,
-    markdown,
-    slug,
-    content,
-    published,
-    updatedAt: new Date(),
-    createdAt: new Date(),
-    author: {
-      connect: { id: user.id },
-    },
-    tags: {
-      connect: tagIds.map(id => ({ id })),
-    },
-  },
-  update: {
-    title,
-    cover_url,
-    description,
-    markdown,
-    content,
-    published,
-    updatedAt: new Date(),  // Update the timestamp if the post is modified
-    tags: {
-      set: tagIds.map(id => ({ id })), // Update the tags
-    },
-  },
-});
+    // Prepare the tags input for Prisma
+    const tagData = tags.map((tag) => ({
+      where: { name: tag },       // Connect to an existing tag by name
+      create: { name: tag },      // Create the tag if it doesn't exist
+    }));
 
-console.log("Post created or updated successfully", post);
-    } catch (error) {
-        console.error("Error creating post:", error);
-        throw error;
-    }
+    // Create the draft in the database
+    const draft = await prisma.post.create({
+      data: {
+        title,
+        content,
+        cover_url,
+        slug, // Add the slug here
+        markdown,
+        published: false, // Draft is not published yet
+        author: { connect: { id: user?.id } }, // Connect the post to the author
+        tags: {
+          connectOrCreate: tagData, // Use connectOrCreate for the tags relation
+        },
+      },
+    });
+
+    return draft.id; // Return the draft postId
+  } catch (error) {
+    console.error("Error creating draft:", error);
+    throw error; // Rethrow the error to handle it further up the stack
+  }
 }

@@ -1,9 +1,9 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { createPost } from "./actions";
+import { createPost, createDraft as saveDraft } from "./actions";
 import rehypeSanitize from "rehype-sanitize";
 import { useTheme } from "next-themes";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import { createClient } from "../utils/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { AiOutlinePicture } from "react-icons/ai";
 import Loading from "@/components/ui/loader-spinner";
+import { title } from "process";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -30,6 +31,7 @@ export default function App() {
   const [imageUrl, setImageUrl] = useState("");
   const [autoSave, setAutoSave] = useState(false);
   const markdown = true;
+  const [postId, setPostId] = useState<string | null>(null);
   const [value, setValue] = useState("Start writing your blog here...");
 
   const [draftTimeout, setDraftTimeout] = useState<NodeJS.Timeout | null>(null);
@@ -111,12 +113,14 @@ export default function App() {
   const createDraft = async () => {
     const formData = new FormData();
     formData.append("content", value);
+    formData.append("title", formData.get("title") as string); // Use form data for title
     formData.append("tags", JSON.stringify(tags));
-    const published = false;
 
     try {
       setAutoSave(true);
-      await createPost(formData, markdown, imageUrl, published);
+      // Call the server action to save draft
+      const userId = "yourUserId"; // Replace with the actual user ID or get it dynamically
+      await saveDraft(formData, true, imageUrl, userId); // Call the server action with userId
     } catch (error) {
       console.error("Error creating draft:", error);
     } finally {
@@ -124,13 +128,16 @@ export default function App() {
     }
   };
 
+  // Auto-save draft effect
   useEffect(() => {
     if (draftTimeout) {
       clearTimeout(draftTimeout); // Clear previous timeout if any
     }
 
     const timeout = setTimeout(() => {
-      createDraft(); // Save draft after delay
+      if (value.trim()) {
+        createDraft(); // Only save draft if there is content
+      }
     }, 2000); // 2 seconds delay before saving the draft
 
     setDraftTimeout(timeout);
@@ -175,7 +182,7 @@ export default function App() {
                   id="image-upload"
                   ref={fileInputRef}
                   aria-label="Choose an image to upload"
-                />{" "}
+                />
                 <div
                   onClick={() => fileInputRef.current?.click()}
                   className="relative h-[400px] md:-mt-0 mt-[-4px]  w-screen overflow-hidden"
@@ -191,7 +198,7 @@ export default function App() {
                   <p className="absolute bottom-4 right-4 flex items-center gap-2 text-gray-200">
                     <AiOutlinePicture color="rgb(229 231 235)" /> Change Cover
                     Image
-                  </p>{" "}
+                  </p>
                 </div>
                 <Label htmlFor="image-upload" className="sr-only">
                   Choose an image to upload
@@ -204,19 +211,18 @@ export default function App() {
           <div className="w-screen flex justify-center">
             <div className="p-4 flex flex-col justify-center max-w-5xl gap-4 mt-4">
               {autoSave ? (
-                <p className="text-green-500">
-                  <Loading />
-                </p>
+                <p className="text-gray-500">Saving draft...</p>
               ) : null}
               <Input
                 name="title"
+                required
                 className="p-1 border-none font-extrabold text-4xl w-full placeholder:font-extrabold placeholder:text-4xl tracking-tight"
                 placeholder="Blog Title"
               />
 
               <Input
                 maxLength={250}
-              
+                required
                 minLength={10}
                 name="description"
                 className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg border-b text-lg font-semibol text-gray-300"
@@ -228,48 +234,57 @@ export default function App() {
                   <div className="flex items-center flex-wrap gap-2">
                     {tags.map((tag) => (
                       <Badge variant={"outline"} className="mb-4" key={tag}>
-                        <Tag size={10} className="mr-1" />
-                        {tag}
+                        <Tag size={10} className="mr-2" /> {tag}
                         <button
                           type="button"
                           onClick={() => removeTag(tag)}
-                          className="text-red-500 ml-1 hover:text-red-700"
+                          className="ml-2 text-xs text-gray-500 hover:text-gray-700"
                         >
-                          ×
+                          ✕
                         </button>
                       </Badge>
                     ))}
                   </div>
                 )}
-                <Input
-                  value={tagInput}
-                  disabled={tags.length >= 5}
-                  onChange={(e) => setTagInput(e.target.value)}
-                  onKeyDown={handleTagInputKeyDown}
-                  className="border-none p-1 w-full"
-                  placeholder="Type a tag and press Enter"
-                />
-                {tags.length >= 5 && (
-                  <p className="text-red-500">Maximum of 5 tags allowed.</p>
-                )}
+                <div className="flex gap-2 items-center">
+                  <Input
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={handleTagInputKeyDown}
+                    placeholder="Add tags"
+                    className="placeholder:text-gray-500"
+                  />
+                  <Button type="button" variant={"outline"} size="sm">
+                    <PlusIcon className="mr-2 h-4 w-4" />
+                    Add Tag
+                  </Button>
+                </div>
               </div>
-              <MDEditor
-                height="100%"
-                className="min-h-[500px]"
-                preview="edit"
-                value={value}
-                previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}
-                onChange={(newValue) => setValue(newValue || "")}
-              />
-              <p>Preview:</p>
-              <MDEditor.Markdown
-                className="p-4 rounded-lg border border-gray-300"
-                source={value}
-                style={{ whiteSpace: "pre-wrap" }}
-              />
-              <Button className="w-full mt-4" type="submit" disabled={loading}>
-                {loading ? <Loading /> : "Publish"}
-              </Button>
+
+              <div
+                data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}
+              >
+                <MDEditor
+                  value={value}
+                  onChange={(val = "") => setValue(val)}
+                  preview="edit"
+                  hideToolbar={false}
+                  height={400}
+                  fullscreen={false}
+                  autoFocus={false}
+                  extraCommands={[]}
+                  visiableDragbar={false}
+                  previewOptions={{
+                    rehypePlugins: [[rehypeSanitize]],
+                  }}
+                />
+              </div>
+
+              <div className="flex justify-end gap-2">
+                <Button type="submit" disabled={loading} className="w-full">
+                  {loading ? <Loading /> : "Post"}
+                </Button>
+              </div>
             </div>
           </div>
         </form>
