@@ -58,26 +58,41 @@ export async function createPost(formData: FormData, markdown: boolean, imageUrl
 
         // Create the post only once, after handling all tags
         const post = await prisma.post.upsert({
-            data: {
-                title,
-                cover_url,
-                description,
-                markdown,
-                slug,
-                content,
-                published,
-                updatedAt: new Date(),
-                createdAt: new Date(),
-                author: {
-                    connect: { id: user.id },
-                },
-                tags: {
-                    connect: tagIds.map(id => ({ id })),
-                },
-            },
-        });
+  where: {
+    slug: slug,  // Assuming slug is unique, or use another unique identifier like ID
+  },
+  create: {
+    title,
+    cover_url,
+    description,
+    markdown,
+    slug,
+    content,
+    published,
+    updatedAt: new Date(),
+    createdAt: new Date(),
+    author: {
+      connect: { id: user.id },
+    },
+    tags: {
+      connect: tagIds.map(id => ({ id })),
+    },
+  },
+  update: {
+    title,
+    cover_url,
+    description,
+    markdown,
+    content,
+    published,
+    updatedAt: new Date(),  // Update the timestamp if the post is modified
+    tags: {
+      set: tagIds.map(id => ({ id })), // Update the tags
+    },
+  },
+});
 
-        console.log("Post created successfully", post);
+console.log("Post created or updated successfully", post);
     } catch (error) {
         console.error("Error creating post:", error);
         throw error;
