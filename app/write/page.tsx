@@ -212,11 +212,13 @@ export default function App() {
           </div>
           <div className="w-screen flex justify-center">
             <div className="p-4 flex flex-col justify-center max-w-5xl gap-4 mt-4">
+{autoSave && 
               <div className="fixed w-screen z-50 bottom-0 bg-gradient-to-t from-card to-transparent h-10">
                 <p className="text-gray-200 flex w-screen items-center animate-pulse gap-2">
                   <Loading /> Saving Draft...
                 </p>
               </div>
+}
 
               <Input
                 name="title"
