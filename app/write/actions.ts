@@ -105,7 +105,8 @@ if (!title) {
 export async function createDraft(
   formData: FormData,
   markdown: boolean,
-  imageUrl: string,
+ imageUrl: string, 
+ postId?: string | null,
 ) {
   try {
     console.log(formData)
@@ -136,10 +137,41 @@ export async function createDraft(
       create: { name: tag },      // Create the tag if it doesn't exist
     }));
 
+    if(postId){
+        const post = await prisma.post.findUnique({
+            where: { id: postId },
+            include: { tags: true },
+        });
+    
+        if (!post) {
+            throw new Error("Post not found");
+        }
+    
+        // Update the post in the database
+        const updatedDraft = await prisma.post.update({
+            where: { id: postId },
+            data: {
+            title,
+            description,
+            content,
+            cover_url,
+            slug, // Add the slug here
+            markdown,
+             tags: {
+          connectOrCreate: tagData, // Use connectOrCreate for the tags relation
+        },
+            },
+        });
+    
+        console.log("Draft updated successfully", updatedDraft.id);
+        return updatedDraft.id; // Return the draft postId
+    }
+
     // Create the draft in the database
     const draft = await prisma.post.create({
       data: {
         title,
+        description,
         content,
         cover_url,
         slug, // Add the slug here
@@ -151,10 +183,12 @@ export async function createDraft(
         },
       },
     });
-
-    return draft.id; // Return the draft postId
+ console.log("Draft created successfully", draft.id);
+    return draft.id; // Return the draft postId 
+   
   } catch (error) {
     console.error("Error creating draft:", error);
     throw error; // Rethrow the error to handle it further up the stack
   }
+ 
 }

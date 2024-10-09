@@ -115,16 +115,14 @@ export default function App() {
   const createDraft = async () => {
     const formData = new FormData();
     formData.append("content", value);
-    formData.append("title", title); // Use form data for title
-    formData.append("description", description); // Use form data for description
+    formData.append("title", title);
+    formData.append("description", description);
     formData.append("tags", JSON.stringify(tags));
-
+    const published = false;
     try {
       setAutoSave(true);
-      // Call the server action to save draft
-      const post_id = await saveDraft(formData, true, imageUrl); // Call the server action with userId
-      setPostId(post_id);
-      console.log(postId);
+      const post_id = await saveDraft(formData, true, imageUrl, postId);
+      setPostId(post_id); // Update the postId state after draft creation
     } catch (error) {
       console.error("Error creating draft:", error);
     } finally {
@@ -214,9 +212,12 @@ export default function App() {
           </div>
           <div className="w-screen flex justify-center">
             <div className="p-4 flex flex-col justify-center max-w-5xl gap-4 mt-4">
-              {autoSave ? (
-                <p className="text-gray-500">Saving draft...</p>
-              ) : null}
+              {autoSave && (
+                <p className="text-gray-500 animate-pulse flex items-center gap-2">
+                  <Loading /> Saving Draft...
+                </p>
+              )}
+
               <Input
                 name="title"
                 required
