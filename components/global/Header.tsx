@@ -40,7 +40,7 @@ export default async function Header() {
             <div className=" hidden md:flex items-center gap-3">
               <ModeToggle />
             </div>{" "}
-            <div className="mt-1">
+            <div className="mt-1 hidden md:flex">
               <UserIcon />
             </div>
           </div>
