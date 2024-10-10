@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { AiOutlinePicture } from "react-icons/ai";
 import Loading from "@/components/ui/loader-spinner";
 import { title } from "process";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -171,9 +172,9 @@ export default function App() {
       className="min-h-screen my-auto"
       data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}
     >
-      <div className="flex flex-col w-full items-center gap-4">
+      <div className="flex flex-col items-center gap-4">
         <form onSubmit={handleSubmit} className="w-full">
-          <div className="flex-col w-full flex gap-2">
+          <div className="w-full">
             <div className="w-full mx-auto bg-card rounded-lg shadow-md">
               <div className="">
                 <Input
@@ -187,7 +188,7 @@ export default function App() {
                 />
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="relative h-[400px] md:-mt-0 mt-[-4px]  w-screen overflow-hidden"
+                  className="relative h-[400px] md:mt-0 mt-[-4px] w-screen overflow-hidden"
                 >
                   <Image
                     src={selectedImage ? selectedImage : "/gradient.jpg"}
@@ -202,97 +203,86 @@ export default function App() {
                     Image
                   </p>
                 </div>
-                <Label htmlFor="image-upload" className="sr-only">
-                  Choose an image to upload
-                </Label>
               </div>
 
               {uploadError && <p className="text-red-500">{uploadError}</p>}
             </div>
           </div>
-          <div className="w-screen flex justify-center">
-            <div className="p-4 flex flex-col justify-center max-w-5xl gap-4 mt-4">
-{autoSave && 
-              <div className="fixed w-screen z-50 bottom-0 bg-gradient-to-t from-card to-transparent h-10">
-                <p className="text-gray-200 flex w-screen items-center animate-pulse gap-2">
-                  <Loading /> Saving Draft...
-                </p>
-              </div>
-}
-
-              <Input
-                name="title"
-                required
-                onChange={(e) => setTitle(e.target.value)}
-                className="p-1 border-none font-extrabold text-4xl w-full placeholder:font-extrabold placeholder:text-4xl tracking-tight"
-                placeholder="Blog Title"
-              />
-
-              <Input
-                maxLength={250}
-                required
-                onChange={(e) => setDescription(e.target.value)}
-                minLength={10}
-                name="description"
-                className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg border-b text-lg font-semibol text-gray-300"
-                placeholder="Blog description"
-              />
-
-              <div className="">
-                {tags.length > 0 && (
-                  <div className="flex items-center flex-wrap gap-2">
-                    {tags.map((tag) => (
-                      <Badge variant={"outline"} className="mb-4" key={tag}>
-                        <Tag size={10} className="mr-2" /> {tag}
-                        <button
-                          type="button"
-                          onClick={() => removeTag(tag)}
-                          className="ml-2 text-xs text-gray-500 hover:text-gray-700"
-                        >
-                          ✕
-                        </button>
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-                <div className="flex gap-2 items-center">
+          {/* Content Section */}
+          <div className="flex justify-center w-full">
+            <div className="max-w-3xl w-full">
+              <div className="p-4 flex flex-col gap-4 mt-4">
+                <div className="flex items-center justify-between">
                   <Input
-                    value={tagInput}
-                    onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={handleTagInputKeyDown}
-                    placeholder="Add tags"
-                    className="placeholder:text-gray-500"
+                    name="title"
+                    required
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="p-1 border-none font-extrabold text-4xl w-full placeholder:font-extrabold placeholder:text-4xl tracking-tight"
+                    placeholder="Blog Title"
                   />
-                  <Button type="button" variant={"outline"}>
-                    <PlusIcon className="mr-2 h-4 w-4" />
-                    Add Tag
+                  <div className="dark:text-gray-200 text-black flex w-fit items-center animate-pulse gap-2">
+                    {autoSave && <Loading />}
+                  </div>
+                </div>
+                <Input
+                  maxLength={250}
+                  required
+                  onChange={(e) => setDescription(e.target.value)}
+                  minLength={10}
+                  name="description"
+                  className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg border-b text-lg font-semibold"
+                  placeholder="Blog description"
+                />
+                <div className="">
+                  {tags.length > 0 && (
+                    <div className="flex items-center flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <Badge variant={"outline"} className="mb-4" key={tag}>
+                          <Tag size={10} className="mr-2" /> {tag}
+                          <button
+                            type="button"
+                            onClick={() => removeTag(tag)}
+                            className="ml-2 text-xs text-gray-500 hover:text-gray-700"
+                          >
+                            ✕
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex gap-2 items-center">
+                    <Input
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={handleTagInputKeyDown}
+                      placeholder="Add a tag and press Enter"
+                      className="placeholder:text-gray-500"
+                    />
+                  </div>
+                </div>
+                <div
+                  data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}
+                >
+                  <MDEditor
+                    value={value}
+                    onChange={(val = "") => setValue(val)}
+                    preview="edit"
+                    hideToolbar={false}
+                    height={400}
+                    fullscreen={false}
+                    autoFocus={false}
+                    extraCommands={[]}
+                    visiableDragbar={false}
+                    previewOptions={{
+                      rehypePlugins: [[rehypeSanitize]],
+                    }}
+                  />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button type="submit" disabled={loading} className="w-full">
+                    {loading ? <Loading /> : "Post"}
                   </Button>
                 </div>
-              </div>
-
-              <div
-                data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}
-              >
-                <MDEditor
-                  value={value}
-                  onChange={(val = "") => setValue(val)}
-                  preview="edit"
-                  hideToolbar={false}
-                  height={400}
-                  fullscreen={false}
-                  autoFocus={false}
-                  extraCommands={[]}
-                  visiableDragbar={false}
-                  previewOptions={{
-                    rehypePlugins: [[rehypeSanitize]],
-                  }}
-                />
-              </div>
-
-              <div className="flex justify-end gap-2">
-                <Button type="submit" disabled={loading} className="w-full">
-                  {loading ? <Loading /> : "Post"}
-                </Button>
               </div>
             </div>
           </div>
