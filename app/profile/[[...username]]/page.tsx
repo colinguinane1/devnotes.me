@@ -74,12 +74,14 @@ export default async function ProfilePage({
     isSubscribed,
   ] = await Promise.all([
     prisma.post.findMany({
-      where: { user_id: author.id },
+      where: { user_id: author.id, published: true },
       include: { author: true, tags: true },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.post.findMany({
-      where: { likedBy: { some: { id: author.id } } },
+      where: { likedBy: { some: { id: author.id } }, published: true },
       include: { author: true, tags: true },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.subscription.findMany({
       where: { subscriberId: author.id },

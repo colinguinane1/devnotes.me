@@ -4,6 +4,9 @@ import BlogCard from "../global/BlogCard";
 
 export default async function TopBlogCarousel() {
   const posts = await prisma.post.findMany({
+    where: {
+      published: true,
+    },
     include: {
       author: true,
       tags: true,
@@ -18,7 +21,12 @@ export default async function TopBlogCarousel() {
       <h1 className="text-2xl text-center py-4 font-medium">Trending</h1>
       <div className="grid gap-4 place-content-center justify-center md:grid-cols-2 max-w-fit ">
         {posts.map((post) => (
-          <BlogCard tags={post.tags} key={post.id} post={post} author={post.author} />
+          <BlogCard
+            tags={post.tags}
+            key={post.id}
+            post={post}
+            author={post.author}
+          />
         ))}
       </div>
     </section>

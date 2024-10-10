@@ -63,7 +63,7 @@ export default function UserDropdown({
     return (
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Button size={"icon"} variant={"outline"}>
+          <Button className="h-10 w-10" size={"icon"} variant={"outline"}>
             {author.image_url && (
               <Avatar className="w-full h-full">
                 <AvatarImage src={author.image_url} alt="@shadcn" />

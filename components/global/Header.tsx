@@ -18,11 +18,11 @@ export default async function Header() {
     data: { user },
   } = await supabase.auth.getUser();
   return (
-    <div className="fixed  w-screen   z-30     top-0  ">
-      <div className="bg-opacity-85 bg-card/20 border-b backdrop-blur-sm  relative   px-4 py-2">
+    <div className="fixed  w-screen  h-fit  z-30     top-0  ">
+      <div className="bg-opacity-85 bg-card/20 border-b backdrop-blur-sm  relative h-fit   px-4 py-1">
         <ul className="flex items-center  text-lg font-semibold justify-between">
           <div className="flex md:hidden items-center gap-2 ">
-            <Sidebar /> <div>{!user && <UserIcon />}</div>
+            <Sidebar /> {!user && <UserIcon />}
           </div>{" "}
           <div className="flex items-center gap-2">
             <Link href="/" className="">
@@ -38,9 +38,11 @@ export default async function Header() {
               </h1>
             </Link>{" "}
             <div className=" hidden md:flex items-center gap-3">
-              <UserIcon />
               <ModeToggle />
             </div>{" "}
+            <div className="mt-1">
+              <UserIcon />
+            </div>
           </div>
           <div className="absolute md:hidden flex items-center justify-center w-full">
             {/* <Link href="/">

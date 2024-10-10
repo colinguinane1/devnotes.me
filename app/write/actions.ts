@@ -126,7 +126,7 @@ export async function createDraft(
     }
 
     // Generate slug from the title
-    const slug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+    const slug = generateSlug(title);
 
     // Parse tags string if it exists
     const tags = tagsString ? JSON.parse(tagsString) as string[] : [];
