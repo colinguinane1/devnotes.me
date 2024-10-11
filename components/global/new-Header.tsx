@@ -42,7 +42,7 @@ export default function NHeader() {
             />
           </a>
         </div>{" "}
-        <div className="flex hidden md:block  items-center gap-6">
+        <div className=" hidden md:flex  items-center gap-6">
           {NavigationData.map((nav) => (
             <Link className="font-bold" key={nav.name} href={nav.href}>
               {nav.name}
@@ -68,7 +68,11 @@ export default function NHeader() {
             className="flex flex-col gap-4 pb-4 items-center justify-center"
           >
             {NavigationData.map((nav) => (
-              <Link className="text-3xl font-extrabold tracking-tight" key={nav.name} href={nav.href}>
+              <Link
+                className="text-3xl hover:text-primary font-extrabold tracking-tight"
+                key={nav.name}
+                href={nav.href}
+              >
                 {nav.name}
               </Link>
             ))}
