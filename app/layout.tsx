@@ -39,7 +39,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Analytics />
           <NHeader />
-          <div className="">{children} </div>
+          <div className="pt-[54px]">{children} </div>
           <Footer />
           <Toaster />
         </ThemeProvider>
