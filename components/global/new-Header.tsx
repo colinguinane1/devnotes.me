@@ -11,6 +11,12 @@ export default function NHeader() {
   const [navHeight, setNavHeight] = useState(0);
   const navRef = useRef(null);
 
+useEffect(() => {
+  if (navRef.current && isOpen) {
+    setNavHeight(navRef.current.scrollHeight);
+  }
+}, [isOpen, navRef]);
+
   return (
     <motion.header
       initial={false}
