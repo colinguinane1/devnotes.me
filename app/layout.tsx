@@ -15,6 +15,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from "@vercel/analytics/react";
 import NextTopLoader from "nextjs-toploader";
 import "@/app/globals.css";
+import NHeader from "@/components/global/new-Header";
 
 const inter = Inter({ subsets: ["latin"] });
 const dm_sans = DM_Sans({ subsets: ["latin"] });
@@ -37,7 +38,7 @@ export default function RootLayout({
         <NextTopLoader />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Analytics />
-          <Header />
+          <NHeader />
           <div className="pt-[3.8rem]">{children} </div>
           <Footer />
           <Toaster />
