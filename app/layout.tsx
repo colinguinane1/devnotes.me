@@ -32,14 +32,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning className="font-sans" lang="en">
+    <html suppressHydrationWarning  className={`${dm_sans.className}`} lang="en">
       <body className="antialiased  bg-primary-light dark:bg-primary-dark transition-colors">
         {" "}
         <NextTopLoader />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Analytics />
           <NHeader />
-          <div className="pt-[3.8rem]">{children} </div>
+          <div className="">{children} </div>
           <Footer />
           <Toaster />
         </ThemeProvider>
