@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function NHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
-  const navRef = useRef(null);
+  const navRef = useRef<HTMLDivElement | null>(null);
 
 useEffect(() => {
   if (navRef.current && isOpen) {
