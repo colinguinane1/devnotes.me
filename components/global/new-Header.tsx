@@ -68,7 +68,7 @@ export default function NHeader() {
             className="flex flex-col gap-4 pb-4 items-center justify-center"
           >
             {NavigationData.map((nav) => (
-              <Link className="text-3xl" key={nav.name} href={nav.href}>
+              <Link className="text-3xl font-extrabold tracking-tight" key={nav.name} href={nav.href}>
                 {nav.name}
               </Link>
             ))}
