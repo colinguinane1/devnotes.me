@@ -65,7 +65,7 @@ export default function UserDropdown({
         <DropdownMenuTrigger>
           <Button className="h-10 w-10" size={"icon"} variant={"ghost"}>
             {author.image_url && (
-              <Avatar className="w-full h-full">
+              <Avatar className="w-full h-full border">
                 <AvatarImage src={author.image_url} alt="@shadcn" />
                 <AvatarFallback>JD</AvatarFallback>
               </Avatar>
@@ -86,7 +86,7 @@ export default function UserDropdown({
           <DropdownMenuItem>
             <Link className="flex items-center gap-2" href={`/account`}>
               {author.image_url && (
-                <Avatar className="w-5 h-5">
+                <Avatar className="w-5 h-5 border">
                   <AvatarImage src={author.image_url} alt="@shadcn" />
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>
@@ -113,7 +113,7 @@ export default function UserDropdown({
         <DrawerTrigger asChild>
           <Button size={"icon"} variant={"ghost"}>
             {author.image_url && (
-              <Avatar className="w-full h-full">
+              <Avatar className="w-full h-full border">
                 <AvatarImage src={author.image_url} alt="@shadcn" />
                 <AvatarFallback>JD</AvatarFallback>
               </Avatar>

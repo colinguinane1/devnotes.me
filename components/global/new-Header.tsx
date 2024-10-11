@@ -5,17 +5,18 @@ import { NavigationData } from "@/data/SiteData";
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import UserIcon from "../buttons/UserIcon";
 
 export default function NHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
   const navRef = useRef<HTMLDivElement | null>(null);
 
-useEffect(() => {
-  if (navRef.current && isOpen) {
-    setNavHeight(navRef.current.scrollHeight);
-  }
-}, [isOpen, navRef]);
+  useEffect(() => {
+    if (navRef.current && isOpen) {
+      setNavHeight(navRef.current.scrollHeight);
+    }
+  }, [isOpen, navRef]);
 
   return (
     <motion.header
@@ -27,9 +28,9 @@ useEffect(() => {
         duration: 0.6,
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="flex items-center flex-col px-4 py-1 border-b bg-card/20 overflow-hidden" // Prevent content overflow
+      className="flex fixed top-0 w-screen items-center flex-col px-4 py-1 border-b bg-card/50 backdrop-blur-xl overflow-hidden z-20" // Prevent content overflow
     >
-      <div className="flex items-center w-full justify-between">
+      <div className="flex items-center mt-0 md:mt-[8px] w-full justify-between">
         <div className="flex items-center gap-4">
           <a href="/" className="font-bold text-2xl">
             <Image
@@ -40,6 +41,13 @@ useEffect(() => {
               className="rounded-lg"
             />
           </a>
+        </div>{" "}
+        <div className="flex hidden md:block  items-center gap-6">
+          {NavigationData.map((nav) => (
+            <Link className="font-bold" key={nav.name} href={nav.href}>
+              {nav.name}
+            </Link>
+          ))}
         </div>
         <div className="md:hidden">
           <Hamburger toggle={setIsOpen} toggled={isOpen} rounded size={20} />

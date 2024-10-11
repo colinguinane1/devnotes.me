@@ -16,6 +16,7 @@ import { Analytics } from "@vercel/analytics/react";
 import NextTopLoader from "nextjs-toploader";
 import "@/app/globals.css";
 import NHeader from "@/components/global/new-Header";
+import HeaderServerSide from "@/components/global/new-Header-server";
 
 const inter = Inter({ subsets: ["latin"] });
 const dm_sans = DM_Sans({ subsets: ["latin"] });
@@ -32,12 +33,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning  className={`${dm_sans.className}`} lang="en">
+    <html suppressHydrationWarning className={`${dm_sans.className}`} lang="en">
       <body className="antialiased  bg-primary-light dark:bg-primary-dark transition-colors">
         {" "}
         <NextTopLoader />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Analytics />
+          <HeaderServerSide />
           <NHeader />
           <div className="pt-[54px]">{children} </div>
           <Footer />
