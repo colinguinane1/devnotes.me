@@ -94,3 +94,19 @@ export async function updatePost(
   }
 }
 
+export async function publishPost(id: string ) {
+  try {
+    const post = await prisma.post.update({
+      where: { id },
+      data: {
+        published: true,
+        createdAt: new Date(),
+      },
+    });
+
+    return post;
+  } catch (error: any) {
+    throw new Error("Failed to publish post: " + error.message);
+  }
+}
+

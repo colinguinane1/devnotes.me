@@ -105,7 +105,7 @@ if (!title) {
 export async function createDraft(
   formData: FormData,
   markdown: boolean,
- imageUrl: string, 
+ imageUrl: string | null, 
  postId?: string | null,
 ) {
   try {

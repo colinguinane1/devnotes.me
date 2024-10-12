@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { getBlogBySlug, updatePost } from "./actions";
+import { getBlogBySlug, publishPost, updatePost } from "./actions";
 import { Button } from "@/components/ui/button"; // Assuming you are using a Button component
 import { useRouter } from "next/navigation";
 import MDEditor from "@uiw/react-md-editor";
@@ -10,20 +10,24 @@ import BlogNotFound from "@/components/global/BlogNotFound";
 import { Tag } from "@prisma/client";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Tag as TagIcon } from "lucide-react";
+import { Pencil, Tag as TagIcon } from "lucide-react";
 import { AiOutlinePicture } from "react-icons/ai";
 import Loading from "@/components/ui/loader-spinner";
 import { useTheme } from "next-themes";
+import { createDraft as saveDraft } from "@/app/write/actions";
 import { createClient } from "@/app/utils/supabase/client";
 import Image from "next/image";
+import { BiLogoHeroku } from "react-icons/bi";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function EditBlog({ params }: { params: { slug: string } }) {
   const [title, setTitle] = useState<string>("");
-  const [content, setContent] = useState<string>("");
+
   const [cover, setCover] = useState<string | null>(null);
   const [description, setDescription] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
   const [markdown, setMarkdown] = useState<boolean | null>(false);
   const [tags, setTags] = useState<Tag[]>([]);
   const [value, setValue] = useState<string>("");
@@ -34,7 +38,13 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
   const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [publishing, setPublishing] = useState<boolean>(false);
   const [tagInput, setTagInput] = useState("");
+  const [postId, setPostId] = useState<string>("");
+  const [published, setPublished] = useState<boolean | null>(false);
+  const [fetching, setFetching] = useState(true);
+  const [draftTimeout, setDraftTimeout] = useState<NodeJS.Timeout | null>(null);
+
   const router = useRouter();
 
   const resolvedTheme = useTheme().resolvedTheme;
@@ -44,16 +54,19 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
   useEffect(() => {
     const fetchPostData = async () => {
       try {
+        setFetching(true);
         const post = await getBlogBySlug(slug); // Call the server action
         setTitle(post.title);
         setTags(post.tags);
-        setContent(post.content);
+        setPostId(post.id);
+        setPublished(post.published);
+        setValue(post.content);
         setDescription(post.description || "");
         setMarkdown(post.markdown);
-        setCover(post.cover_url);
+        setImageUrl(post.cover_url);
+        setFetching(false);
       } catch (error) {
         setError("Failed to fetch post data");
-        return <BlogNotFound />;
       }
     };
 
@@ -122,6 +135,44 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
       setImageLoading(false);
     }
   };
+  const createDraft = async () => {
+    const formData = new FormData();
+    formData.append("content", value);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("tags", JSON.stringify(tags));
+    const published = false;
+    try {
+      setAutoSave(true);
+      const post_id = await saveDraft(formData, true, imageUrl, postId);
+      setPostId(post_id); // Update the postId state after draft creation
+    } catch (error) {
+      console.error("Error creating draft:", error);
+    } finally {
+      setAutoSave(false);
+    }
+  };
+
+  // Auto-save draft effect
+  useEffect(() => {
+    if (draftTimeout) {
+      clearTimeout(draftTimeout); // Clear previous timeout if any
+    }
+
+    const timeout = setTimeout(() => {
+      if (value.trim()) {
+        createDraft(); // Only save draft if there is content
+      }
+    }, 2000); // 2 seconds delay before saving the draft
+
+    setDraftTimeout(timeout);
+
+    return () => {
+      if (draftTimeout) {
+        clearTimeout(draftTimeout); // Cleanup timeout on component unmount or change
+      }
+    };
+  }, [value, tags, imageUrl]); // Run effect when value, tags, or image changes
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -129,7 +180,7 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
     setError(null);
 
     try {
-      await updatePost(slug, title, content, description, tags); // Use another server action to update the post
+      await updatePost(slug, title, value, description, tags); // Use another server action to update the post
       router.push(`/posts/${slug}`); // Redirect to the updated blog post
     } catch (error) {
       setError("Failed to update post");
@@ -138,7 +189,29 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
     }
   };
 
+  const publish = async () => {
+    try {
+      setPublishing(true);
+      await publishPost(postId); // Call the publishPost server action
+      router.push(`/posts/${slug}`); // Redirect to the published post
+    } catch (error) {
+      setPublishing(false);
+      setError("Failed to publish post");
+    }
+  };
+
   if (error) return <p>{error}</p>;
+
+  if (fetching)
+    return (
+      <div className="min-h-screen min-w-screen grid place-content-center">
+        <div className="flex items-center gap-4 text-primary flex-col scale-150 animate-pulse">
+          <Loading />
+          <p>Fetching blog...</p>
+        </div>
+      </div>
+    );
+  else if (error) return <BlogNotFound />;
 
   return (
     <div
@@ -164,7 +237,7 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
                   className="relative h-[400px] md:mt-0 mt-[-4px] w-screen overflow-hidden"
                 >
                   <Image
-                    src={cover ? cover : "/gradient.jpg"}
+                    src={imageUrl ? imageUrl : "/gradient.jpg"}
                     alt="Blog cover image"
                     width={1920}
                     height={1080}
@@ -177,14 +250,30 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
                   </p>
                 </div>
               </div>
-
-              {uploadError && <p className="text-red-500">{uploadError}</p>}
             </div>
           </div>
           {/* Content Section */}
           <div className="flex justify-center w-full">
             <div className="max-w-3xl w-full">
               <div className="p-4 flex flex-col gap-4 mt-4">
+                {" "}
+                <div className="py-2">
+                  {!published && (
+                    <>
+                      <Alert>
+                        <AlertTitle className="flex items-center gap-1">
+                          <Pencil size={20} />
+                          Draft Mode
+                        </AlertTitle>
+                        <AlertDescription>
+                          Your blog is not published yet!
+                        </AlertDescription>
+                      </Alert>
+                    </>
+                  )}
+
+                  {uploadError && <p className="text-red-500">{uploadError}</p>}
+                </div>
                 <div className="flex items-center justify-between">
                   <Input
                     name="title"
@@ -243,8 +332,8 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
                   data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}
                 >
                   <MDEditor
-                    value={content}
-                    onChange={(val = "") => setValue(val)}
+                    value={value}
+                    onChange={(value) => setValue(value || "")} // Correctly update the content state
                     preview="edit"
                     hideToolbar={false}
                     height={400}
@@ -262,10 +351,13 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
                     {loading ? <Loading /> : "Post"}
                   </Button>
                 </div>
-              </div>
+              </div>{" "}
             </div>
           </div>
-        </form>
+        </form>{" "}
+        <Button variant={"outline"} disabled={loading} className="w-full">
+          {publishing ? <Loading /> : "Publish Post"}
+        </Button>
       </div>
     </div>
   );
