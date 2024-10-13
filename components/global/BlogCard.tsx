@@ -47,9 +47,9 @@ export default async function BlogCard({
   } = await supabase.auth.getUser();
   return (
     <Card
-      className={`w-full   group overflow-hidden active:scale-[0.99] transition-all  ${
+      className={`w-full   group overflow-hidden active:scale-[0.99] bg-card transition-all  ${
         horizontal
-          ? "flex w-full border hover:bg-card/80 "
+          ? "flex w-full border "
           : "max-w-lg border rounded-md"
       }
     `}
@@ -71,7 +71,7 @@ export default async function BlogCard({
           />
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-background  to-transparent " />
+        <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent " />
       </Link>
       <CardContent
         className={`space-y-4 w-full ${borderType === "none" ? "p-0" : "p-4"} `}
