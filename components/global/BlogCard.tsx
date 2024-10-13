@@ -87,19 +87,6 @@ export default async function BlogCard({
             }`}
           >
             <Link
-              href={`/posts/${post.slug}`}
-              className="block"
-              prefetch={false}
-            >
-              <h3
-                className={` ${
-                  horizontal ? "text-base" : "text-xl"
-                } font-semibold transition-colors group-hover:text-primary`}
-              >
-                {post.title}
-              </h3>
-            </Link>
-            <Link
               href={`/profile/${author.username}`}
               className="flex items-center gap-4"
             >
@@ -123,6 +110,20 @@ export default async function BlogCard({
                 </span>
               </div>
             </Link>
+            <Link
+              href={`/posts/${post.slug}`}
+              className="block"
+              prefetch={false}
+            >
+              <h3
+                className={` ${
+                  horizontal ? "text-base" : "text-xl"
+                } font-semibold transition-colors group-hover:text-primary`}
+              >
+                {post.title}
+              </h3>
+            </Link>
+
             {tags && (
               <div className={`flex flex-wrap  gap-2 `}>
                 {showTags &&
