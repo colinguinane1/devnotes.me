@@ -49,7 +49,7 @@ export default async function BlogCard({
     <Card
       className={`w-full   group overflow-hidden active:scale-[0.99] transition-all  ${
         horizontal
-          ? "flex w-full hover:bg-card/80 "
+          ? "flex w-full border hover:bg-card/80 "
           : "max-w-lg border rounded-md"
       }
     `}
