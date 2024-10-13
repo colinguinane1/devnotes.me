@@ -24,6 +24,7 @@ interface BlogCardProps {
   horizontal?: boolean;
   dropdownType?: string;
   borderType?: string;
+  showDescription?: boolean;
 }
 
 export default async function BlogCard({
@@ -34,6 +35,7 @@ export default async function BlogCard({
   horizontal = false,
   dropdownType = "user",
   borderType = "full",
+  showDescription = false,
 }: BlogCardProps) {
   const supabase = createClient();
 
@@ -48,9 +50,7 @@ export default async function BlogCard({
   return (
     <Card
       className={`w-full   group overflow-hidden active:scale-[0.99] bg-card transition-all  ${
-        horizontal
-          ? "flex w-full border "
-          : "max-w-lg border rounded-md"
+        horizontal ? "flex w-full border " : "max-w-lg border rounded-md"
       }
     `}
       key={post.id}
@@ -88,11 +88,15 @@ export default async function BlogCard({
           >
             <Link
               href={`/profile/${author.username}`}
-              className="flex items-center gap-4"
+              className="flex items-center gap-2"
             >
               {author.image_url && (
-                <Avatar className="border">
-                  <AvatarImage src={author.image_url} alt="Author Avatar" />
+                <Avatar className="border h-8 w-8">
+                  <AvatarImage
+                    className=""
+                    src={author.image_url}
+                    alt="Author Avatar"
+                  />
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>
               )}
@@ -104,9 +108,6 @@ export default async function BlogCard({
                 >
                   {author.username}
                   {author.verified && <VerifiedUser />}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  {formatDate(post.createdAt)}
                 </span>
               </div>
             </Link>
@@ -122,6 +123,7 @@ export default async function BlogCard({
               >
                 {post.title}
               </h3>
+              {showDescription && <p>{post.description}</p>}
             </Link>
 
             {tags && (
@@ -139,7 +141,9 @@ export default async function BlogCard({
                   })}
               </div>
             )}
-
+            <span className="text-sm text-muted-foreground">
+              {formatDate(post.createdAt)}
+            </span>
             <div className="flex items-center justify-between">
               {" "}
               {horizontal ? (
