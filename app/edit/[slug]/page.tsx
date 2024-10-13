@@ -44,6 +44,8 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
   const [published, setPublished] = useState<boolean | null>(false);
   const [fetching, setFetching] = useState(true);
   const [draftTimeout, setDraftTimeout] = useState<NodeJS.Timeout | null>(null);
+  const supabaseURL =
+    "https://gktuazxnjcwahdrwuchb.supabase.co/storage/v1/object/public/blog-images/";
 
   const router = useRouter();
 
@@ -126,7 +128,7 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
       if (error) {
         setUploadError("Error uploading file: " + error.message);
       } else {
-        setImageUrl(fileName);
+        setImageUrl(`${supabaseURL}${fileName}`);
       }
     } catch (err) {
       console.error("An unexpected error occurred:", err);

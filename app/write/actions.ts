@@ -1,7 +1,7 @@
 'use server'
 import prisma from "@/prisma/db";
 import { createClient } from "@/app/utils/supabase/server";
-import { generateSlug } from "@/data/SiteData";
+import { calculateReadingTime, generateSlug } from "@/data/SiteData";
 
 const supabaseURL = "https://gktuazxnjcwahdrwuchb.supabase.co/storage/v1/object/public/blog-images/";
 
@@ -65,6 +65,8 @@ if (!title) {
     let cover_url = imageUrl ? `${supabaseURL}${imageUrl}` : null;
 
     const tagIds = await handleTags(tags);
+    const read_time = calculateReadingTime(content);
+    const readingTime = read_time.toString();
 
     // Create or update the post
     const post = await prisma.post.upsert({
@@ -73,6 +75,7 @@ if (!title) {
         title,
         cover_url,
         description,
+        readingTime,
         markdown,
         slug,
         content,
@@ -85,7 +88,7 @@ if (!title) {
       update: {
         title,
         cover_url,
-        description,
+        readingTime,
         markdown,
         content,
         published,
@@ -131,6 +134,9 @@ export async function createDraft(
     // Parse tags string if it exists
     const tags = tagsString ? JSON.parse(tagsString) as string[] : [];
 
+       const read_time = calculateReadingTime(content);
+    const readingTime = read_time.toString();
+
     // Prepare the tags input for Prisma
     const tagData = tags.map((tag) => ({
       where: { name: tag },       // Connect to an existing tag by name
@@ -152,6 +158,7 @@ export async function createDraft(
             where: { id: postId },
             data: {
             title,
+            readingTime,
             description,
             content,
             cover_url,
@@ -172,6 +179,7 @@ export async function createDraft(
       data: {
         title,
         description,
+        readingTime,
         content,
         createdAt: new Date(),
         updatedAt: new Date(),

@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatDate, getTagColor } from "@/data/SiteData";
+import { calculateReadingTime, formatDate, getTagColor } from "@/data/SiteData";
 import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post, Tag } from "@prisma/client";
 import { Author } from "@prisma/client";
-import { Heart, MessageCircleIcon, TagIcon } from "lucide-react";
+import { Clock, Heart, MessageCircleIcon, TagIcon } from "lucide-react";
 import BlogDropdown from "../buttons/BlogDropdown";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { defaultAvatar } from "@/data/SiteData";
@@ -138,25 +138,42 @@ export default async function BlogCard({
                   })}
               </div>
             )}
-            <div className="flex items-center justify-between">
-              <Link
-                href={`/posts/${post.slug}`}
-                className="flex items-center gap-4"
-              >
-                <div className="flex items-center gap-2 pr-2 text-muted-foreground">
-                  <EyeIcon className="w-4 h-4" />
-                  <span>{post.views}</span>{" "}
-                </div>
-                <div className="flex items-center gap-2 pr-2 text-muted-foreground">
-                  <HeartIcon className="w-4 h-4" />
-                  <span>{post.likes}</span>
-                </div>
-                <div className="flex items-center gap-2 pr-2 text-muted-foreground">
-                  <MessageCircleIcon className="w-4 h-4" />
-                  <span>{comments}</span>
-                </div>
-              </Link>
 
+            <div className="flex items-center justify-between">
+              {" "}
+              {horizontal ? (
+                <>
+                  <p className="flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    {post.readingTime
+                      ? post.readingTime
+                      : calculateReadingTime(post.content)}{" "}
+                    min read
+                  </p>
+                  <p className="flex items-center gap-1">
+                    <EyeIcon className="w-4 h-4" />
+                    {post.views}
+                  </p>
+                </>
+              ) : (
+                <Link
+                  href={`/posts/${post.slug}`}
+                  className="flex items-center gap-4"
+                >
+                  <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                    <EyeIcon className="w-4 h-4" />
+                    <span>{post.views}</span>{" "}
+                  </div>
+                  <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                    <HeartIcon className="w-4 h-4" />
+                    <span>{post.likes}</span>
+                  </div>
+                  <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                    <MessageCircleIcon className="w-4 h-4" />
+                    <span>{comments}</span>
+                  </div>
+                </Link>
+              )}
               {dropdownType === "author" || user?.id === post.user_id ? (
                 <BlogDropdown author={author} slug={post.slug} type="author" />
               ) : (
