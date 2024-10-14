@@ -35,7 +35,7 @@ export default async function BlogCard({
   horizontal = false,
   dropdownType = "user",
   borderType = "full",
-  showDescription = false,
+  showDescription = true,
 }: BlogCardProps) {
   const supabase = createClient();
 
