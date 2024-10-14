@@ -6,11 +6,13 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import UserIcon from "../buttons/UserIcon";
+import { usePathname } from "next/navigation";
 
 export default function NHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
   const navRef = useRef<HTMLDivElement | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (navRef.current && isOpen) {

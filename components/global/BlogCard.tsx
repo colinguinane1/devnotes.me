@@ -119,13 +119,12 @@ export default async function BlogCard({
               <h3
                 className={` ${
                   horizontal ? "text-base" : "text-xl"
-                } font-semibold transition-colors group-hover:text-primary`}
+                } font-extrabold tracking-tight transition-colors group-hover:text-primary`}
               >
                 {post.title}
               </h3>
-              {showDescription && <p>{post.description}</p>}
+              {showDescription && <p className="text-sm">{post.description}</p>}
             </Link>
-
             {tags && (
               <div className={`flex flex-wrap  gap-2 `}>
                 {showTags &&
@@ -138,22 +137,19 @@ export default async function BlogCard({
                         </Badge>
                       </Link>
                     );
-                  })}
+                  })}{" "}
               </div>
-            )}
-            <span className="text-sm text-muted-foreground">
+            )}{" "}
+            <div className="text-sm pt-2  text-muted-foreground">
               {formatDate(post.createdAt)}
-            </span>
+            </div>
             <div className="flex items-center justify-between">
               {" "}
               {horizontal ? (
                 <>
                   <p className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
-                    {post.readingTime
-                      ? post.readingTime
-                      : calculateReadingTime(post.content)}{" "}
-                    min read
+                    <p> {calculateReadingTime(post.content)} min read</p>
                   </p>
                   <p className="flex items-center gap-1">
                     <EyeIcon className="w-4 h-4" />

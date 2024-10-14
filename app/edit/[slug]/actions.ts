@@ -2,6 +2,8 @@
 import prisma from "@/prisma/db";
 import { createClient } from "@/app/utils/supabase/server";
 import { Tag } from "@prisma/client";
+import { calculateReadingTime } from "@/data/SiteData";
+
 
 export async function getBlogBySlug(slug: string) {
       const supabase = createClient();
@@ -37,7 +39,8 @@ export async function updatePost(
   title: string,
   content: string,
   description: string,
-  tags: Tag[]
+  tags: Tag[],
+  imageUrl?: string | null,
 ) {
   try {
     // Get the current post's tags from the database
@@ -72,13 +75,14 @@ export async function updatePost(
     });
 
     const resolvedTags = await Promise.all(tagPromises);
-
+ 
     // Update the post with both connect and disconnect operations
     const updatedPost = await prisma.post.update({
       where: { slug },
       data: {
         title,
         content,
+        cover_url: imageUrl,
         description,
         updatedAt: new Date(),
         tags: {

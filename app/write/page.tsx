@@ -39,6 +39,9 @@ export default function App() {
 
   const [draftTimeout, setDraftTimeout] = useState<NodeJS.Timeout | null>(null);
 
+  const supabaseURL =
+    "https://gktuazxnjcwahdrwuchb.supabase.co/storage/v1/object/public/blog-images/";
+
   const successToast = () => {
     toast({
       variant: "success",
@@ -85,7 +88,7 @@ export default function App() {
       if (error) {
         setUploadError("Error uploading file: " + error.message);
       } else {
-        setImageUrl(fileName);
+        setImageUrl(supabaseURL + fileName);
       }
     } catch (err) {
       console.error("An unexpected error occurred:", err);
@@ -255,6 +258,7 @@ export default function App() {
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
                       onKeyDown={handleTagInputKeyDown}
+                      pattern="^[a-zA-Z0-9]+$"
                       placeholder="Add a tag and press Enter"
                       className="placeholder:text-gray-500"
                     />

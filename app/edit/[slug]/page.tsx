@@ -182,7 +182,7 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
     setError(null);
 
     try {
-      await updatePost(slug, title, value, description, tags); // Use another server action to update the post
+      await updatePost(slug, title, value, description, tags, imageUrl); // Use another server action to update the post
       router.push(`/posts/${slug}`); // Redirect to the updated blog post
     } catch (error) {
       setError("Failed to update post");
@@ -325,6 +325,7 @@ export default function EditBlog({ params }: { params: { slug: string } }) {
                       value={tagInput}
                       onChange={(e) => setTagInput(e.target.value)}
                       onKeyDown={handleTagInputKeyDown}
+                      pattern="^[a-zA-Z0-9]+$"
                       placeholder="Add a tag and press Enter"
                       className="placeholder:text-gray-500"
                     />

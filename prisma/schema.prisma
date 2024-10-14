@@ -68,7 +68,6 @@ model Post {
   id          String    @id @default(cuid())
   markdown    Boolean?  @default(false)
   description String?
-  readingTime String?
   slug        String    @unique
   title       String
   cover_url   String?
