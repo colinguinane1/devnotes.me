@@ -161,13 +161,7 @@ export default async function blog({ params }: { params: { slug: string } }) {
           style={{ aspectRatio: "1920/1080", objectFit: "cover" }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-        {user?.id === blog.author.id && (
-          <Link href={`/edit/${blog.slug}`}>
-            <Button size={"icon"} className="absolute h-12 w-12 top-2 right-2">
-              <PencilIcon />
-            </Button>
-          </Link>
-        )}
+
         <div className="absolute bottom-0 left-0 right-0 px-4 pb-6 md:px-6 md:pb-8 lg:px-8 lg:pb-10">
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
@@ -187,7 +181,6 @@ export default async function blog({ params }: { params: { slug: string } }) {
               ) : (
                 <RemovePostLikeManager postId={blog.id} />
               )}
-
               <span>{blog.likes}</span>
               <Button asChild variant="ghost" size="icon">
                 <Link href="#comments">
@@ -195,16 +188,32 @@ export default async function blog({ params }: { params: { slug: string } }) {
                   <span className="sr-only">Comment</span>
                 </Link>
               </Button>
-              <span>{comments.length}</span>
+              <span>{comments.length}</span>{" "}
+              {blog.author.id === user?.id ? (
+                <BlogDropdown
+                  author={blog.author}
+                  slug={blog.slug}
+                  type="author"
+                />
+              ) : (
+                <BlogDropdown
+                  author={blog.author}
+                  slug={blog.slug}
+                  type="user"
+                />
+              )}
             </div>
           </div>
         </div>
       </div>
       <div className="container mx-auto max-w-3xl px-4 py-8 md:px-6 md:py-12 lg:px-8 lg:py-16">
-        <UserCard author={blog.author} />
         <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
           {blog.title}
         </h1>{" "}
+        <div className="mt-10 -mb-10">
+          {" "}
+          <UserCard author={blog.author} />
+        </div>
         <article className="prose dark:prose-invert max-w-3xl prose-a:font-bold  prose-a:no-underline ">
           <div>
             {blog.tags && (

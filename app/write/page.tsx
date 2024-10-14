@@ -1,22 +1,27 @@
 "use client";
-import React, { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { createPost } from "./actions";
+import { createPost, createDraft as saveDraft } from "./actions";
 import rehypeSanitize from "rehype-sanitize";
 import { useTheme } from "next-themes";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PlusIcon } from "lucide-react";
+import { PlusIcon, Tag } from "lucide-react";
 import Image from "next/image";
 import { createClient } from "../utils/supabase/client";
+import { Badge } from "@/components/ui/badge";
+import { AiOutlinePicture } from "react-icons/ai";
+import Loading from "@/components/ui/loader-spinner";
+import { title } from "process";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
   const { setTheme, theme, resolvedTheme } = useTheme();
   const { toast } = useToast();
-  
+
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState("");
   const [imageLoading, setImageLoading] = useState(false);
@@ -25,8 +30,17 @@ export default function App() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [autoSave, setAutoSave] = useState(false);
   const markdown = true;
-  const [value, setValue] = useState("**Hello world!!!**");
+  const [postId, setPostId] = useState<string | null>(null);
+  const [value, setValue] = useState("Start writing your blog here...");
+  const [title, setTitle] = useState(""); // State for the title
+  const [description, setDescription] = useState(""); // State for the title
+
+  const [draftTimeout, setDraftTimeout] = useState<NodeJS.Timeout | null>(null);
+
+  const supabaseURL =
+    "https://gktuazxnjcwahdrwuchb.supabase.co/storage/v1/object/public/blog-images/";
 
   const successToast = () => {
     toast({
@@ -36,7 +50,9 @@ export default function App() {
     });
   };
 
-  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
       setSelectedFile(file);
@@ -72,7 +88,7 @@ export default function App() {
       if (error) {
         setUploadError("Error uploading file: " + error.message);
       } else {
-        setImageUrl(fileName);
+        setImageUrl(supabaseURL + fileName);
       }
     } catch (err) {
       console.error("An unexpected error occurred:", err);
@@ -87,10 +103,11 @@ export default function App() {
     const formData = new FormData(event.currentTarget);
     formData.append("content", value);
     formData.append("tags", JSON.stringify(tags));
+    const published = true;
 
     try {
       setLoading(true);
-      await createPost(formData, markdown, imageUrl);
+      await createPost(formData, markdown, imageUrl, published);
       successToast();
     } catch (error) {
       console.error("Error creating post:", error);
@@ -98,6 +115,45 @@ export default function App() {
       setLoading(false);
     }
   };
+
+  const createDraft = async () => {
+    const formData = new FormData();
+    formData.append("content", value);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("tags", JSON.stringify(tags));
+    const published = false;
+    try {
+      setAutoSave(true);
+      const post_id = await saveDraft(formData, true, imageUrl, postId);
+      setPostId(post_id); // Update the postId state after draft creation
+    } catch (error) {
+      console.error("Error creating draft:", error);
+    } finally {
+      setAutoSave(false);
+    }
+  };
+
+  // Auto-save draft effect
+  useEffect(() => {
+    if (draftTimeout) {
+      clearTimeout(draftTimeout); // Clear previous timeout if any
+    }
+
+    const timeout = setTimeout(() => {
+      if (value.trim()) {
+        createDraft(); // Only save draft if there is content
+      }
+    }, 2000); // 2 seconds delay before saving the draft
+
+    setDraftTimeout(timeout);
+
+    return () => {
+      if (draftTimeout) {
+        clearTimeout(draftTimeout); // Cleanup timeout on component unmount or change
+      }
+    };
+  }, [value, tags, imageUrl]); // Run effect when value, tags, or image changes
 
   const handleTagInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && tagInput.trim()) {
@@ -115,13 +171,15 @@ export default function App() {
   };
 
   return (
-    <div className="p-4 min-h-screen my-auto" data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}>
-      <div className="flex flex-col w-full items-center gap-4">
+    <div
+      className="min-h-screen my-auto"
+      data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}
+    >
+      <div className="flex flex-col items-center gap-4">
         <form onSubmit={handleSubmit} className="w-full">
-          <div className="flex-col flex mb-4 gap-2">
-            <div className="max-w-xl mx-auto mt-8 p-6 bg-card rounded-lg shadow-md">
-              <h2 className="text-2xl font-bold mb-4">Image Upload</h2>
-              <div className="mb-4">
+          <div className="w-full">
+            <div className="w-full mx-auto bg-card rounded-lg shadow-md">
+              <div className="">
                 <Input
                   type="file"
                   accept="image/*"
@@ -131,97 +189,107 @@ export default function App() {
                   ref={fileInputRef}
                   aria-label="Choose an image to upload"
                 />
-                <Label htmlFor="image-upload" className="sr-only">Choose an image to upload</Label>
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors"
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => e.key === "Enter" && fileInputRef.current?.click()}
-                  aria-label="Click or press enter to upload an image"
+                  className="relative h-[400px] md:mt-0 mt-[-4px] w-screen overflow-hidden"
                 >
-                  <PlusIcon className="w-12 h-12 text-gray-400" />
+                  <Image
+                    src={selectedImage ? selectedImage : "/gradient.jpg"}
+                    alt="Blog cover image"
+                    width={1920}
+                    height={1080}
+                    className="h-full w-full object-cover cursor-pointer"
+                    style={{ aspectRatio: "1920/1080", objectFit: "cover" }}
+                  />
+                  <p className="absolute bottom-4 right-4 flex items-center gap-2 text-gray-200">
+                    <AiOutlinePicture color="rgb(229 231 235)" /> Change Cover
+                    Image
+                  </p>
                 </div>
               </div>
-              {selectedImage ? (
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2">Preview:</h3>
-                  <div className="relative w-full h-64">
-                    <Image src={selectedImage} alt="Preview of the selected image" layout="fill" objectFit="contain" />
-                  </div>
-                </div>
-              ) : (
-                <p className="text-center text-gray-500 mt-2">No image selected</p>
-              )}
+
               {uploadError && <p className="text-red-500">{uploadError}</p>}
             </div>
-
-            <label>Title:</label>
-            <input
-              name="title"
-              required
-              className="border rounded-md p-1 w-full"
-              placeholder="Blog Title"
-            />
           </div>
-
-          <div className="pb-4">
-            <label>Description:</label>
-            <input
-              maxLength={250}
-              required
-              minLength={10}
-              name="description"
-              className="border rounded-md p-1 w-full"
-              placeholder="Enter your description"
-            />
-          </div>
-
-          <div className="pb-4">
-            <label>Tags:</label>
-            <div className="flex items-center flex-wrap gap-2 mb-2">
-              {tags.map((tag) => (
-                <span key={tag} className="bg-gray-200 text-black px-2 py-1 rounded-full text-sm flex items-center gap-1">
-                  {tag}
-                  <button
-                    type="button"
-                    onClick={() => removeTag(tag)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
+          {/* Content Section */}
+          <div className="flex justify-center w-full">
+            <div className="max-w-3xl w-full">
+              <div className="p-4 flex flex-col gap-4 mt-4">
+                <div className="flex items-center justify-between">
+                  <Input
+                    name="title"
+                    required
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="p-1 border-none font-extrabold text-4xl w-full placeholder:font-extrabold placeholder:text-4xl tracking-tight"
+                    placeholder="Blog Title"
+                  />
+                  <div className="dark:text-gray-200 text-black flex w-fit items-center animate-pulse gap-2">
+                    {autoSave && <Loading />}
+                  </div>
+                </div>
+                <Input
+                  maxLength={250}
+                  required
+                  onChange={(e) => setDescription(e.target.value)}
+                  minLength={10}
+                  name="description"
+                  className="p-1 w-full border-none placeholder:font-semibold placeholder:text-lg border-b text-lg font-semibold"
+                  placeholder="Blog description"
+                />
+                <div className="">
+                  {tags.length > 0 && (
+                    <div className="flex items-center flex-wrap gap-2">
+                      {tags.map((tag) => (
+                        <Badge variant={"outline"} className="mb-4" key={tag}>
+                          <Tag size={10} className="mr-2" /> {tag}
+                          <button
+                            type="button"
+                            onClick={() => removeTag(tag)}
+                            className="ml-2 text-xs text-gray-500 hover:text-gray-700"
+                          >
+                            ✕
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex gap-2 items-center">
+                    <Input
+                      value={tagInput}
+                      onChange={(e) => setTagInput(e.target.value)}
+                      onKeyDown={handleTagInputKeyDown}
+                      pattern="^[a-zA-Z0-9]+$"
+                      placeholder="Add a tag and press Enter"
+                      className="placeholder:text-gray-500"
+                    />
+                  </div>
+                </div>
+                <div
+                  data-color-mode={resolvedTheme === "dark" ? "dark" : "light"}
+                >
+                  <MDEditor
+                    value={value}
+                    onChange={(val = "") => setValue(val)}
+                    preview="edit"
+                    hideToolbar={false}
+                    height={400}
+                    fullscreen={false}
+                    autoFocus={false}
+                    extraCommands={[]}
+                    visiableDragbar={false}
+                    previewOptions={{
+                      rehypePlugins: [[rehypeSanitize]],
+                    }}
+                  />
+                </div>
+                <div className="flex justify-end gap-2">
+                  <Button type="submit" disabled={loading} className="w-full">
+                    {loading ? <Loading /> : "Post"}
+                  </Button>
+                </div>
+              </div>
             </div>
-            <input
-              value={tagInput}
-              disabled={tags.length >= 5}
-              onChange={(e) => setTagInput(e.target.value)}
-              onKeyDown={handleTagInputKeyDown}
-              className="border rounded-md p-1 w-full"
-              placeholder="Type a tag and press Enter"
-            />
-            {tags.length >= 5 && <p className="text-red-500">Maximum of 5 tags allowed.</p>}
           </div>
-
-          <label>Content:</label>
-          <MDEditor
-            height="100%"
-            className="min-h-[500px]"
-            preview="edit"
-            value={value}
-            previewOptions={{ rehypePlugins: [[rehypeSanitize]] }}
-            onChange={(newValue) => setValue(newValue || "")}
-          />
-          <p>Preview:</p>
-          <MDEditor.Markdown
-            className="p-4 rounded-lg border border-gray-300"
-            source={value}
-            style={{ whiteSpace: "pre-wrap" }}
-          />
-          <Button className="w-full mt-4" type="submit" disabled={loading}>
-            {loading ? "Publishing..." : "Publish Blog"}
-          </Button>
         </form>
       </div>
     </div>

@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatDate, getTagColor } from "@/data/SiteData";
+import { calculateReadingTime, formatDate, getTagColor } from "@/data/SiteData";
 import { Button } from "../ui/button";
 import { BsEye, BsHeart, BsThreeDots } from "react-icons/bs";
 import { Post, Tag } from "@prisma/client";
 import { Author } from "@prisma/client";
-import { Heart, MessageCircleIcon, TagIcon } from "lucide-react";
+import { Clock, Heart, MessageCircleIcon, TagIcon } from "lucide-react";
 import BlogDropdown from "../buttons/BlogDropdown";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { defaultAvatar } from "@/data/SiteData";
@@ -24,6 +24,7 @@ interface BlogCardProps {
   horizontal?: boolean;
   dropdownType?: string;
   borderType?: string;
+  showDescription?: boolean;
 }
 
 export default async function BlogCard({
@@ -34,6 +35,7 @@ export default async function BlogCard({
   horizontal = false,
   dropdownType = "user",
   borderType = "full",
+  showDescription = true,
 }: BlogCardProps) {
   const supabase = createClient();
 
@@ -47,12 +49,10 @@ export default async function BlogCard({
   } = await supabase.auth.getUser();
   return (
     <Card
-      className={`w-full  rounded-md group overflow-hidden active:scale-[0.99] shadow-lg transition-all hover:shadow-xl  ${
-        horizontal ? "flex w-full hover:bg-card/80" : "max-w-lg"
+      className={`w-full   group overflow-hidden active:scale-[0.99] bg-card transition-all  ${
+        horizontal ? "flex w-full border " : "max-w-lg border rounded-md"
       }
-      ${borderType === "full" && "border"}
-      ${borderType === "none" && "border-none"}
-      ${borderType === "top" && "border-t border-b"}`}
+    `}
       key={post.id}
     >
       <Link
@@ -71,7 +71,7 @@ export default async function BlogCard({
           />
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-background  to-transparent " />
+        <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent " />
       </Link>
       <CardContent
         className={`space-y-4 w-full ${borderType === "none" ? "p-0" : "p-4"} `}
@@ -87,25 +87,16 @@ export default async function BlogCard({
             }`}
           >
             <Link
-              href={`/posts/${post.slug}`}
-              className="block"
-              prefetch={false}
-            >
-              <h3
-                className={` ${
-                  horizontal ? "text-base" : "text-xl"
-                } font-semibold transition-colors group-hover:text-primary`}
-              >
-                {post.title}
-              </h3>
-            </Link>
-            <Link
               href={`/profile/${author.username}`}
-              className="flex items-center gap-4"
+              className="flex items-center gap-2"
             >
               {author.image_url && (
-                <Avatar className="border">
-                  <AvatarImage src={author.image_url} alt="Author Avatar" />
+                <Avatar className="border h-8 w-8">
+                  <AvatarImage
+                    className=""
+                    src={author.image_url}
+                    alt="Author Avatar"
+                  />
                   <AvatarFallback>JD</AvatarFallback>
                 </Avatar>
               )}
@@ -118,10 +109,21 @@ export default async function BlogCard({
                   {author.username}
                   {author.verified && <VerifiedUser />}
                 </span>
-                <span className="text-sm text-muted-foreground">
-                  {formatDate(post.createdAt)}
-                </span>
               </div>
+            </Link>
+            <Link
+              href={`/posts/${post.slug}`}
+              className="block"
+              prefetch={false}
+            >
+              <h3
+                className={` ${
+                  horizontal ? "text-base" : "text-xl"
+                } font-extrabold tracking-tight transition-colors group-hover:text-primary`}
+              >
+                {post.title}
+              </h3>
+              {showDescription && <p className="text-sm">{post.description}</p>}
             </Link>
             {tags && (
               <div className={`flex flex-wrap  gap-2 `}>
@@ -135,28 +137,44 @@ export default async function BlogCard({
                         </Badge>
                       </Link>
                     );
-                  })}
+                  })}{" "}
               </div>
-            )}
+            )}{" "}
+            <div className="text-sm pt-2  text-muted-foreground">
+              {formatDate(post.createdAt)}
+            </div>
             <div className="flex items-center justify-between">
-              <Link
-                href={`/posts/${post.slug}`}
-                className="flex items-center gap-4"
-              >
-                <div className="flex items-center gap-2 pr-2 text-muted-foreground">
-                  <EyeIcon className="w-4 h-4" />
-                  <span>{post.views}</span>{" "}
-                </div>
-                <div className="flex items-center gap-2 pr-2 text-muted-foreground">
-                  <HeartIcon className="w-4 h-4" />
-                  <span>{post.likes}</span>
-                </div>
-                <div className="flex items-center gap-2 pr-2 text-muted-foreground">
-                  <MessageCircleIcon className="w-4 h-4" />
-                  <span>{comments}</span>
-                </div>
-              </Link>
-
+              {" "}
+              {horizontal ? (
+                <>
+                  <p className="flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    <p> {calculateReadingTime(post.content)} min read</p>
+                  </p>
+                  <p className="flex items-center gap-1">
+                    <EyeIcon className="w-4 h-4" />
+                    {post.views}
+                  </p>
+                </>
+              ) : (
+                <Link
+                  href={`/posts/${post.slug}`}
+                  className="flex items-center gap-4"
+                >
+                  <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                    <EyeIcon className="w-4 h-4" />
+                    <span>{post.views}</span>{" "}
+                  </div>
+                  <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                    <HeartIcon className="w-4 h-4" />
+                    <span>{post.likes}</span>
+                  </div>
+                  <div className="flex items-center gap-2 pr-2 text-muted-foreground">
+                    <MessageCircleIcon className="w-4 h-4" />
+                    <span>{comments}</span>
+                  </div>
+                </Link>
+              )}
               {dropdownType === "author" || user?.id === post.user_id ? (
                 <BlogDropdown author={author} slug={post.slug} type="author" />
               ) : (

@@ -40,7 +40,11 @@ export default async function ExplorePage() {
     tags,
   ] = await Promise.all([
     supabase.auth.getUser(),
-    prisma.post.findMany({ include: { author: true }, take: 10 }),
+    prisma.post.findMany({
+      include: { author: true },
+      where: { published: true },
+      take: 10,
+    }),
     prisma.tag.findMany({ include: { posts: true } }),
   ]);
 

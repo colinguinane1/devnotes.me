@@ -97,7 +97,7 @@ export default async function UserCard({
                 <Button
                   className="w-full shadow-2xl"
                   disabled
-                  variant={"outline"}
+                  variant={"ghost"}
                 >
                   Profile <ChevronRightIcon className="w-4 h-4 mr-1" />
                 </Button>
