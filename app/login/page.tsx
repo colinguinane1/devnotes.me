@@ -72,7 +72,7 @@ export default function Login({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="login">
-            <Card className="mx-auto bg-card w-fit">
+            <Card className="mx-auto border bg-card w-fit">
               <CardHeader>
                 <CardTitle className="text-2xl">Login</CardTitle>
                 <CardDescription>
@@ -128,12 +128,12 @@ export default function Login({
                       </motion.div>
                     )}
                   </AnimatePresence>
-                  <div className="flex justify-between">
+                  {/* <div className="flex justify-between">
                     <div></div>
                     <Link href="/forgot-password">
                       <p className="text-sm underline">Forgot Password?</p>
                     </Link>
-                  </div>
+                  </div> */}
                   <Button
                     type="submit"
                     disabled={isSubmitting}
@@ -161,7 +161,7 @@ export default function Login({
             </Card>
           </TabsContent>
           <TabsContent value="signup">
-            <Card className="bg-card">
+            <Card className="bg-card border">
               <CardHeader>
                 <CardTitle className="text-2xl">Sign Up</CardTitle>
                 <CardDescription>Create a devnotes account.</CardDescription>
